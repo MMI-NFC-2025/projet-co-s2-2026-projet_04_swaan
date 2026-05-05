@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --color-beige-light: #FAF8F3;
+    --color-beige: #F5F1E8;
+    --color-taupe: #D4C5B0;
+    --color-brown-dark: #3E2723;
+  }
+  
+  body {
+    @apply bg-[#FAF8F3] text-[#3E2723];
+  }
+}
