@@ -1,11 +1,46 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+// Page d'accueil SWAAN — Astro + Tailwind
+import Header from '../components/header.astro';
+import Footer from '../components/footer.astro';
+import PbImage from '../components/PbImage.astro';
+import StatsSection from '../components/statsSection.astro';
+import AlphabetBanner from '../components/bannièrealphabet.astro';
+import LsfSignsSection from '../components/LSFsignsection.astro';
+import CiblesSection from '../components/CiblesSection.astro';
+import FonctionnalitesSection from '../components/fonctiannilitessection.astro';
+import TarifsSection from '../components/Tarifsection.astro';
+import EssaiSection from '../components/essaiSection.astro';
+import DemoSection from '../components/demosection.astro';
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<Header />
+
+
+<main class="bg-[#E8E4DF] text-[#3A3530] font-sans overflow-x-hidden">
+  <!-- HERO -->
+  <section class="min-h-screen pt-20 grid grid-cols-1 md:grid-cols-2 items-center px-6 md:px-20 gap-10 bg-[#E8E4DF]">
+    <div class="flex flex-col gap-6 py-10">
+      <span class="inline-flex items-center gap-2 bg-[#E8E4DF] shadow-[6px_6px_14px_#C8C4BF,-6px_-6px_14px_#FFF] rounded-full px-4 py-2 text-xs font-medium uppercase text-[#6A8A58] mb-6 animate-fadeIn"> <span class="w-2 h-2 rounded-full bg-[#8FAF7A] shadow-[0_0_0_3px_rgba(143,175,122,0.25)]"></span> Formation LSF — Entreprises & collaborateurs </span>
+      <h1 class="font-serif text-4xl md:text-6xl font-light leading-tight text-[#3A3530] mb-4 animate-fadeIn">Formez vos équipes<br />à la LSF, <em class="italic text-[#6A8A58]">simplement,<br />avec plus d'inclusion.</em></h1>
+      <p class="text-base font-light leading-relaxed text-[#7A746E] max-w-xl mb-8 animate-fadeIn">SWAAN permet aux entreprises de sensibiliser et former leurs collaborateurs aux bases de la Langue des Signes Française grâce à des mini-jeux, un parcours progressif et une expérience pensée pour les contraintes du monde professionnel.</p>
+      <div class="flex flex-wrap gap-4 items-center animate-fadeIn">
+        <a href="#demo" class="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-[#8FAF7A] text-white font-medium shadow-lg hover:scale-95 transition">Demander une démo <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a href="#essai" class="px-8 py-4 rounded-full bg-[#E8E4DF] text-[#7A746E] font-normal shadow-lg hover:scale-95 transition border border-[#ADA8A2]">Tester pendant 7 jours</a>
+      </div>
+      <div class="flex items-center gap-2 text-xs text-[#ADA8A2] mt-4 animate-fadeIn"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1.5L1.5 3.5v3c0 2.5 1.8 4.6 5 5 3.2-.4 5-2.5 5-5v-3L6.5 1.5z" stroke="currentColor" stroke-width="1.2"/></svg> Essai réservé à un RH ou responsable formation, sans engagement.</div>
+    </div>
+    <div class="flex items-center justify-center py-10">
+      <PbImage />
+    </div>
+  </section>
+  <StatsSection />
+  <AlphabetBanner />
+  <LsfSignsSection />
+  <CiblesSection />
+  <FonctionnalitesSection />
+  <TarifsSection />
+  <EssaiSection />
+  <DemoSection />
+</main>
+
+<Footer />
