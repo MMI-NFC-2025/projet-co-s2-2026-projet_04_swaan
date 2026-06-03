@@ -1,0 +1,224 @@
+---
+import AccountShell from "../components/AccountShell.astro";
+
+const title = "Contact";
+const description =
+  "Contacter l'équipe SWAAN pour une question sur le compte, les cours LSF, les mini-jeux, le dictionnaire ou le déploiement en entreprise.";
+
+const contactReasons = [
+  "Problème de connexion",
+  "Question sur les cours",
+  "Question sur les jeux",
+  "Dictionnaire ou vidéo LSF",
+  "Demande entreprise",
+  "Autre demande",
+];
+
+const quickHelps = [
+  {
+    title: "Accès compte",
+    text: "Connexion, inscription, code entreprise ou mot de passe.",
+  },
+  {
+    title: "Contenus LSF",
+    text: "Cours, vidéos de signes, catégories du dictionnaire ou progression.",
+  },
+  {
+    title: "Entreprise",
+    text: "Déploiement, équipe RH, suivi apprenant ou demande de démonstration.",
+  },
+];
+---
+
+<AccountShell title={title} description={description} active="contact">
+  <div class="grid gap-10 lg:grid-cols-[0.86fr_1.14fr] lg:items-start">
+    <aside class="lg:sticky lg:top-10">
+      <nav class="reveal mb-8 text-sm text-soft" aria-label="Fil d'Ariane">
+        <a class="hover:text-dark" href="/tableau-de-bord">Tableau de bord</a>
+        <span class="mx-2">/</span>
+        <span>Contact</span>
+      </nav>
+
+      <div class="section-label reveal">Besoin d'aide</div>
+      <h1 class="reveal max-w-2xl font-serif text-[44px] leading-[1.05] font-light tracking-[-1px] text-dark md:text-[64px]">
+        Contacter l'équipe <em class="title-em">SWAAN.</em>
+      </h1>
+      <p class="reveal mt-7 max-w-xl text-base leading-8 font-light text-mid">
+        Envoie une demande claire avec ton contexte. Le formulaire prépare un récapitulatif complet pour le support et garde une copie locale de ta demande.
+      </p>
+
+      <div class="reveal mt-9 rounded-[34px] bg-bg p-5 shadow-neu-out-lg">
+        <img
+          class="mx-auto h-56 w-full rounded-[28px] bg-bg object-contain p-4 shadow-neu-in"
+          src="/assets/img/dictionnaire/quotidien-aide.png"
+          alt="Illustration LSF aide"
+          loading="eager"
+        />
+      </div>
+
+      <div class="reveal mt-7 grid gap-4">
+        {
+          quickHelps.map((item) => (
+            <div class="rounded-[26px] bg-bg p-5 shadow-neu-in-sm">
+              <h2 class="mb-2 font-serif text-2xl font-light text-dark">{item.title}</h2>
+              <p class="text-sm leading-7 font-light text-mid">{item.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </aside>
+
+    <section class="reveal rounded-[40px] bg-bg p-6 shadow-neu-out-lg md:p-9">
+      <div class="mb-8">
+        <p class="mb-3 text-[11px] font-medium tracking-[0.14em] text-soft uppercase">Formulaire de contact</p>
+        <h2 class="font-serif text-[36px] leading-[1.1] font-light text-dark md:text-[44px]">
+          Décrire la demande
+        </h2>
+      </div>
+
+      <form id="contact-form" class="grid gap-5" novalidate>
+        <div class="grid gap-5 md:grid-cols-2">
+          <label class="grid gap-2 text-sm text-mid">
+            Prénom et nom
+            <input
+              class="min-h-14 rounded-full bg-bg px-6 text-dark shadow-neu-in outline-none placeholder:text-soft"
+              name="name"
+              type="text"
+              placeholder="Leila Tebrouri"
+              autocomplete="name"
+              required
+            />
+          </label>
+
+          <label class="grid gap-2 text-sm text-mid">
+            Email
+            <input
+              class="min-h-14 rounded-full bg-bg px-6 text-dark shadow-neu-in outline-none placeholder:text-soft"
+              name="email"
+              type="email"
+              placeholder="prenom@entreprise.fr"
+              autocomplete="email"
+              required
+            />
+          </label>
+        </div>
+
+        <div class="grid gap-5 md:grid-cols-2">
+          <label class="grid gap-2 text-sm text-mid">
+            Motif
+            <select class="min-h-14 rounded-full bg-bg px-6 text-dark shadow-neu-in outline-none" name="reason" required>
+              <option value="">Choisir un motif</option>
+              {contactReasons.map((reason) => <option value={reason}>{reason}</option>)}
+            </select>
+          </label>
+
+          <label class="grid gap-2 text-sm text-mid">
+            Priorité
+            <select class="min-h-14 rounded-full bg-bg px-6 text-dark shadow-neu-in outline-none" name="priority" required>
+              <option value="">Choisir une priorité</option>
+              <option>Simple question</option>
+              <option>Bloquant pour continuer</option>
+              <option>Demande entreprise urgente</option>
+            </select>
+          </label>
+        </div>
+
+        <label class="grid gap-2 text-sm text-mid">
+          Sujet
+          <input
+            class="min-h-14 rounded-full bg-bg px-6 text-dark shadow-neu-in outline-none placeholder:text-soft"
+            name="subject"
+            type="text"
+            placeholder="Exemple : je n'arrive pas à accéder au dictionnaire"
+            required
+          />
+        </label>
+
+        <label class="grid gap-2 text-sm text-mid">
+          Message
+          <textarea
+            class="min-h-44 rounded-[30px] bg-bg px-6 py-5 text-dark shadow-neu-in outline-none placeholder:text-soft"
+            name="message"
+            placeholder="Décris ce qui se passe, la page concernée, et ce que tu voulais faire."
+            required
+          ></textarea>
+        </label>
+
+        <label class="flex gap-4 rounded-[26px] bg-bg p-5 text-sm leading-7 text-mid shadow-neu-in-sm">
+          <input class="mt-1 size-4 accent-pop" name="copy" type="checkbox" checked />
+          <span>Garder une copie locale de cette demande dans le navigateur.</span>
+        </label>
+
+        <div id="contact-error" class="hidden rounded-[26px] bg-red-light/55 p-5 text-sm leading-7 text-red-soft shadow-neu-in-sm" role="alert">
+          Merci de remplir tous les champs obligatoires avant d'envoyer.
+        </div>
+
+        <div id="contact-success" class="hidden rounded-[30px] bg-pop-light/55 p-6 shadow-neu-in-sm" role="status" aria-live="polite">
+          <p class="mb-2 text-[11px] font-medium tracking-[0.14em] text-pop-dark uppercase">Demande préparée</p>
+          <h3 class="font-serif text-3xl font-light text-dark">Message prêt à envoyer.</h3>
+          <p class="mt-3 text-sm leading-7 font-light text-mid">
+            Référence : <span id="contact-reference" class="font-medium text-dark"></span>. Une copie locale a été enregistrée si l'option était cochée.
+          </p>
+          <a id="contact-mailto" class="btn btn-soft mt-5" href="mailto:contact@swaan.fr">Ouvrir l'email prérempli</a>
+        </div>
+
+        <div class="flex flex-col gap-4 pt-2 sm:flex-row">
+          <button class="btn btn-accent" type="submit">Envoyer la demande</button>
+          <a class="btn btn-soft" href="/demande-demo">Demander une démo</a>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <script>
+    const form = document.getElementById("contact-form");
+    const errorBox = document.getElementById("contact-error");
+    const successBox = document.getElementById("contact-success");
+    const referenceBox = document.getElementById("contact-reference");
+    const mailtoLink = document.getElementById("contact-mailto");
+
+    form?.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      if (!form.checkValidity()) {
+        errorBox?.classList.remove("hidden");
+        successBox?.classList.add("hidden");
+        form.reportValidity();
+        return;
+      }
+
+      const data = Object.fromEntries(new FormData(form).entries());
+      const reference = `SWAAN-${Date.now().toString().slice(-6)}`;
+      const request = {
+        ...data,
+        reference,
+        createdAt: new Date().toISOString(),
+      };
+
+      if (data.copy === "on") {
+        const previous = JSON.parse(localStorage.getItem("swaan_contact_requests") || "[]");
+        localStorage.setItem("swaan_contact_requests", JSON.stringify([request, ...previous].slice(0, 10)));
+      }
+
+      const body = [
+        `Référence : ${reference}`,
+        `Nom : ${data.name}`,
+        `Email : ${data.email}`,
+        `Motif : ${data.reason}`,
+        `Priorité : ${data.priority}`,
+        "",
+        "Message :",
+        data.message,
+      ].join("\n");
+
+      mailtoLink?.setAttribute(
+        "href",
+        `mailto:contact@swaan.fr?subject=${encodeURIComponent(`[SWAAN] ${data.subject}`)}&body=${encodeURIComponent(body)}`,
+      );
+      referenceBox.textContent = reference;
+      errorBox?.classList.add("hidden");
+      successBox?.classList.remove("hidden");
+      successBox?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+  </script>
+</AccountShell>

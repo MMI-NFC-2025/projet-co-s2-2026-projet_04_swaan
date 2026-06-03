@@ -1,0 +1,296 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+
+const documents = [
+  "Adresse email professionnelle",
+  "Justificatif d'appartenance à l'entreprise",
+  "Document ou attestation montrant votre rôle RH, formation, RSE ou management",
+];
+
+const packs = {
+  "pack-5": "Pack 5 utilisateurs",
+  "pack-20": "Pack 20 utilisateurs",
+  "pack-50": "Pack 50 utilisateurs",
+  "pack-100": "Pack 100 utilisateurs",
+  "pack-250": "Pack 250 utilisateurs",
+};
+
+const demoRecipientEmail = "leila.tebrourij@gmail.com";
+---
+
+<Layout
+  title="Demander une démo"
+  description="Formulaire de demande de démo SWAAN réservé aux responsables RH, formation, RSE ou aux personnes chargées de déployer la formation LSF en entreprise."
+>
+  <Nav />
+
+  <main class="px-6 pt-36 pb-16 md:px-12 lg:h-screen lg:overflow-hidden lg:px-20 lg:pb-8">
+    <section class="mx-auto grid max-w-7xl gap-10 lg:h-[calc(100vh-11rem)] lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
+      <div class="demo-scroll-panel lg:max-h-[calc(100vh-11rem)] lg:overflow-y-auto lg:pr-4">
+        <nav class="reveal mb-8 text-sm text-soft" aria-label="Fil d'Ariane">
+          <a class="hover:text-dark" href="/">Accueil</a>
+          <span class="mx-2">/</span>
+          <span>Demande de démo</span>
+        </nav>
+
+        <div class="section-label reveal">Démo entreprise</div>
+        <h1 class="reveal font-serif text-[44px] leading-[1.05] font-light tracking-[-1px] text-dark md:text-[64px]">
+          Demander un accès de démonstration <em class="title-em">SWAAN.</em>
+        </h1>
+        <p class="reveal mt-7 max-w-xl text-base leading-8 font-light text-mid">
+          La démo est réservée aux personnes qui travaillent dans une entreprise et qui participent réellement aux sujets de formation, RH, RSE, inclusion ou management d'équipe.
+        </p>
+
+        <div class="reveal mt-10 rounded-[32px] bg-bg p-7 shadow-neu-out-lg">
+          <p class="mb-5 text-[11px] font-medium tracking-[0.14em] text-soft uppercase">Documents demandés</p>
+          <ul class="grid gap-4">
+            {
+              documents.map((document) => (
+                <li class="flex gap-4 rounded-3xl bg-bg p-4 shadow-neu-in-sm">
+                  <span class="mt-1 flex size-6 shrink-0 items-center justify-center rounded-full bg-pop-light text-xs text-pop-dark">✓</span>
+                  <span class="text-sm leading-7 font-light text-mid">{document}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+
+      <form id="demo-form" class="demo-scroll-panel reveal rounded-[40px] bg-bg p-6 shadow-neu-out-lg md:p-10 lg:max-h-[calc(100vh-11rem)] lg:overflow-y-auto lg:pr-8" enctype="multipart/form-data" novalidate>
+        <div class="mb-9">
+          <p class="mb-3 text-[11px] font-medium tracking-[0.14em] text-soft uppercase">Formulaire</p>
+          <h2 class="font-serif text-[36px] leading-[1.1] font-light text-dark">
+            Informations de contact
+          </h2>
+        </div>
+
+        <div id="selected-pack-box" class="mb-8 hidden rounded-[30px] bg-pop-light/45 p-5 shadow-neu-in-sm">
+          <p class="mb-2 text-[10px] font-medium tracking-[0.14em] text-pop-dark uppercase">Pack sélectionné</p>
+          <div class="font-serif text-3xl font-light text-dark" id="selected-pack-label"></div>
+          <p class="mt-2 text-sm leading-7 font-light text-mid">
+            Ce pack sera ajouté automatiquement à votre demande de démo.
+          </p>
+        </div>
+
+        <input id="selected-pack-input" name="pack" type="hidden" value="" />
+        <input name="_honey" type="text" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+        <div class="grid gap-5 md:grid-cols-2">
+          <label class="grid gap-2 text-sm text-mid">
+            Prénom
+            <input class="min-h-14 rounded-full bg-bg px-6 text-dark shadow-neu-in outline-none" name="prenom" type="text" placeholder="Leila" required />
+          </label>
+
+          <label class="grid gap-2 text-sm text-mid">
+            Nom
+            <input class="min-h-14 rounded-full bg-bg px-6 text-dark shadow-neu-in outline-none" name="nom" type="text" placeholder="Tebrouri" required />
+          </label>
+
+          <label class="grid gap-2 text-sm text-mid md:col-span-2">
+            Email professionnel
+            <input class="min-h-14 rounded-full bg-bg px-6 text-dark shadow-neu-in outline-none" name="email" type="email" placeholder="prenom.nom@entreprise.fr" required />
+          </label>
+
+          <label class="grid gap-2 text-sm text-mid">
+            Téléphone
+            <input class="min-h-14 rounded-full bg-bg px-6 text-dark shadow-neu-in outline-none" name="telephone" type="tel" placeholder="06 00 00 00 00" />
+          </label>
+
+          <label class="grid gap-2 text-sm text-mid">
+            Fonction
+            <select class="min-h-14 rounded-full bg-bg px-6 text-dark shadow-neu-in outline-none" name="fonction" required>
+              <option value="">Choisir une fonction</option>
+              <option>RH</option>
+              <option>Responsable formation</option>
+              <option>Responsable RSE</option>
+              <option>Manager</option>
+              <option>Direction</option>
+              <option>Autre rôle formation/inclusion</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="mt-10 mb-7 h-px bg-shadow-dark"></div>
+
+        <h2 class="mb-6 font-serif text-[36px] leading-[1.1] font-light text-dark">
+          Votre entreprise
+        </h2>
+
+        <div class="grid gap-5 md:grid-cols-2">
+          <label class="grid gap-2 text-sm text-mid">
+            Nom de l'entreprise
+            <input class="min-h-14 rounded-full bg-bg px-6 text-dark shadow-neu-in outline-none" name="entreprise" type="text" placeholder="Nom de l'organisation" required />
+          </label>
+
+          <label class="grid gap-2 text-sm text-mid">
+            Taille de l'équipe à former
+            <select id="team-size-select" class="min-h-14 rounded-full bg-bg px-6 text-dark shadow-neu-in outline-none" name="taille" required>
+              <option value="">Choisir un volume</option>
+              <option>1 à 5 personnes</option>
+              <option>6 à 20 personnes</option>
+              <option>21 à 50 personnes</option>
+              <option>51 à 100 personnes</option>
+              <option>Plus de 100 personnes</option>
+            </select>
+          </label>
+
+          <label class="grid gap-2 text-sm text-mid md:col-span-2">
+            Objectif de la formation
+            <textarea class="min-h-36 rounded-[28px] bg-bg px-6 py-5 text-dark shadow-neu-in outline-none" name="objectif" placeholder="Exemple : sensibiliser l'équipe d'accueil, former les collaborateurs aux bases de la LSF, préparer une action RSE..." required></textarea>
+          </label>
+        </div>
+
+        <div class="mt-10 mb-7 h-px bg-shadow-dark"></div>
+
+        <h2 class="mb-6 font-serif text-[36px] leading-[1.1] font-light text-dark">
+          Justificatifs
+        </h2>
+
+        <div class="grid gap-5">
+          <label class="grid gap-3 rounded-[30px] bg-bg p-6 text-sm text-mid shadow-neu-in">
+            Justificatif entreprise
+            <input class="text-sm text-mid file:mr-4 file:rounded-full file:border-0 file:bg-bg file:px-5 file:py-3 file:text-xs file:font-medium file:text-pop-dark file:shadow-neu-out" name="justificatif_entreprise" type="file" accept=".pdf,.png,.jpg,.jpeg" />
+            <span class="text-xs leading-6 text-soft">Exemples : badge professionnel, attestation employeur, extrait d'annuaire interne, document avec nom de l'entreprise.</span>
+          </label>
+
+          <label class="grid gap-3 rounded-[30px] bg-bg p-6 text-sm text-mid shadow-neu-in">
+            Justificatif de rôle formation/RH
+            <input class="text-sm text-mid file:mr-4 file:rounded-full file:border-0 file:bg-bg file:px-5 file:py-3 file:text-xs file:font-medium file:text-pop-dark file:shadow-neu-out" name="justificatif_role" type="file" accept=".pdf,.png,.jpg,.jpeg" />
+            <span class="text-xs leading-6 text-soft">Exemples : fiche de poste, signature email professionnelle, attestation interne, document de mission.</span>
+          </label>
+        </div>
+
+        <label class="mt-8 flex gap-4 rounded-3xl bg-bg p-5 text-sm leading-7 text-mid shadow-neu-in-sm">
+          <input class="mt-1 size-4 accent-pop" name="confirmation_cadre_professionnel" type="checkbox" value="Oui" required />
+          <span>Je confirme demander cette démo dans un cadre professionnel lié à la formation, aux RH, à l'inclusion, à la RSE ou au management.</span>
+        </label>
+
+        <div id="demo-error" class="mt-7 hidden rounded-[26px] bg-red-light/55 p-5 text-sm leading-7 text-red-soft shadow-neu-in-sm" role="alert" aria-live="assertive">
+          Merci de remplir les champs obligatoires avant d'envoyer.
+        </div>
+
+        <div id="demo-success" class="mt-7 hidden rounded-[30px] bg-pop-light/55 p-6 shadow-neu-in-sm" role="status" aria-live="polite">
+          <p class="mb-2 text-[11px] font-medium tracking-[0.14em] text-pop-dark uppercase">Demande envoyée</p>
+          <h3 class="font-serif text-3xl font-light text-dark">Votre demande a bien été transmise.</h3>
+          <p class="mt-3 text-sm leading-7 font-light text-mid">
+            Référence : <span id="demo-reference" class="font-medium text-dark"></span>. Un email récapitulatif est envoyé à l'équipe SWAAN.
+          </p>
+        </div>
+
+        <div class="mt-9 flex flex-col gap-4 sm:flex-row">
+          <button id="demo-submit" class="btn btn-accent" type="submit">Envoyer la demande</button>
+          <a class="btn btn-soft" href="/contact">Contacter le support</a>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <Footer />
+
+  <script define:vars={{ packs, demoRecipientEmail }}>
+    const form = document.getElementById("demo-form");
+    const params = new URLSearchParams(window.location.search);
+    const packSlug = params.get("pack");
+    const selectedPack = packSlug ? packs[packSlug] : "";
+    const selectedTeamSize = params.get("taille");
+    const packBox = document.getElementById("selected-pack-box");
+    const packLabel = document.getElementById("selected-pack-label");
+    const packInput = document.getElementById("selected-pack-input");
+    const teamSizeSelect = document.getElementById("team-size-select");
+    const errorBox = document.getElementById("demo-error");
+    const successBox = document.getElementById("demo-success");
+    const referenceBox = document.getElementById("demo-reference");
+    const submitButton = document.getElementById("demo-submit");
+
+    if (selectedPack) {
+      packBox?.classList.remove("hidden");
+      packLabel.textContent = selectedPack;
+      packInput.value = selectedPack;
+    }
+
+    if (selectedTeamSize && teamSizeSelect) {
+      teamSizeSelect.value = selectedTeamSize;
+    }
+
+    function showError(message) {
+      if (!errorBox) return;
+      errorBox.textContent = message;
+      errorBox.classList.remove("hidden");
+      successBox?.classList.add("hidden");
+    }
+
+    form?.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      if (!form.checkValidity()) {
+        showError("Merci de remplir les champs obligatoires avant d'envoyer.");
+        form.reportValidity();
+        return;
+      }
+
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+      const reference = `SWAAN-DEMO-${Date.now().toString().slice(-6)}`;
+
+      formData.append("_subject", `[SWAAN] Demande de démo ${data.pack || ""}`);
+      formData.append("_template", "table");
+      formData.append("_captcha", "false");
+      formData.append("_replyto", String(data.email || ""));
+      formData.append("reference", reference);
+
+      submitButton?.setAttribute("disabled", "true");
+      submitButton.textContent = "Envoi en cours...";
+
+      try {
+        const response = await fetch(`https://formsubmit.co/ajax/${demoRecipientEmail}`, {
+          method: "POST",
+          body: formData,
+          headers: {
+            Accept: "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("FormSubmit a refusé l'envoi.");
+        }
+
+        referenceBox.textContent = reference;
+        errorBox?.classList.add("hidden");
+        successBox?.classList.remove("hidden");
+        successBox?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        form.reset();
+        packInput.value = selectedPack || "";
+      } catch (error) {
+        console.error("Erreur envoi demande démo :", error);
+        showError("L'envoi automatique n'a pas fonctionné. Vérifie que l'adresse destinataire FormSubmit est bien activée, puis réessaie.");
+      } finally {
+        submitButton?.removeAttribute("disabled");
+        submitButton.textContent = "Envoyer la demande";
+      }
+    });
+  </script>
+
+  <style>
+    @media (min-width: 1024px) {
+      .demo-scroll-panel {
+        overscroll-behavior: contain;
+        scrollbar-gutter: stable;
+      }
+
+      .demo-scroll-panel::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      .demo-scroll-panel::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      .demo-scroll-panel::-webkit-scrollbar-thumb {
+        background: var(--color-shadow-dark);
+        border-radius: 999px;
+      }
+    }
+  </style>
+</Layout>

@@ -1,0 +1,55 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Layout
+  title="Page introuvable"
+  description="La page demandée n'existe pas ou a été déplacée. Retrouvez les principaux accès SWAAN."
+>
+  <Nav />
+
+  <main class="grid min-h-screen items-center px-6 pt-36 pb-16 md:px-12 lg:px-20">
+    <section class="mx-auto grid w-full max-w-6xl gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+      <div>
+        <div class="section-label reveal">Erreur 404</div>
+        <h1 class="reveal font-serif text-[54px] leading-[0.95] font-light text-dark md:text-[86px]">
+          Cette page s'est perdue <em class="title-em">en chemin.</em>
+        </h1>
+        <p class="reveal mt-7 max-w-xl text-base leading-8 font-light text-mid">
+          L'adresse demandée n'existe pas ou a été déplacée. Vous pouvez revenir à l'accueil, consulter les offres ou accéder à votre espace apprenant.
+        </p>
+
+        <div class="reveal mt-9 flex flex-col gap-4 sm:flex-row">
+          <a class="btn btn-accent" href="/">Retour à l'accueil</a>
+          <a class="btn btn-soft" href="/tarifs">Voir les tarifs</a>
+        </div>
+      </div>
+
+      <div class="reveal rounded-[42px] bg-bg p-7 shadow-neu-out-lg md:p-10">
+        <div class="rounded-[34px] bg-bg p-8 text-center shadow-neu-in">
+          <p class="font-serif text-[96px] leading-none font-light text-pop-dark md:text-[140px]">404</p>
+          <p class="mt-3 text-[11px] font-medium tracking-[0.16em] text-soft uppercase">Page introuvable</p>
+        </div>
+
+        <div class="mt-7 grid gap-4">
+          <a class="rounded-[26px] bg-bg p-5 shadow-neu-out hover:shadow-neu-in" href="/demande-demo">
+            <span class="block text-sm font-medium text-dark">Demander une démo</span>
+            <span class="mt-1 block text-sm leading-6 font-light text-mid">Préparer un accès entreprise SWAAN.</span>
+          </a>
+          <a class="rounded-[26px] bg-bg p-5 shadow-neu-out hover:shadow-neu-in" href="/connexion">
+            <span class="block text-sm font-medium text-dark">Espace apprenant</span>
+            <span class="mt-1 block text-sm leading-6 font-light text-mid">Se connecter à un compte existant.</span>
+          </a>
+          <a class="rounded-[26px] bg-bg p-5 shadow-neu-out hover:shadow-neu-in" href="/contact">
+            <span class="block text-sm font-medium text-dark">Contacter SWAAN</span>
+            <span class="mt-1 block text-sm leading-6 font-light text-mid">Signaler un lien cassé ou poser une question.</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>

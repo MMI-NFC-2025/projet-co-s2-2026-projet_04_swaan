@@ -1,0 +1,28 @@
+---
+import InfoPage from "../components/InfoPage.astro";
+---
+
+<InfoPage
+  title="Documentation"
+  eyebrow="Ressources"
+  description="Un guide clair pour comprendre les parcours, les jeux, le dictionnaire, la progression et les futures données PocketBase de la plateforme SWAAN."
+  image="/assets/img/dictionnaire/corps-main.png"
+  ctaLabel="Ouvrir le contact"
+  ctaHref="/contact"
+  secondaryLabel="Voir les jeux"
+  secondaryHref="/jeux"
+  highlights={[
+    { label: "Parcours", value: "4 niveaux" },
+    { label: "Jeux", value: "3 modes" },
+    { label: "Données", value: "PocketBase" },
+  ]}
+  cards={[
+    { label: "Apprendre", title: "Modules progressifs", text: "Les contenus peuvent être organisés par niveau, thème et ordre pédagogique pour guider les collaborateurs." },
+    { label: "Réviser", title: "Mini-jeux", text: "Quiz, memory et vrai/faux servent à renforcer la mémorisation sans transformer la formation en simple lecture." },
+    { label: "Consulter", title: "Dictionnaire LSF", text: "Les signes restent accessibles par catégorie, avec une place prévue pour les vidéos de démonstration." },
+  ]}
+  sections={[
+    { label: "Côté apprenant", title: "Un espace pensé pour l'usage quotidien.", text: "L'utilisateur retrouve sa progression, ses objectifs, les jeux disponibles et les ressources utiles depuis le tableau de bord.", items: ["Tableau de bord personnalisé", "Accès aux jeux et au dictionnaire", "Objectifs du jour et suivi de score"] },
+    { label: "Côté admin", title: "Une base prête pour le suivi RH.", text: "Les collections PocketBase prévues permettent de structurer les utilisateurs, entreprises, modules, leçons, jeux et progressions.", items: ["users et companies", "modules, lessons et games", "progress, badges et dictionary"] },
+  ]}
+/>

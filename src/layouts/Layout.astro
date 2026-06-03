@@ -1,14 +1,68 @@
 ---
+import "../styles/global.css";
+
+const {
+  title = "SWAAN — Formation LSF pour entreprises",
+  description = "SWAAN est une webapp B2B de formation à la Langue des Signes Française pour aider les entreprises à former leurs collaborateurs grâce à des parcours progressifs, mini-jeux et ressources LSF.",
+  image = "/assets/img/swaan-hero.png",
+} = Astro.props;
+
+const siteName = "SWAAN";
+const baseUrl = "https://swaan.fr";
+const pageUrl = `${baseUrl}${Astro.url.pathname}`;
+const titleHead = title.includes(siteName) ? title : `${title} — ${siteName}`;
+const imageUrl = image.startsWith("http") ? image : `${baseUrl}${image}`;
 ---
+
+<!doctype html>
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><slot name="title">SWAAN — Formation LSF</slot></title>
-    <link rel="stylesheet" href="/styles/global.css" />
-    <link rel="stylesheet" href="/styles/tailwind.css" />
+    <title>{titleHead}</title>
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content={titleHead} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:url" content={pageUrl} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={titleHead} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
+    <link rel="canonical" href={pageUrl} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
+    <a class="skip-link" href="#contenu-principal">Aller au contenu principal</a>
     <slot />
+    <script>
+      const main = document.querySelector("main");
+      if (main && !main.id) main.id = "contenu-principal";
+
+      const revealedElements = document.querySelectorAll(".reveal");
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      if (reduceMotion) {
+        revealedElements.forEach((el) => el.classList.add("visible"));
+      } else {
+        const obs = new IntersectionObserver(
+          (entries) =>
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) entry.target.classList.add("visible");
+            }),
+          { threshold: 0.08 },
+        );
+        revealedElements.forEach((el) => obs.observe(el));
+      }
+    </script>
   </body>
 </html>

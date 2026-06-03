@@ -1,0 +1,179 @@
+---
+import AccountShell from "../components/AccountShell.astro";
+---
+
+<AccountShell
+  title="Paramètres du compte"
+  description="Paramètres de profil et préférences de l'espace apprenant SWAAN."
+  active="parametres"
+>
+  <header class="mb-9 grid gap-6 xl:grid-cols-[1fr_auto] xl:items-end">
+    <div>
+      <p class="section-label mb-3">Compte client</p>
+      <h1 class="font-serif text-[44px] leading-[1.05] font-light tracking-[-0.5px] text-dark md:text-[58px]">
+        Paramètres du <em class="title-em">compte.</em>
+      </h1>
+      <p class="mt-5 max-w-2xl text-sm leading-7 font-light text-mid">
+        Modifiez les informations visibles dans votre espace apprenant. Dans la version finale, ces champs seront synchronisés avec PocketBase.
+      </p>
+    </div>
+
+    <a class="btn btn-soft" href="/tableau-de-bord">Retour dashboard</a>
+  </header>
+
+  <section class="grid gap-7 xl:grid-cols-[1.1fr_0.9fr]">
+    <form id="settings-form" class="rounded-[38px] bg-bg p-6 shadow-neu-out-lg md:p-9">
+      <div class="mb-8">
+        <p class="mb-3 text-[11px] font-medium tracking-[0.14em] text-soft uppercase">Profil</p>
+        <h2 class="font-serif text-[38px] leading-none font-light text-dark">Informations personnelles</h2>
+      </div>
+
+      <div class="grid gap-5 md:grid-cols-2">
+        <label class="grid gap-2 text-sm text-mid">
+          Prénom
+          <input id="first-name" class="min-h-14 rounded-full bg-bg px-6 text-dark shadow-neu-in outline-none" name="firstName" type="text" placeholder="Leila" required />
+        </label>
+        <label class="grid gap-2 text-sm text-mid">
+          Nom
+          <input id="last-name" class="min-h-14 rounded-full bg-bg px-6 text-dark shadow-neu-in outline-none" name="lastName" type="text" placeholder="Tebrouri" />
+        </label>
+        <label class="grid gap-2 text-sm text-mid md:col-span-2">
+          Email professionnel
+          <input id="email" class="min-h-14 rounded-full bg-bg px-6 text-dark shadow-neu-in outline-none" name="email" type="email" placeholder="prenom@entreprise.fr" />
+        </label>
+        <label class="grid gap-2 text-sm text-mid">
+          Entreprise
+          <input id="company" class="min-h-14 rounded-full bg-bg px-6 text-dark shadow-neu-in outline-none" name="company" type="text" placeholder="SWAAN Academy" />
+        </label>
+        <label class="grid gap-2 text-sm text-mid">
+          Rôle
+          <select id="role" class="min-h-14 rounded-full bg-bg px-6 text-dark shadow-neu-in outline-none" name="role">
+            <option value="collaborateur">Collaborateur</option>
+            <option value="admin">Admin RH</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="mt-9 mb-7 h-px bg-shadow-dark"></div>
+
+      <div class="mb-6">
+        <p class="mb-3 text-[11px] font-medium tracking-[0.14em] text-soft uppercase">Préférences</p>
+        <h2 class="font-serif text-[38px] leading-none font-light text-dark">Apprentissage</h2>
+      </div>
+
+      <div class="grid gap-4">
+        <label class="flex gap-4 rounded-[26px] bg-bg p-5 text-sm leading-7 text-mid shadow-neu-in-sm">
+          <input id="daily-goal" class="mt-1 size-4 accent-pop" name="dailyGoal" type="checkbox" />
+          <span>Afficher les objectifs du jour sur mon tableau de bord.</span>
+        </label>
+        <label class="flex gap-4 rounded-[26px] bg-bg p-5 text-sm leading-7 text-mid shadow-neu-in-sm">
+          <input id="save-scores" class="mt-1 size-4 accent-pop" name="saveScores" type="checkbox" />
+          <span>Conserver localement mes scores de mini-jeux pendant la démonstration.</span>
+        </label>
+      </div>
+
+      <div id="settings-success" class="mt-7 hidden rounded-[28px] bg-pop-light/55 p-5 text-sm leading-7 text-pop-dark shadow-neu-in-sm" role="status" aria-live="polite">
+        Paramètres enregistrés. Le tableau de bord utilisera ces informations.
+      </div>
+
+      <div class="mt-8 flex flex-col gap-4 sm:flex-row">
+        <button class="btn btn-accent" type="submit">Enregistrer</button>
+        <button id="reset-settings" class="btn btn-soft" type="button">Réinitialiser</button>
+      </div>
+    </form>
+
+    <aside class="grid gap-6">
+      <article class="rounded-[34px] bg-bg p-6 shadow-neu-out-lg">
+        <div class="mb-5 flex items-center gap-4">
+          <div class="flex size-16 items-center justify-center rounded-full bg-bg font-serif text-3xl text-pop-dark shadow-neu-in">S</div>
+          <div>
+            <p class="text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Aperçu profil</p>
+            <h2 id="preview-name" class="font-serif text-3xl leading-none font-light text-dark">Leila</h2>
+          </div>
+        </div>
+        <div class="grid gap-3 text-sm leading-7 font-light text-mid">
+          <p><span class="font-medium text-dark">Email :</span> <span id="preview-email">Non renseigné</span></p>
+          <p><span class="font-medium text-dark">Entreprise :</span> <span id="preview-company">Non renseignée</span></p>
+          <p><span class="font-medium text-dark">Rôle :</span> <span id="preview-role">Collaborateur</span></p>
+        </div>
+      </article>
+
+      <article class="rounded-[34px] bg-[#ead7cd] p-6 shadow-neu-out-lg">
+        <p class="mb-2 text-[10px] font-medium tracking-[0.14em] text-mid uppercase">PocketBase</p>
+        <h2 class="font-serif text-[34px] leading-none font-light text-dark">Prochaine étape</h2>
+        <p class="mt-4 text-sm leading-7 font-light text-mid">
+          Quand tu rempliras PocketBase, ces champs pourront être branchés sur la collection <code class="text-pop-dark">users</code> : name, prenom, email, role et company.
+        </p>
+      </article>
+    </aside>
+  </section>
+
+  <script>
+    const form = document.getElementById("settings-form");
+    const firstName = document.getElementById("first-name");
+    const lastName = document.getElementById("last-name");
+    const email = document.getElementById("email");
+    const company = document.getElementById("company");
+    const role = document.getElementById("role");
+    const dailyGoal = document.getElementById("daily-goal");
+    const saveScores = document.getElementById("save-scores");
+    const success = document.getElementById("settings-success");
+    const previewName = document.getElementById("preview-name");
+    const previewEmail = document.getElementById("preview-email");
+    const previewCompany = document.getElementById("preview-company");
+    const previewRole = document.getElementById("preview-role");
+
+    function readSettings() {
+      return JSON.parse(localStorage.getItem("swaan_user_settings") || "{}");
+    }
+
+    function updatePreview() {
+      previewName.textContent = [firstName.value, lastName.value].filter(Boolean).join(" ") || "Leila";
+      previewEmail.textContent = email.value || "Non renseigné";
+      previewCompany.textContent = company.value || "Non renseignée";
+      previewRole.textContent = role.value === "admin" ? "Admin RH" : "Collaborateur";
+    }
+
+    function loadSettings() {
+      const settings = readSettings();
+      firstName.value = settings.firstName || localStorage.getItem("swaan_user_name") || "Leila";
+      lastName.value = settings.lastName || "";
+      email.value = settings.email || "";
+      company.value = settings.company || "";
+      role.value = settings.role || localStorage.getItem("swaan_user_role") || "collaborateur";
+      dailyGoal.checked = settings.dailyGoal ?? true;
+      saveScores.checked = settings.saveScores ?? true;
+      updatePreview();
+    }
+
+    [firstName, lastName, email, company, role].forEach((input) => input.addEventListener("input", updatePreview));
+
+    form?.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const settings = {
+        firstName: firstName.value.trim(),
+        lastName: lastName.value.trim(),
+        email: email.value.trim(),
+        company: company.value.trim(),
+        role: role.value,
+        dailyGoal: dailyGoal.checked,
+        saveScores: saveScores.checked,
+      };
+
+      localStorage.setItem("swaan_user_settings", JSON.stringify(settings));
+      localStorage.setItem("swaan_user_name", settings.firstName || "Leila");
+      localStorage.setItem("swaan_user_role", settings.role);
+      success?.classList.remove("hidden");
+      updatePreview();
+    });
+
+    document.getElementById("reset-settings")?.addEventListener("click", () => {
+      localStorage.removeItem("swaan_user_settings");
+      localStorage.removeItem("swaan_user_role");
+      loadSettings();
+      success?.classList.add("hidden");
+    });
+
+    loadSettings();
+  </script>
+</AccountShell>

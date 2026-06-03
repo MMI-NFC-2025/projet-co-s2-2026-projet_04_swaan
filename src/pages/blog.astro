@@ -1,0 +1,28 @@
+---
+import InfoPage from "../components/InfoPage.astro";
+---
+
+<InfoPage
+  title="Blog LSF"
+  eyebrow="Ressources"
+  description="Des contenus courts pour aider les entreprises à mieux comprendre la Langue des Signes Française, l'accessibilité et les bonnes pratiques de formation inclusive."
+  image="/assets/img/dictionnaire/quotidien-merci.png"
+  ctaLabel="Demander une démo"
+  ctaHref="/demande-demo"
+  secondaryLabel="Contacter SWAAN"
+  secondaryHref="/contact"
+  highlights={[
+    { label: "Format", value: "Guides" },
+    { label: "Public", value: "B2B" },
+    { label: "Thème", value: "LSF" },
+  ]}
+  cards={[
+    { label: "Article", title: "Former sans surcharger", text: "Pourquoi les formats courts, les jeux et les révisions espacées facilitent l'apprentissage des premiers signes en entreprise." },
+    { label: "Article", title: "Accueil accessible", text: "Les situations où quelques signes essentiels peuvent améliorer l'accueil, l'orientation et la qualité d'échange." },
+    { label: "Article", title: "Inclusion concrète", text: "Comment relier une formation LSF aux objectifs RH, RSE et expérience collaborateur." },
+  ]}
+  sections={[
+    { label: "Ligne éditoriale", title: "Des articles utiles, pas décoratifs.", text: "Le blog SWAAN sert à donner des repères simples et actionnables aux responsables formation, managers et équipes RH.", items: ["Conseils de déploiement en entreprise", "Repères pédagogiques autour de la LSF", "Cas d'usage pour l'accueil et la communication quotidienne"] },
+    { label: "À venir", title: "Une base éditoriale évolutive.", text: "Les articles pourront être connectés plus tard à PocketBase pour publier des contenus dynamiques depuis l'interface admin.", items: ["Catégories d'articles", "Temps de lecture", "Ressources liées aux modules SWAAN"] },
+  ]}
+/>

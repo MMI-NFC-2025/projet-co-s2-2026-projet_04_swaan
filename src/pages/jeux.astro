@@ -1,0 +1,85 @@
+---
+import AccountShell from "../components/AccountShell.astro";
+
+const games = [
+  {
+    title: "Memory",
+    subtitle: "Associer les signes à leurs mots",
+    description: "Retournez les cartes, mémorisez les emplacements et retrouvez les paires signe/mot.",
+    href: "/jeu-memoire",
+    image: "/assets/img/dictionnaire/quotidien-merci.png",
+    status: "Disponible",
+    meta: "6 paires",
+  },
+  {
+    title: "Vrai / Faux",
+    subtitle: "Valider une traduction",
+    description: "Observez le signe affiché et décidez si la traduction proposée est correcte.",
+    href: "/jeu-vrai-faux",
+    image: "/assets/img/dictionnaire/quotidien-bonjour.png",
+    status: "Disponible",
+    meta: "6 questions",
+  },
+  {
+    title: "Quiz",
+    subtitle: "Réviser en QCM",
+    description: "Testez votre compréhension avec des questions courtes autour du vocabulaire LSF.",
+    href: "/jeu-quiz",
+    image: "/assets/img/dictionnaire/corps-main.png",
+    status: "À compléter",
+    meta: "QCM",
+  },
+  {
+    title: "Champ lexical",
+    subtitle: "Classer les signes par thème",
+    description: "Associez chaque signe à la bonne catégorie : quotidien, corps, animaux ou nourriture.",
+    href: "/jeu-champ-lexical",
+    image: "/assets/img/dictionnaire/nourriture-pomme.png",
+    status: "Disponible",
+    meta: "12 cartes",
+  },
+];
+---
+
+<AccountShell
+  title="Jeux LSF"
+  description="Catalogue des mini-jeux SWAAN disponibles dans l'espace apprenant."
+  active="jeux"
+>
+  <header class="mb-10 grid gap-6 xl:grid-cols-[1fr_auto] xl:items-end">
+    <div>
+      <p class="section-label mb-3">Jeux — LSF</p>
+      <h1 class="font-serif text-[44px] leading-[1.05] font-light tracking-[-0.5px] text-dark md:text-[58px]">
+        Choisir un <em class="title-em">mini-jeu.</em>
+      </h1>
+      <p class="mt-5 max-w-2xl text-sm leading-7 font-light text-mid">
+        Sélectionnez l'exercice que vous voulez faire aujourd'hui : mémorisation, validation rapide ou révision en quiz.
+      </p>
+    </div>
+
+    <a href="/tableau-de-bord" class="btn btn-soft w-fit">Retour au tableau de bord</a>
+  </header>
+
+  <section class="grid gap-7 md:grid-cols-2 xl:grid-cols-4">
+    {
+      games.map((game) => (
+        <a href={game.href} class="group flex min-h-full flex-col rounded-[34px] bg-bg p-5 shadow-neu-out-lg transition hover:-translate-y-1 hover:shadow-neu-in">
+          <div class="mb-5 flex h-64 items-center justify-center rounded-[28px] bg-bg p-5 shadow-neu-in">
+            <img src={game.image} alt={`Illustration du jeu ${game.title}`} class="h-full w-full object-contain transition group-hover:scale-[1.03]" loading="lazy" />
+          </div>
+
+          <div class="flex flex-1 flex-col px-2 pb-2">
+            <div class="mb-4 flex flex-wrap gap-2">
+              <span class="rounded-full bg-bg px-3 py-1 text-[9px] font-medium tracking-[0.12em] text-pop-dark uppercase shadow-neu-in-sm">{game.status}</span>
+              <span class="rounded-full bg-bg px-3 py-1 text-[9px] font-medium tracking-[0.12em] text-soft uppercase shadow-neu-in-sm">{game.meta}</span>
+            </div>
+            <h2 class="font-serif text-[38px] leading-none font-light text-dark">{game.title}</h2>
+            <p class="mt-2 text-sm font-medium text-pop-dark">{game.subtitle}</p>
+            <p class="mt-4 flex-1 text-sm leading-7 font-light text-mid">{game.description}</p>
+            <span class="btn btn-accent mt-6 w-fit">Lancer le jeu</span>
+          </div>
+        </a>
+      ))
+    }
+  </section>
+</AccountShell>

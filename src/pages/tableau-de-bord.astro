@@ -1,0 +1,217 @@
+---
+import AccountShell from "../components/AccountShell.astro";
+
+const goals = [
+  "Apprendre 3 nouveaux signes",
+  "Réviser un mini-jeu",
+  "Terminer ta session quotidienne",
+];
+
+const games = [
+  {
+    title: "Memory",
+    subtitle: "Vocabulaire du quotidien",
+    href: "/jeu-memoire",
+    image: "/assets/img/dictionnaire/quotidien-merci.png",
+    tag: "Associer",
+  },
+  {
+    title: "Vrai / Faux",
+    subtitle: "Expressions courantes",
+    href: "/jeu-vrai-faux",
+    image: "/assets/img/dictionnaire/quotidien-bonjour.png",
+    tag: "Réviser",
+  },
+  {
+    title: "Quiz",
+    subtitle: "Révision rapide",
+    href: "/jeu-quiz",
+    image: "/assets/img/dictionnaire/corps-main.png",
+    tag: "Tester",
+  },
+  {
+    title: "Champ lexical",
+    subtitle: "Classer par thème",
+    href: "/jeu-champ-lexical",
+    image: "/assets/img/dictionnaire/nourriture-pomme.png",
+    tag: "Catégoriser",
+  },
+];
+---
+
+<AccountShell
+  title="Tableau de bord"
+  description="Tableau de bord connecté SWAAN avec progression, objectifs du jour, statistiques et accès aux jeux LSF."
+  active="dashboard"
+>
+  <header class="mb-9 grid gap-6 xl:grid-cols-[1fr_auto] xl:items-center">
+    <div>
+      <p class="section-label mb-3">Tableau de bord</p>
+      <h1 class="font-serif text-[44px] leading-[1.05] font-light tracking-[-0.5px] text-dark md:text-[58px]">
+        Bonjour, <em id="dashboard-name" class="title-em">Leila</em>
+      </h1>
+      <p class="mt-4 max-w-2xl text-sm leading-7 font-light text-mid">
+        Continue ta progression LSF, révise avec les mini-jeux et retrouve rapidement les signes importants du quotidien.
+      </p>
+    </div>
+
+    <label class="flex h-14 w-full max-w-sm items-center gap-3 rounded-full bg-bg px-6 shadow-neu-in xl:w-80">
+      <input class="min-w-0 flex-1 bg-transparent text-sm text-dark outline-none placeholder:text-soft" type="search" placeholder="Rechercher un signe..." />
+      <span class="text-lg text-pop-dark">⌕</span>
+    </label>
+  </header>
+
+  <div class="grid gap-7 xl:grid-cols-[0.95fr_1.05fr]">
+    <section class="rounded-[32px] bg-bg p-7 shadow-neu-out-lg">
+      <div class="mb-5 flex items-start justify-between gap-4">
+        <div>
+          <p class="text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Ta progression</p>
+          <h2 class="mt-2 font-serif text-[34px] leading-none font-light text-dark">Débutant <em class="title-em">2</em></h2>
+        </div>
+        <span class="rounded-full bg-bg px-4 py-2 text-[11px] font-medium tracking-[0.1em] text-pop-dark uppercase shadow-neu-in-sm">4 jours</span>
+      </div>
+
+      <div class="grid gap-4">
+        <div class="rounded-[24px] bg-bg p-5 shadow-neu-in">
+          <p class="mb-2 text-sm font-medium text-mid">XP total</p>
+          <p class="font-serif text-[42px] leading-none font-light text-dark">1 240 <span class="text-xl text-soft">points</span></p>
+        </div>
+        <a href="/dictionnaire" class="btn btn-accent w-fit">Continuer ma leçon</a>
+      </div>
+    </section>
+
+    <section class="rounded-[32px] bg-[#ead7cd] p-7 shadow-neu-out-lg">
+      <p class="mb-2 text-[10px] font-medium tracking-[0.14em] text-mid uppercase">Objectifs du jour</p>
+      <h2 class="mb-6 font-serif text-[34px] leading-none font-light text-dark">Session quotidienne</h2>
+      <div class="grid gap-4">
+        {
+          goals.map((goal) => (
+            <a href={goal.includes("mini-jeu") ? "/jeux" : "/dictionnaire"} class="flex items-center gap-4 rounded-[22px] bg-bg/55 p-4 shadow-neu-in-sm hover:shadow-neu-out">
+              <span class="flex size-9 shrink-0 items-center justify-center rounded-full bg-bg text-pop-dark shadow-neu-out">✓</span>
+              <span class="text-sm font-medium text-dark">{goal}</span>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+  </div>
+
+  <section class="mt-7 rounded-[32px] bg-bg p-6 shadow-neu-out-lg">
+    <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+      <div>
+        <p class="text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Tes mini-jeux</p>
+        <h2 class="mt-2 font-serif text-[38px] leading-none font-light text-dark">
+          Réviser en <em class="title-em">jouant.</em>
+        </h2>
+      </div>
+      <p class="max-w-sm text-sm leading-7 font-light italic text-mid">
+        "J'ai choisi ceux-là pour toi... j'espère que je ne me suis pas trompé !"
+      </p>
+    </div>
+
+    <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+      {
+        games.map((game) => (
+          <a href={game.href} class="group rounded-[30px] bg-bg p-4 shadow-neu-out transition hover:-translate-y-1 hover:shadow-neu-in">
+            <div class="mb-4 flex h-44 items-center justify-center rounded-[24px] bg-bg p-3 shadow-neu-in">
+              <img src={game.image} alt={`Illustration du jeu ${game.title}`} class="h-full w-full object-contain transition group-hover:scale-[1.03]" loading="lazy" />
+            </div>
+            <div class="px-2 pb-2">
+              <span class="mb-3 inline-flex rounded-full bg-bg px-3 py-1 text-[9px] font-medium tracking-[0.12em] text-pop-dark uppercase shadow-neu-in-sm">
+                {game.tag}
+              </span>
+              <h3 class="font-serif text-[30px] leading-none font-light text-dark">{game.title}</h3>
+              <p class="mt-2 text-sm leading-6 font-light text-mid">{game.subtitle}</p>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <div class="mt-7 grid gap-7 xl:grid-cols-[1fr_360px]">
+    <section>
+      <div class="mb-4 flex items-center justify-between gap-4">
+        <h2 class="font-serif text-[36px] font-light text-dark">Tes statistiques</h2>
+        <a href="/dictionnaire" class="hidden rounded-full bg-bg px-5 py-2.5 text-xs font-medium tracking-[0.09em] text-pop-dark uppercase shadow-neu-out hover:shadow-neu-in sm:inline-flex">
+          Voir les signes
+        </a>
+      </div>
+
+      <div class="grid gap-5 md:grid-cols-2">
+        <a href="/dictionnaire" class="rounded-[30px] bg-bg p-7 shadow-neu-out-lg hover:shadow-neu-in">
+          <p class="mb-4 text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Signes appris</p>
+          <div class="mb-4 h-8 rounded-full bg-bg p-1 shadow-neu-in">
+            <div class="h-full w-[40%] rounded-full bg-pop-light shadow-neu-out"></div>
+          </div>
+          <p class="font-serif text-[44px] leading-none font-light text-dark">38</p>
+        </a>
+
+        <a href="/jeu-vrai-faux" class="rounded-[30px] bg-bg p-7 shadow-neu-out-lg hover:shadow-neu-in">
+          <p class="mb-4 text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Taux de réussite</p>
+          <div class="mb-4 h-8 rounded-full bg-bg p-1 shadow-neu-in">
+            <div class="h-full w-[82%] rounded-full bg-pop shadow-neu-out"></div>
+          </div>
+          <p class="font-serif text-[44px] leading-none font-light text-dark">82 <span class="text-2xl text-soft">%</span></p>
+        </a>
+      </div>
+
+      <a href="/tableau-de-bord" class="mt-5 grid gap-6 rounded-[32px] bg-[#ead7cd] p-7 shadow-neu-out-lg md:grid-cols-[1fr_auto] md:items-center">
+        <div>
+          <p class="mb-2 text-[10px] font-medium tracking-[0.14em] text-mid uppercase">Temps total d'apprentissage</p>
+          <p class="font-serif text-[48px] leading-none font-light text-dark">1h42</p>
+        </div>
+        <div class="relative size-28 rounded-full bg-bg p-4 shadow-neu-out">
+          <div class="absolute inset-4 rounded-full border-[18px] border-pop-light border-r-transparent"></div>
+          <div class="absolute inset-[38px] rounded-full bg-bg shadow-neu-in-sm"></div>
+        </div>
+      </a>
+    </section>
+
+    <section class="rounded-[32px] bg-bg p-6 shadow-neu-out-lg">
+      <div class="mb-5">
+        <p class="text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Tes mini-jeux</p>
+        <h2 class="mt-2 font-serif text-[34px] leading-none font-light text-dark">Réviser en jouant</h2>
+      </div>
+
+      <div class="mb-5 rounded-[24px] bg-bg p-5 text-sm leading-7 font-light italic text-mid shadow-neu-in">
+        "J'ai choisi ceux-là pour toi... j'espère que je ne me suis pas trompé !"
+      </div>
+
+      <div class="grid gap-4">
+        {
+          games.map((game) => (
+            <a href={game.href} class="rounded-[22px] bg-bg px-5 py-4 shadow-neu-out hover:shadow-neu-in">
+              <p class="font-medium text-dark">{game.title}</p>
+              <p class="mt-1 text-sm font-light text-mid">{game.subtitle}</p>
+            </a>
+          ))
+        }
+        <a href="/jeux" class="btn btn-soft mt-1">Voir tous les jeux</a>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    function titleCaseName(value) {
+      if (!value) return "Leila";
+      return value
+        .split(/[._\-\s@]+/)
+        .filter(Boolean)[0]
+        ?.replace(/^./, (char) => char.toUpperCase()) || "Leila";
+    }
+
+    const storedName = localStorage.getItem("swaan_user_name");
+    const pbAuth = localStorage.getItem("pocketbase_auth");
+    let displayName = storedName;
+
+    if (!displayName && pbAuth) {
+      try {
+        const auth = JSON.parse(pbAuth);
+        displayName = auth?.model?.prenom || auth?.model?.name || auth?.model?.email;
+      } catch {}
+    }
+
+    document.getElementById("dashboard-name").textContent = titleCaseName(displayName);
+  </script>
+</AccountShell>

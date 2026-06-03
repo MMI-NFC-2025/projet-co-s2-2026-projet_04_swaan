@@ -1,0 +1,6 @@
+name,description,icon,condition
+Premier signe,"Attribué après le premier signe appris.",sparkles,first_sign
+Session complète,"Attribué après une session quotidienne terminée.",check,session_complete
+Mémoire active,"Attribué après une partie de memory réussie.",brain,memory_win
+Série 4 jours,"Attribué après quatre jours d'apprentissage consécutifs.",flame,streak_4
+Explorateur LSF,"Attribué après consultation de plusieurs catégories du dictionnaire.",compass,dictionary_explorer

@@ -1,0 +1,184 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+import SimpleIcon from "../components/SimpleIcon.astro";
+
+const title = "À propos";
+const description =
+  "Découvrez SWAAN, une plateforme B2B de formation à la Langue des Signes Française pensée pour l'inclusion, l'accessibilité et la formation des collaborateurs.";
+
+const pillars = [
+  {
+    icon: "eye",
+    title: "Former simplement",
+    text: "SWAAN propose des modules courts pour apprendre les bases de la LSF sans perturber le rythme de travail des collaborateurs.",
+  },
+  {
+    icon: "square",
+    title: "Inclure concrètement",
+    text: "La plateforme transforme l'engagement d'inclusion en gestes utiles : saluer, remercier, demander de l'aide, comprendre une situation.",
+  },
+  {
+    icon: "diamond",
+    title: "Mesurer les progrès",
+    text: "Les scores, badges et parcours rendent la progression lisible pour les apprenants comme pour les responsables formation.",
+  },
+];
+
+const steps = [
+  "Découvrir l'alphabet et les premiers signes",
+  "Apprendre avec des leçons courtes",
+  "S'entraîner grâce aux mini-jeux",
+  "Réviser avec le dictionnaire LSF",
+];
+
+const principles = [
+  ["Accessibilité", "Des contrastes doux, une hiérarchie claire et des contenus faciles à scanner."],
+  ["Progression", "Un parcours par étapes pour éviter de surcharger l'utilisateur."],
+  ["Motivation", "Des badges et jeux pour encourager la régularité sans rendre l'expérience enfantine."],
+  ["Déploiement B2B", "Une solution pensée pour les RH, les responsables formation et les équipes RSE."],
+];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  name: "À propos de SWAAN",
+  description,
+  url: "https://swaan.fr/a-propos",
+};
+---
+
+<Layout title={title} description={description} image="/assets/img/swaan-hero.png">
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </Fragment>
+
+  <Nav />
+
+  <main>
+    <section class="grid min-h-screen items-center gap-12 px-6 pt-36 pb-16 md:px-12 lg:grid-cols-[1.05fr_0.95fr] lg:px-20">
+      <div>
+        <nav class="reveal mb-8 text-sm text-soft" aria-label="Fil d'Ariane">
+          <a class="hover:text-dark" href="/">Accueil</a>
+          <span class="mx-2">/</span>
+          <span>À propos</span>
+        </nav>
+
+        <div class="section-label reveal">Notre mission</div>
+        <h1 class="reveal max-w-3xl font-serif text-[44px] leading-[1.05] font-light tracking-[-1px] text-dark md:text-[64px] lg:text-[76px]">
+          Rendre la LSF plus accessible aux <em class="text-pop-dark italic">équipes professionnelles.</em>
+        </h1>
+        <p class="reveal mt-7 max-w-xl text-base leading-8 font-light text-mid">
+          SWAAN est une webapp B2B qui accompagne les entreprises dans la sensibilisation et la formation aux bases de la Langue des Signes Française. L'objectif est de donner aux collaborateurs des repères utiles pour mieux accueillir, comprendre et communiquer.
+        </p>
+        <div class="reveal mt-10 flex flex-col gap-4 sm:flex-row">
+          <a class="btn btn-accent w-fit" href="/demande-demo">Demander une démo</a>
+          <a class="btn btn-soft w-fit" href="/#fonctionnalites">Voir la solution</a>
+        </div>
+      </div>
+
+      <figure class="reveal rounded-[40px] bg-bg p-5 shadow-neu-out-lg">
+        <img
+          class="h-[360px] w-full rounded-[30px] object-cover md:h-[440px]"
+          src="/assets/img/swaan-hero.png"
+          alt="Illustration de deux personnes qui communiquent en langue des signes"
+          loading="eager"
+        />
+        <figcaption class="mt-5 grid gap-4 sm:grid-cols-2">
+          <div class="rounded-3xl bg-bg p-5 shadow-neu-in-sm">
+            <p class="mb-2 text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Public</p>
+            <p class="text-sm leading-7 font-light text-mid">RH, responsables formation, RSE et structures accueillant du public.</p>
+          </div>
+          <div class="rounded-3xl bg-bg p-5 shadow-neu-in-sm">
+            <p class="mb-2 text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Format</p>
+            <p class="text-sm leading-7 font-light text-mid">Parcours courts, jeux pédagogiques et dictionnaire consultable.</p>
+          </div>
+        </figcaption>
+      </figure>
+    </section>
+
+    <section class="page-section">
+      <div class="grid gap-6 md:grid-cols-3">
+        {
+          pillars.map((pillar) => (
+            <article class="neu-card reveal p-8">
+              <SimpleIcon type={pillar.icon} />
+              <h2 class="mt-6 mb-4 font-serif text-3xl font-normal text-dark">{pillar.title}</h2>
+              <p class="text-sm leading-8 font-light text-mid">{pillar.text}</p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="page-section grid gap-12 lg:grid-cols-[0.9fr_1.1fr]">
+      <div>
+        <div class="section-label reveal">UX & parcours</div>
+        <h2 class="section-title reveal">
+          Une expérience claire, utile et <em>progressive.</em>
+        </h2>
+        <p class="reveal max-w-xl text-base leading-8 font-light text-mid">
+          La page suit les principes vus en cours : une intention lisible dès le premier écran, des sections hiérarchisées, des appels à l'action identifiables et une structure sémantique adaptée au SEO.
+        </p>
+      </div>
+
+      <ol class="reveal grid gap-5 rounded-3xl bg-bg p-6 shadow-neu-in md:p-9">
+        {
+          steps.map((step, index) => (
+            <li class="flex gap-5 rounded-3xl bg-bg p-5 shadow-neu-out">
+              <span class="flex size-10 shrink-0 items-center justify-center rounded-full bg-bg font-serif text-lg text-pop-dark shadow-neu-in-sm">
+                {index + 1}
+              </span>
+              <div>
+                <h3 class="mb-1 text-base font-medium text-dark">{step}</h3>
+                <p class="text-sm leading-7 font-light text-mid">
+                  Une étape courte pour limiter la charge cognitive et faciliter la mémorisation.
+                </p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <section class="page-section">
+      <div class="reveal rounded-[36px] bg-bg p-8 shadow-neu-out-lg md:p-12">
+        <div class="grid gap-10 lg:grid-cols-[0.75fr_1.25fr]">
+          <div>
+            <div class="section-label">Principes</div>
+            <h2 class="font-serif text-[38px] leading-[1.1] font-light text-dark">
+              Ce que SWAAN doit faire ressentir.
+            </h2>
+          </div>
+
+          <div class="grid gap-5 sm:grid-cols-2">
+            {
+              principles.map(([label, text]) => (
+                <article class="rounded-3xl bg-bg p-6 shadow-neu-in-sm">
+                  <h3 class="mb-3 text-base font-medium text-dark">{label}</h3>
+                  <p class="text-sm leading-7 font-light text-mid">{text}</p>
+                </article>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="px-6 py-16 text-center md:px-12 lg:px-20">
+      <div class="reveal mx-auto max-w-5xl rounded-[36px] bg-bg px-8 py-12 shadow-neu-out-lg md:px-16">
+        <p class="mb-3 text-[11px] font-medium tracking-[0.14em] text-soft uppercase">Prochaine étape</p>
+        <h2 class="mx-auto max-w-3xl font-serif text-[34px] leading-[1.1] font-light text-dark md:text-[48px]">
+          Construire une formation LSF utile, mesurable et adaptée à vos équipes.
+        </h2>
+        <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <a class="btn btn-accent" href="/demande-demo">Demander une démo</a>
+          <a class="btn btn-soft" href="/">Retour à l'accueil</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>

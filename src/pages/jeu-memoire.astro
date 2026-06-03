@@ -1,0 +1,218 @@
+---
+import AccountShell from "../components/AccountShell.astro";
+
+const signs = [
+  { word: "Bonjour", image: "/assets/img/dictionnaire/quotidien-bonjour.png" },
+  { word: "Merci", image: "/assets/img/dictionnaire/quotidien-merci.png" },
+  { word: "Oui", image: "/assets/img/dictionnaire/quotidien-oui.png" },
+  { word: "Non", image: "/assets/img/dictionnaire/quotidien-non.png" },
+  { word: "Aide", image: "/assets/img/dictionnaire/quotidien-aide.png" },
+  { word: "Main", image: "/assets/img/dictionnaire/corps-main.png" },
+];
+---
+
+<AccountShell
+  title="Memory LSF"
+  description="Mini-jeu Memory SWAAN pour associer les signes LSF à leur mot."
+  active="jeux"
+>
+  <header class="mb-8 flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
+    <div>
+      <p class="section-label mb-3">Jeu pédagogique</p>
+      <h1 class="font-serif text-[44px] leading-[1.05] font-light text-dark md:text-[58px]">
+        Memory <em class="title-em">LSF.</em>
+      </h1>
+      <p class="mt-5 max-w-2xl text-sm leading-7 font-light text-mid">
+        Retournez les cartes et associez chaque illustration de signe à son mot.
+      </p>
+    </div>
+
+    <div class="flex flex-wrap gap-3">
+      <div class="rounded-2xl bg-bg px-5 py-4 shadow-neu-out">
+        <p class="text-[9px] font-medium tracking-[0.12em] text-soft uppercase">Coups</p>
+        <p id="move-counter" class="font-serif text-3xl leading-none font-light text-dark">0</p>
+      </div>
+      <div class="rounded-2xl bg-bg px-5 py-4 shadow-neu-out">
+        <p class="text-[9px] font-medium tracking-[0.12em] text-soft uppercase">Paires</p>
+        <p id="pair-counter" class="font-serif text-3xl leading-none font-light text-pop-dark">0 / 6</p>
+      </div>
+    </div>
+  </header>
+
+  <section class="mb-7 rounded-[32px] bg-[#ead7cd] p-5 shadow-neu-out-lg md:p-7">
+    <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <div>
+        <p class="text-[10px] font-medium tracking-[0.14em] text-mid uppercase">Objectif</p>
+        <h2 class="mt-2 font-serif text-[32px] leading-none font-light text-dark">Trouver les 6 paires</h2>
+      </div>
+      <p id="memory-status" class="max-w-xl text-sm leading-7 font-medium text-mid" role="status" aria-live="polite">
+        Choisissez une carte signe puis une carte mot.
+      </p>
+    </div>
+  </section>
+
+  <section id="memory-board" class="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4"></section>
+
+  <section id="end-screen" class="mt-8 hidden rounded-[34px] bg-bg p-8 text-center shadow-neu-out-lg">
+    <p class="mb-3 text-[11px] font-medium tracking-[0.14em] text-soft uppercase">Partie terminée</p>
+    <h2 class="font-serif text-[44px] font-light text-dark">
+      Bravo <em class="title-em">!</em>
+    </h2>
+    <p id="end-message" class="mx-auto mt-4 max-w-xl text-sm leading-7 font-light text-mid"></p>
+    <div class="mt-7 flex flex-wrap justify-center gap-4">
+      <button id="reset-btn" class="btn btn-accent" type="button">Rejouer</button>
+      <a class="btn btn-soft" href="/jeu-vrai-faux">Vrai / Faux</a>
+    </div>
+  </section>
+
+  <script define:vars={{ signs }}>
+    const board = document.getElementById("memory-board");
+    const moveCounter = document.getElementById("move-counter");
+    const pairCounter = document.getElementById("pair-counter");
+    const memoryStatus = document.getElementById("memory-status");
+    const endScreen = document.getElementById("end-screen");
+    const endMessage = document.getElementById("end-message");
+    const resetBtn = document.getElementById("reset-btn");
+
+    let cards = [];
+    let selected = [];
+    let locked = false;
+    let moves = 0;
+    let pairs = 0;
+
+    function shuffle(items) {
+      return [...items].sort(() => Math.random() - 0.5);
+    }
+
+    function buildCards() {
+      const gameCards = signs.flatMap((sign) => [
+        {
+          id: `${sign.word}-image`,
+          pair: sign.word,
+          type: "image",
+          image: sign.image,
+          label: sign.word,
+        },
+        {
+          id: `${sign.word}-word`,
+          pair: sign.word,
+          type: "word",
+          label: sign.word,
+        },
+      ]);
+
+      return shuffle(gameCards);
+    }
+
+    function cardInner(card) {
+      if (card.type === "image") {
+        return `
+          <div class="flex h-full flex-col items-center justify-center gap-3">
+            <img src="${card.image}" alt="Signe ${card.label}" class="max-h-28 w-full object-contain" />
+            <span class="rounded-full bg-bg px-3 py-1 text-[9px] font-medium uppercase tracking-[0.12em] text-soft shadow-neu-in-sm">Signe</span>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="flex h-full flex-col items-center justify-center text-center">
+          <span class="mb-3 rounded-full bg-bg px-3 py-1 text-[9px] font-medium uppercase tracking-[0.12em] text-pop-dark shadow-neu-in-sm">Mot</span>
+          <span class="font-serif text-[34px] leading-none font-light text-dark">${card.label}</span>
+        </div>
+      `;
+    }
+
+    function renderBoard() {
+      cards = buildCards();
+      selected = [];
+      locked = false;
+      moves = 0;
+      pairs = 0;
+      moveCounter.textContent = moves;
+      pairCounter.textContent = `${pairs} / ${signs.length}`;
+      memoryStatus.textContent = "Choisissez une carte signe puis une carte mot.";
+      endScreen.classList.add("hidden");
+
+      board.innerHTML = cards
+        .map(
+          (card, index) => `
+            <button
+              class="memory-card group min-h-44 rounded-[28px] bg-bg p-4 text-left shadow-neu-out transition hover:-translate-y-1 hover:shadow-neu-in"
+              type="button"
+              data-index="${index}"
+              data-pair="${card.pair}"
+              data-type="${card.type}"
+              aria-label="Carte memory face cachée"
+              aria-pressed="false"
+            >
+              <div class="card-back flex h-full min-h-36 items-center justify-center rounded-[22px] bg-bg shadow-neu-in">
+                <span class="font-serif text-[42px] italic text-pop-dark">S</span>
+              </div>
+              <div class="card-front hidden h-full min-h-36 rounded-[22px] bg-bg p-4 shadow-neu-in">
+                ${cardInner(card)}
+              </div>
+            </button>
+          `
+        )
+        .join("");
+
+      document.querySelectorAll(".memory-card").forEach((button) => {
+        button.addEventListener("click", () => selectCard(button));
+      });
+    }
+
+    function flipCard(button, isOpen) {
+      button.querySelector(".card-back").classList.toggle("hidden", isOpen);
+      button.querySelector(".card-front").classList.toggle("hidden", !isOpen);
+      button.classList.toggle("shadow-neu-in", isOpen);
+      button.classList.toggle("ring-2", isOpen);
+      button.classList.toggle("ring-pop-light", isOpen);
+      button.setAttribute("aria-pressed", String(isOpen));
+      button.setAttribute("aria-label", isOpen ? `Carte retournée : ${button.dataset.type === "image" ? "signe" : "mot"} ${button.dataset.pair}` : "Carte memory face cachée");
+    }
+
+    function selectCard(button) {
+      if (locked || button.dataset.found === "true" || selected.includes(button)) return;
+
+      flipCard(button, true);
+      selected.push(button);
+
+      if (selected.length < 2) return;
+
+      locked = true;
+      moves += 1;
+      moveCounter.textContent = moves;
+
+      const [first, second] = selected;
+      const isPair = first.dataset.pair === second.dataset.pair && first.dataset.type !== second.dataset.type;
+
+      if (isPair) {
+        first.dataset.found = "true";
+        second.dataset.found = "true";
+        first.classList.add("ring-pop");
+        second.classList.add("ring-pop");
+        pairs += 1;
+        pairCounter.textContent = `${pairs} / ${signs.length}`;
+        memoryStatus.textContent = `Bonne paire : ${first.dataset.pair}.`;
+        selected = [];
+        locked = false;
+
+        if (pairs === signs.length) {
+          endMessage.textContent = `Vous avez retrouvé les ${signs.length} paires en ${moves} coups.`;
+          endScreen.classList.remove("hidden");
+        }
+      } else {
+        memoryStatus.textContent = "Pas encore, essayez une autre association.";
+        setTimeout(() => {
+          flipCard(first, false);
+          flipCard(second, false);
+          selected = [];
+          locked = false;
+        }, 900);
+      }
+    }
+
+    resetBtn.addEventListener("click", renderBoard);
+    renderBoard();
+  </script>
+</AccountShell>

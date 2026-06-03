@@ -1,14 +1,105 @@
 @import "tailwindcss";
 
+@theme {
+  --color-bg: #e8e4df;
+  --color-shadow-dark: #c8c4bf;
+  --color-shadow-light: #ffffff;
+  --color-dark: #3a3530;
+  --color-mid: #7a746e;
+  --color-soft: #ada8a2;
+  --color-pop: #8faf7a;
+  --color-pop-dark: #6a8a58;
+  --color-pop-light: #c4d8b0;
+  --color-red-soft: #c97070;
+  --color-red-light: #e8c4c4;
+
+  --font-sans: "DM Sans", sans-serif;
+  --font-serif: "Cormorant Garamond", serif;
+
+  --shadow-neu-out: 6px 6px 14px #c8c4bf, -6px -6px 14px #ffffff;
+  --shadow-neu-out-lg: 10px 10px 24px #c8c4bf, -10px -10px 24px #ffffff;
+  --shadow-neu-in: inset 4px 4px 10px #c8c4bf, inset -4px -4px 10px #ffffff;
+  --shadow-neu-in-sm: inset 2px 2px 6px #c8c4bf, inset -2px -2px 6px #ffffff;
+}
+
 @layer base {
-  :root {
-    --color-beige-light: #FAF8F3;
-    --color-beige: #F5F1E8;
-    --color-taupe: #D4C5B0;
-    --color-brown-dark: #3E2723;
+  html {
+    @apply scroll-smooth;
   }
-  
+
   body {
-    @apply bg-[#FAF8F3] text-[#3E2723];
+    @apply overflow-x-hidden bg-bg font-sans text-dark;
+  }
+
+  a {
+    @apply text-inherit no-underline;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-pop-dark);
+    outline-offset: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
+  }
+}
+
+@layer components {
+  .skip-link {
+    @apply fixed top-4 left-4 z-[100] -translate-y-24 rounded-full bg-dark px-5 py-3 text-sm font-medium text-bg shadow-neu-out transition focus:translate-y-0;
+  }
+
+  .sr-only-custom {
+    @apply absolute h-px w-px overflow-hidden whitespace-nowrap border-0 p-0;
+    clip: rect(0, 0, 0, 0);
+  }
+
+  .page-section {
+    @apply px-6 py-16 md:px-12 lg:px-20 lg:py-20;
+  }
+
+  .section-label {
+    @apply mb-4 flex items-center gap-3 text-[11px] font-medium tracking-[0.14em] text-soft uppercase before:block before:h-px before:w-7 before:bg-soft;
+  }
+
+  .section-title {
+    @apply mb-10 max-w-2xl font-serif text-[34px] leading-[1.1] font-light text-dark md:text-[44px] lg:mb-13 lg:text-[50px];
+  }
+
+  .section-title em,
+  .title-em {
+    @apply text-pop-dark italic;
+  }
+
+  .neu-card {
+    @apply rounded-3xl bg-bg shadow-neu-out transition-shadow hover:shadow-neu-in;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-8 py-4 text-sm font-medium transition duration-200 hover:scale-[0.98] hover:shadow-neu-in;
+  }
+
+  .btn-soft {
+    @apply bg-bg text-mid shadow-neu-out hover:text-dark;
+  }
+
+  .btn-accent {
+    @apply bg-pop text-white shadow-[5px_5px_12px_rgba(90,120,72,0.45),-3px_-3px_8px_rgba(255,255,255,0.55)] hover:shadow-[inset_3px_3px_8px_rgba(80,110,60,0.5),inset_-2px_-2px_6px_rgba(255,255,255,0.25)];
+  }
+
+  .reveal {
+    @apply translate-y-5 opacity-0 transition duration-500;
+  }
+
+  .reveal.visible {
+    @apply translate-y-0 opacity-100;
   }
 }

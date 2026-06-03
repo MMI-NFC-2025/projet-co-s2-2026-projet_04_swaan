@@ -1,0 +1,28 @@
+---
+import InfoPage from "../components/InfoPage.astro";
+---
+
+<InfoPage
+  title="Politique de confidentialité"
+  eyebrow="Données personnelles"
+  description="SWAAN traite des données liées aux comptes, entreprises, parcours de formation et progressions afin de fournir une expérience d'apprentissage LSF personnalisée et un suivi pédagogique."
+  image="/assets/img/dictionnaire/corps-coeur.png"
+  ctaLabel="Exercer une demande"
+  ctaHref="/contact"
+  secondaryLabel="Voir les cookies"
+  secondaryHref="/cookies"
+  notice={{ label: "À personnaliser", text: "Cette politique doit être adaptée au responsable de traitement réel, aux durées de conservation retenues, aux éventuels sous-traitants et aux outils de mesure ajoutés avant une mise en production." }}
+  cards={[
+    { label: "Compte", title: "Identité utilisateur", text: "Nom, prénom, email professionnel, rôle, entreprise et statut du compte." },
+    { label: "Formation", title: "Progression", text: "Leçons consultées, scores, badges, objectifs et complétion des modules." },
+    { label: "Demandes", title: "Formulaires", text: "Messages de contact, demandes de démonstration, fonction, entreprise et pièces justificatives si le formulaire les demande." },
+  ]}
+  sections={[
+    { label: "Finalités", title: "Pourquoi ces données sont utilisées.", text: "Les données servent à créer le compte, personnaliser le parcours, mesurer la progression et permettre aux responsables habilités de suivre le déploiement.", items: ["Authentification et accès sécurisé", "Suivi pédagogique individuel", "Badges, scores et objectifs", "Vue agrégée pour les responsables formation", "Traitement des demandes de contact et de démonstration"] },
+    { label: "Base juridique", title: "Cadre du traitement.", text: "Selon le contexte final, les traitements pourront reposer sur l'exécution d'un contrat, l'intérêt légitime de formation, le consentement pour certains dépôts de fichiers ou une obligation légale.", items: ["Base exacte à confirmer avant publication", "Aucune collecte sans finalité définie", "Information accessible depuis les formulaires"] },
+    { label: "Données collectées", title: "Catégories prévues.", text: "Le projet prévoit uniquement les données nécessaires au fonctionnement de la plateforme et au suivi de formation.", items: ["Identité : nom, prénom, email", "Organisation : entreprise, rôle, fonction", "Apprentissage : progression, score, badges", "Technique : session, identifiant utilisateur, date de mise à jour", "Contact : message, motif, priorité, documents transmis volontairement"] },
+    { label: "Conservation", title: "Durées à fixer.", text: "Les durées doivent être limitées à ce qui est nécessaire au projet. Elles devront être validées selon le cadre réel de déploiement.", items: ["Compte : pendant la durée d'accès au service", "Progression : pendant la durée de formation ou du contrat", "Demandes de contact : durée nécessaire au traitement", "Pièces justificatives : durée courte à préciser"] },
+    { label: "Destinataires", title: "Qui peut accéder aux données.", text: "Les données sont accessibles aux personnes habilitées selon leur rôle et aux prestataires techniques nécessaires au fonctionnement.", items: ["Utilisateur concerné", "Responsable formation ou RH habilité", "Équipe SWAAN ou administrateur technique", "PocketBase comme base applicative"] },
+    { label: "Droits", title: "Accès, correction et suppression.", text: "Les utilisateurs peuvent demander l'accès, la rectification, l'effacement, la limitation ou l'opposition lorsque le cadre applicable le permet.", items: ["Demande via la page contact", "Réponse selon les délais légaux applicables", "Réclamation possible auprès de la CNIL", "Vérification d'identité possible avant traitement"] },
+  ]}
+/>

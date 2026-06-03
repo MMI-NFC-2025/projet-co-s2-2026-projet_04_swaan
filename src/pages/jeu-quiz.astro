@@ -1,0 +1,33 @@
+---
+import AccountShell from "../components/AccountShell.astro";
+---
+
+<AccountShell title="Quiz LSF" active="jeux">
+  <div class="max-w-5xl">
+    <p class="section-label mb-3">Jeu pédagogique</p>
+    <h1 class="font-serif text-[44px] leading-[1.05] font-light text-dark md:text-[58px]">
+      Quiz <em class="title-em">LSF.</em>
+    </h1>
+    <p class="mt-5 max-w-2xl text-sm leading-7 font-light text-mid">
+      Répondez à des questions courtes pour vérifier la compréhension des signes et du vocabulaire LSF.
+    </p>
+
+    <div class="mt-10 grid gap-6 md:grid-cols-3">
+      {[
+        ["Questions", "QCM avec une réponse correcte et plusieurs distracteurs."],
+        ["Score", "Chaque réponse pourra alimenter la progression PocketBase."],
+        ["Révision", "Les erreurs renverront vers le dictionnaire."],
+      ].map(([title, text]) => (
+        <article class="rounded-[30px] bg-bg p-7 shadow-neu-out">
+          <h2 class="mb-3 font-serif text-3xl font-light text-dark">{title}</h2>
+          <p class="text-sm leading-7 font-light text-mid">{text}</p>
+        </article>
+      ))}
+    </div>
+
+    <div class="mt-8 flex flex-wrap gap-4">
+      <a class="btn btn-accent" href="/jeu-vrai-faux">Jouer au vrai ou faux</a>
+      <a class="btn btn-soft" href="/jeu-memoire">Ouvrir le memory</a>
+    </div>
+  </div>
+</AccountShell>

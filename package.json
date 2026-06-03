@@ -1,5 +1,5 @@
 {
-  "name": "",
+  "name": "swaan-astro-tailwind",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
@@ -9,6 +9,9 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.17.3"
+    "@tailwindcss/vite": "^4.1.18",
+    "astro": "^5.16.9",
+    "pocketbase": "^0.27.0",
+    "tailwindcss": "^4.1.18"
   }
 }

@@ -1,0 +1,28 @@
+---
+import InfoPage from "../components/InfoPage.astro";
+---
+
+<InfoPage
+  title="Partenariats"
+  eyebrow="Écosystème"
+  description="SWAAN peut s'appuyer sur des formateurs LSF, associations, entreprises et acteurs de l'inclusion pour construire des contenus justes, utiles et déployables."
+  image="/assets/img/dictionnaire/quotidien-aide.png"
+  ctaLabel="Proposer un partenariat"
+  ctaHref="/contact"
+  secondaryLabel="Demander une démo"
+  secondaryHref="/demande-demo"
+  highlights={[
+    { label: "Objectif", value: "Impact" },
+    { label: "Format", value: "B2B" },
+    { label: "Sujet", value: "Inclusion" },
+  ]}
+  cards={[
+    { label: "Formateurs", title: "Expertise LSF", text: "Co-construire les contenus, valider les signes et enrichir les parcours pédagogiques." },
+    { label: "Associations", title: "Ancrage terrain", text: "Relier la plateforme aux besoins réels des personnes concernées et aux bonnes pratiques d'accessibilité." },
+    { label: "Entreprises", title: "Déploiement pilote", text: "Tester SWAAN auprès d'équipes RH, accueil, relation client ou management." },
+  ]}
+  sections={[
+    { label: "Méthode", title: "Des collaborations cadrées.", text: "Chaque partenariat doit avoir un objectif clair : contenu, expérimentation, sensibilisation, communication ou déploiement.", items: ["Périmètre défini dès le départ", "Validation des contenus sensibles", "Retours utilisateurs exploitables"] },
+    { label: "Qualité", title: "Une exigence pédagogique.", text: "La LSF ne doit pas être traitée comme un simple élément visuel. Les contenus doivent rester respectueux, vérifiables et utiles.", items: ["Priorité aux sources fiables", "Progression adaptée aux débutants", "Vidéos et signes contextualisés"] },
+  ]}
+/>

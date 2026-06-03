@@ -1,46 +1,222 @@
 ---
-// Page d'accueil SWAAN — Astro + Tailwind
-import Header from '../components/header.astro';
-import Footer from '../components/footer.astro';
-import PbImage from '../components/PbImage.astro';
-import StatsSection from '../components/statsSection.astro';
-import AlphabetBanner from '../components/bannièrealphabet.astro';
-import LsfSignsSection from '../components/LSFsignsection.astro';
-import CiblesSection from '../components/CiblesSection.astro';
-import FonctionnalitesSection from '../components/fonctiannilitessection.astro';
-import TarifsSection from '../components/Tarifsection.astro';
-import EssaiSection from '../components/essaiSection.astro';
-import DemoSection from '../components/demosection.astro';
+import Layout from "../layouts/Layout.astro";
+import Nav from "../components/Nav.astro";
+import Hero from "../components/Hero.astro";
+import Footer from "../components/Footer.astro";
+import SimpleIcon from "../components/SimpleIcon.astro";
+
+const apropos = [
+  {
+    icon: "eye",
+    title: "Le projet",
+    text: "SWAAN aide les organisations à former leurs collaborateurs aux bases de la Langue des Signes Française afin de faciliter la communication avec les personnes sourdes ou malentendantes et de renforcer une culture d'entreprise plus inclusive.",
+  },
+  {
+    icon: "square",
+    title: "La promesse",
+    text: "Une solution simple à déployer, avec des formats courts, un apprentissage progressif et une interface accessible, pensée pour les contraintes du monde professionnel et la valorisation des engagements RSE.",
+  },
+];
+
+const cibles = [
+  ["circle", "RH", "Pour piloter une démarche d'inclusion et proposer une formation concrète aux collaborateurs."],
+  ["square", "Responsables formation", "Pour intégrer des modules courts, accessibles et engageants dans les parcours internes."],
+  ["triangle", "Responsables RSE", "Pour valoriser une action cohérente avec les engagements d'accessibilité et d'inclusion."],
+  ["diamond", "Structures publiques", "Pour améliorer l'accueil et la communication avec les personnes sourdes ou malentendantes."],
+];
+
+const fonctions = [
+  ["01", "Parcours progressif", "Des modules courts pensés pour découvrir les bases de la LSF sans bloquer la journée de travail."],
+  ["02", "Mini-jeux interactifs", "Quiz, memory, vrai/faux et exercices lexicaux pour apprendre de manière plus engageante."],
+  ["03", "Dictionnaire LSF", "Une ressource disponible à tout moment pour retrouver rapidement un signe ou une notion."],
+  ["04", "Suivi de progression", "Chaque collaborateur visualise son avancée, ses acquis et ses objectifs d'apprentissage."],
+  ["05", "Desktop et mobile", "Une solution simple à déployer, accessible sans installation complexe."],
+  ["06", "Badges et motivation", "Un système de récompense qui encourage la régularité et valorise les progrès."],
+];
+
+const tarifs = [
+  ["Pack 5 utilisateurs", "25 € / mois", "250 € / an", "pack-5", "1 à 5 personnes"],
+  ["Pack 20 utilisateurs", "80 € / mois", "800 € / an", "pack-20", "6 à 20 personnes"],
+  ["Pack 50 utilisateurs", "175 € / mois", "1 750 € / an", "pack-50", "21 à 50 personnes"],
+  ["Pack 100 utilisateurs", "300 € / mois", "3 000 € / an", "pack-100", "51 à 100 personnes"],
+  ["Pack 250 utilisateurs", "600 € / mois", "6 000 € / an", "pack-250", "Plus de 100 personnes"],
+];
+
 ---
 
-<Header />
+<Layout>
+  <Nav />
+  <main id="contenu-principal">
+    <Hero />
 
-
-<main class="bg-[#E8E4DF] text-[#3A3530] font-sans overflow-x-hidden">
-  <!-- HERO -->
-  <section class="min-h-screen pt-20 grid grid-cols-1 md:grid-cols-2 items-center px-6 md:px-20 gap-10 bg-[#E8E4DF]">
-    <div class="flex flex-col gap-6 py-10">
-      <span class="inline-flex items-center gap-2 bg-[#E8E4DF] shadow-[6px_6px_14px_#C8C4BF,-6px_-6px_14px_#FFF] rounded-full px-4 py-2 text-xs font-medium uppercase text-[#6A8A58] mb-6 animate-fadeIn"> <span class="w-2 h-2 rounded-full bg-[#8FAF7A] shadow-[0_0_0_3px_rgba(143,175,122,0.25)]"></span> Formation LSF — Entreprises & collaborateurs </span>
-      <h1 class="font-serif text-4xl md:text-6xl font-light leading-tight text-[#3A3530] mb-4 animate-fadeIn">Formez vos équipes<br />à la LSF, <em class="italic text-[#6A8A58]">simplement,<br />avec plus d'inclusion.</em></h1>
-      <p class="text-base font-light leading-relaxed text-[#7A746E] max-w-xl mb-8 animate-fadeIn">SWAAN permet aux entreprises de sensibiliser et former leurs collaborateurs aux bases de la Langue des Signes Française grâce à des mini-jeux, un parcours progressif et une expérience pensée pour les contraintes du monde professionnel.</p>
-      <div class="flex flex-wrap gap-4 items-center animate-fadeIn">
-        <a href="#demo" class="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-[#8FAF7A] text-white font-medium shadow-lg hover:scale-95 transition">Demander une démo <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-        <a href="#essai" class="px-8 py-4 rounded-full bg-[#E8E4DF] text-[#7A746E] font-normal shadow-lg hover:scale-95 transition border border-[#ADA8A2]">Tester pendant 7 jours</a>
+    <div class="px-6 py-10 md:px-12 lg:px-20">
+    <div class="reveal grid rounded-[28px] bg-bg shadow-neu-out-lg md:grid-cols-3">
+      <div class="relative px-8 py-10 text-center after:absolute after:top-1/4 after:right-0 after:bottom-1/4 after:hidden after:w-px after:bg-shadow-dark md:after:block">
+        <div class="mb-2 font-serif text-[44px] leading-none font-light">LSF<span class="text-pop-dark">.</span></div>
+        <div class="text-[11px] tracking-[0.1em] text-soft uppercase">Langue des Signes Française</div>
       </div>
-      <div class="flex items-center gap-2 text-xs text-[#ADA8A2] mt-4 animate-fadeIn"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1.5L1.5 3.5v3c0 2.5 1.8 4.6 5 5 3.2-.4 5-2.5 5-5v-3L6.5 1.5z" stroke="currentColor" stroke-width="1.2"/></svg> Essai réservé à un RH ou responsable formation, sans engagement.</div>
+      <div class="relative px-8 py-10 text-center after:absolute after:top-1/4 after:right-0 after:bottom-1/4 after:hidden after:w-px after:bg-shadow-dark md:after:block">
+        <div class="mb-2 font-serif text-[44px] leading-none font-light">5<span class="text-pop-dark">+</span></div>
+        <div class="text-[11px] tracking-[0.1em] text-soft uppercase">Packs d'équipes disponibles</div>
+      </div>
+      <div class="px-8 py-10 text-center">
+        <div class="mb-2 font-serif text-[44px] leading-none font-light">7<span class="text-pop-dark">j</span></div>
+        <div class="text-[11px] tracking-[0.1em] text-soft uppercase">Essai entreprise offert</div>
+      </div>
     </div>
-    <div class="flex items-center justify-center py-10">
-      <PbImage />
     </div>
-  </section>
-  <StatsSection />
-  <AlphabetBanner />
-  <LsfSignsSection />
-  <CiblesSection />
-  <FonctionnalitesSection />
-  <TarifsSection />
-  <EssaiSection />
-  <DemoSection />
-</main>
 
-<Footer />
+    <section id="apropos" class="page-section">
+    <div class="section-label reveal">À propos</div>
+    <h2 class="section-title reveal">Une solution pensée pour relier <em>formation, accessibilité et inclusion.</em></h2>
+    <div class="grid gap-7 md:grid-cols-2">
+      {
+        apropos.map((item) => (
+          <div class="reveal neu-card p-8 md:p-11">
+            <SimpleIcon type={item.icon} />
+            <div class="mb-4 font-serif text-3xl font-normal text-dark">{item.title}</div>
+            <p class="text-sm leading-8 font-light text-mid">{item.text}</p>
+          </div>
+        ))
+      }
+    </div>
+    </section>
+
+    <section class="grid gap-8 px-6 pb-16 md:px-12 lg:grid-cols-2 lg:items-center lg:px-20 lg:pb-20">
+    <div>
+      <div class="section-label reveal">Signes illustrés</div>
+      <h2 class="mb-5 font-serif text-[32px] leading-[1.15] font-light text-dark lg:text-[40px]">
+        Apprenez les signes du <em class="title-em">quotidien professionnel.</em>
+      </h2>
+      <p class="reveal max-w-xl text-sm leading-8 font-light text-mid">
+        Chaque parcours SWAAN commence par les gestes essentiels : bonjour, merci, aide, comprendre… Des signes concrets pour des situations réelles en entreprise.
+      </p>
+    </div>
+    <div class="reveal rounded-[32px] bg-bg p-4 shadow-neu-out-lg md:p-6">
+      <img
+        src="/assets/img/signes-pro-formation.png"
+        alt="Illustration d'une formation aux signes LSF en contexte professionnel"
+        class="mx-auto w-full max-w-[430px] object-contain"
+        loading="lazy"
+      />
+    </div>
+    </section>
+
+    <section id="cibles" class="page-section">
+    <div class="section-label reveal">Pour qui</div>
+    <h2 class="section-title reveal">Des usages pensés pour les <em>équipes qui forment</em> et celles qui accueillent.</h2>
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        cibles.map(([icon, title, text]) => (
+          <div class="reveal neu-card p-8">
+            <SimpleIcon type={icon} />
+            <div class="mb-3 font-serif text-2xl font-normal text-dark">{title}</div>
+            <p class="text-[13px] leading-7 font-light text-mid">{text}</p>
+          </div>
+        ))
+      }
+    </div>
+    </section>
+
+    <section id="fonctionnalites" class="page-section">
+    <div class="section-label reveal">Fonctionnalités</div>
+    <h2 class="section-title reveal">Tout ce qu'il faut pour <em>apprendre efficacement.</em></h2>
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {
+        fonctions.map(([num, title, text]) => (
+          <div class="reveal neu-card p-8">
+            <div class="mb-5 font-serif text-4xl leading-none font-light text-pop-light">{num}</div>
+            <svg viewBox="0 0 60 40" width="60" height="40" fill="none" class="mb-3" aria-hidden="true" focusable="false">
+              <rect x="4" y="28" width="8" height="8" rx="3" fill="#C4D8B0" />
+              <rect x="16" y="20" width="8" height="16" rx="3" fill="#8FAF7A" opacity="0.7" />
+              <rect x="28" y="12" width="8" height="24" rx="3" fill="#6A8A58" opacity="0.85" />
+              <rect x="40" y="4" width="8" height="32" rx="3" fill="#6A8A58" />
+              <path d="M4 36 L52 36" stroke="#ADA8A2" stroke-width="1" stroke-dasharray="3 2" />
+            </svg>
+            <div class="mb-2.5 text-[15px] font-medium text-dark">{title}</div>
+            <p class="text-[13px] leading-7 font-light text-mid">{text}</p>
+          </div>
+        ))
+      }
+    </div>
+    </section>
+
+    <section id="tarifs" class="page-section">
+    <div class="section-label reveal">Offres et tarifs</div>
+    <h2 class="section-title reveal">Des offres adaptées à la <em>taille de votre équipe.</em></h2>
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {
+        tarifs.map(([pack, month, year, slug, teamSize]) => (
+          <a
+            class="reveal block rounded-[32px] bg-bg p-8 shadow-neu-out transition hover:-translate-y-1 hover:shadow-neu-in"
+            href={`/demande-demo?pack=${slug}&taille=${encodeURIComponent(teamSize)}`}
+            aria-label={`Choisir ${pack}`}
+          >
+            <div class="mb-8 flex items-center justify-between gap-3">
+              <div class="font-serif text-2xl leading-tight font-light text-dark">{pack}</div>
+              <span class="shrink-0 rounded-full bg-bg px-3 py-1 text-[9px] font-medium tracking-[0.14em] text-pop-dark uppercase shadow-neu-out">B2B</span>
+            </div>
+            <div class="mb-5">
+              <div class="mb-1.5 text-[10px] font-medium tracking-[0.12em] text-soft uppercase">Mensuel</div>
+              <div class="font-serif text-[38px] leading-none font-light text-dark">{month}</div>
+            </div>
+            <div class="mb-5">
+              <div class="mb-1.5 text-[10px] font-medium tracking-[0.12em] text-soft uppercase">Annuel</div>
+              <div class="font-serif text-3xl leading-none font-light text-pop-dark">{year}</div>
+            </div>
+            <p class="mt-4 text-xs leading-7 font-light text-mid">
+              Tarification accessible par pack d'utilisateurs, pensée pour les organisations qui veulent équiper leurs équipes progressivement.
+            </p>
+            <span class="mt-6 inline-flex rounded-full bg-bg px-5 py-2.5 text-xs font-medium tracking-[0.08em] text-pop-dark uppercase shadow-neu-out">
+              Choisir ce pack
+            </span>
+          </a>
+        ))
+      }
+    </div>
+    </section>
+
+    <section id="essai" class="grid gap-10 px-6 py-16 md:px-12 lg:grid-cols-[1.2fr_1fr] lg:items-center lg:gap-16 lg:px-20 lg:py-20">
+    <div>
+      <div class="reveal mb-7 inline-flex w-fit items-center gap-2 rounded-full bg-bg px-5 py-2 text-[11px] font-medium tracking-[0.08em] text-pop-dark uppercase shadow-neu-out">
+        <div class="size-1.5 rounded-full bg-pop"></div>
+        Essai ciblé
+      </div>
+      <h2 class="reveal mb-5 font-serif text-[34px] leading-[1.1] font-light text-dark lg:text-[48px]">
+        Testez SWAAN pendant <em class="title-em">7 jours</em>, côté entreprise.
+      </h2>
+      <p class="reveal mb-9 max-w-[480px] text-[15px] leading-7 font-light text-mid">
+        L'essai est réservé à une seule personne dans l'organisation, par exemple un RH ou un responsable formation, afin de découvrir la plateforme avant un déploiement plus large.
+      </p>
+      <a href="/demande-demo" class="btn btn-accent reveal">Demander une démo</a>
+    </div>
+
+    <div class="reveal relative rounded-[32px] bg-bg px-8 py-12 shadow-neu-out-lg md:px-11">
+      <div class="absolute top-7 right-7 rounded-full bg-bg px-3.5 py-1 font-serif text-sm text-soft italic shadow-neu-in-sm">Vue entreprise</div>
+      <div class="mb-1.5 pr-24 font-serif text-3xl font-light text-dark">Un tableau de bord pour suivre vos équipes</div>
+      <div class="mb-7 text-[11px] tracking-[0.07em] text-soft uppercase">Dashboard — À venir</div>
+      <div class="text-sm leading-8 font-light text-mid">
+        À terme, SWAAN pourra proposer une vue entreprise dédiée au suivi global des collaborateurs, à l'engagement dans les modules et à la progression sur les parcours.
+      </div>
+    </div>
+    </section>
+
+    <section id="demo" class="px-6 py-16 md:px-12 lg:px-20">
+    <div class="reveal rounded-[32px] bg-bg px-8 py-12 shadow-neu-out-lg md:px-18 md:py-16">
+      <div class="mb-4 text-[11px] font-medium tracking-[0.14em] text-soft uppercase">Démo</div>
+      <h2 class="mb-5 max-w-[700px] font-serif text-[34px] leading-[1.1] font-light text-dark lg:text-[48px]">
+        Faites le premier pas vers une communication <em class="title-em">plus inclusive.</em>
+      </h2>
+      <p class="mb-10 max-w-[680px] text-[15px] leading-7 font-light text-mid">
+        Découvrez comment SWAAN peut s'intégrer à vos actions de formation, améliorer l'accueil des publics sourds ou malentendants et soutenir vos engagements d'accessibilité.
+      </p>
+      <div class="flex flex-wrap gap-5">
+        <a href="/demande-demo" class="btn btn-accent">Demander une démo</a>
+        <a href="/tarifs" class="btn btn-soft">Voir les offres</a>
+      </div>
+    </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>

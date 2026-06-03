@@ -1,0 +1,66 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+
+const steps = [
+  {
+    number: "01",
+    title: "Choisir une offre",
+    text: "L'accès SWAAN dépend d'un pack entreprise adapté au nombre de collaborateurs à former.",
+  },
+  {
+    number: "02",
+    title: "Demander une démo",
+    text: "La demande permet de vérifier le contexte professionnel et le besoin de formation.",
+  },
+  {
+    number: "03",
+    title: "Créer les accès",
+    text: "Les comptes apprenants sont ensuite créés ou activés pour les collaborateurs concernés.",
+  },
+];
+---
+
+<Layout
+  title="Accès entreprise"
+  description="L'inscription SWAAN se fait après le choix d'une offre entreprise et une demande de démonstration."
+>
+  <Nav />
+
+  <main class="px-6 pt-36 pb-16 md:px-12 lg:px-20">
+    <section class="mx-auto grid w-full max-w-6xl gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+      <div>
+        <div class="section-label reveal">Accès SWAAN</div>
+        <h1 class="reveal font-serif text-[44px] leading-[1.05] font-light text-dark md:text-[64px]">
+          L'inscription se fait après le choix d'une <em class="title-em">offre entreprise.</em>
+        </h1>
+        <p class="reveal mt-6 max-w-xl text-base leading-8 font-light text-mid">
+          SWAAN est une solution B2B : les collaborateurs ne créent pas leur compte seuls. L'entreprise choisit un pack, demande une démo, puis les accès sont ouverts selon le cadre validé.
+        </p>
+
+        <div class="reveal mt-9 flex flex-col gap-4 sm:flex-row">
+          <a class="btn btn-accent" href="/tarifs">Voir les tarifs</a>
+          <a class="btn btn-soft" href="/demande-demo">Demander une démo</a>
+        </div>
+      </div>
+
+      <div class="reveal rounded-[40px] bg-bg p-7 shadow-neu-out-lg md:p-10">
+        <p class="mb-7 text-[11px] font-medium tracking-[0.14em] text-soft uppercase">Parcours d'accès</p>
+        <div class="grid gap-5">
+          {
+            steps.map((step) => (
+              <article class="rounded-[30px] bg-bg p-6 shadow-neu-in-sm">
+                <p class="mb-3 text-[11px] font-medium tracking-[0.14em] text-pop-dark uppercase">{step.number}</p>
+                <h2 class="font-serif text-3xl font-light text-dark">{step.title}</h2>
+                <p class="mt-3 text-sm leading-7 font-light text-mid">{step.text}</p>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>

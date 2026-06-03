@@ -1,0 +1,92 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Layout title="Connexion" description="Connectez-vous à votre espace SWAAN pour retrouver vos cours LSF, votre progression et vos jeux pédagogiques.">
+  <Nav />
+  <main class="grid min-h-screen items-center px-6 pt-36 pb-16 md:px-12 lg:px-20">
+    <section class="mx-auto grid w-full max-w-6xl gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+      <div>
+        <div class="section-label reveal">Connexion</div>
+        <h1 class="reveal font-serif text-[44px] leading-[1.05] font-light text-dark md:text-[64px]">
+          Reprendre votre parcours <em class="title-em">LSF.</em>
+        </h1>
+        <p class="reveal mt-6 max-w-xl text-base leading-8 font-light text-mid">
+          Accédez à votre tableau de bord, vos badges, vos scores et vos modules en cours.
+        </p>
+      </div>
+
+      <form id="login-form" class="reveal rounded-[38px] bg-bg p-7 shadow-neu-out-lg md:p-10" novalidate>
+        <div class="grid gap-5">
+          <label class="grid gap-2 text-sm text-mid">
+            Email
+            <input id="login-email" class="min-h-14 rounded-full bg-bg px-6 text-dark shadow-neu-in outline-none" name="email" type="email" autocomplete="email" placeholder="prenom@entreprise.fr" required />
+          </label>
+          <label class="grid gap-2 text-sm text-mid">
+            Mot de passe
+            <input id="login-password" class="min-h-14 rounded-full bg-bg px-6 text-dark shadow-neu-in outline-none" name="password" type="password" autocomplete="current-password" placeholder="••••••••" required />
+          </label>
+          <p id="login-message" class="hidden rounded-[24px] bg-bg px-5 py-4 text-sm leading-6 text-mid shadow-neu-in-sm" role="status" aria-live="polite"></p>
+          <button id="login-submit" class="btn btn-accent mt-3" type="submit">Se connecter</button>
+          <a class="text-center text-sm text-mid hover:text-dark" href="/tarifs">Pas encore d'accès ? Voir les offres entreprise</a>
+        </div>
+      </form>
+    </section>
+  </main>
+  <Footer />
+
+  <script>
+    import { login, pb } from "../lib/pocketbase";
+
+    const form = document.getElementById("login-form");
+    const message = document.getElementById("login-message");
+    const submitButton = document.getElementById("login-submit");
+
+    function showMessage(text, type = "info") {
+      if (!message) return;
+      message.textContent = text;
+      message.classList.remove("hidden", "text-red-700", "text-pop-dark");
+      message.classList.add(type === "error" ? "text-red-700" : "text-pop-dark");
+    }
+
+    if (pb.authStore.isValid) {
+      window.location.href = "/tableau-de-bord";
+    }
+
+    form?.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (!(form instanceof HTMLFormElement)) return;
+
+      if (!form.checkValidity()) {
+        showMessage("Remplis ton email et ton mot de passe pour te connecter.", "error");
+        form.reportValidity();
+        return;
+      }
+
+      const emailInput = document.getElementById("login-email");
+      const passwordInput = document.getElementById("login-password");
+      const email = emailInput instanceof HTMLInputElement ? emailInput.value.trim() : "";
+      const password = passwordInput instanceof HTMLInputElement ? passwordInput.value : "";
+
+      try {
+        submitButton?.setAttribute("disabled", "true");
+        showMessage("Connexion en cours...");
+
+        const authData = await login(email, password);
+        const user = authData.record;
+        const displayName = user.prenom || user.name || user.email?.split("@")[0] || "Apprenant";
+
+        localStorage.setItem("swaan_user_name", displayName);
+        if (user.role) localStorage.setItem("swaan_user_role", user.role);
+
+        window.location.href = "/tableau-de-bord";
+      } catch (error) {
+        console.error("Erreur connexion PocketBase :", error);
+        showMessage("Connexion impossible. Vérifie ton email et ton mot de passe.", "error");
+        submitButton?.removeAttribute("disabled");
+      }
+    });
+  </script>
+</Layout>

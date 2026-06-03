@@ -1,0 +1,26 @@
+---
+import InfoPage from "../components/InfoPage.astro";
+---
+
+<InfoPage
+  title="Cookies"
+  eyebrow="Stockage local"
+  description="SWAAN utilise surtout du stockage local de démonstration et pourra utiliser des cookies strictement nécessaires pour gérer la session, les préférences et le bon fonctionnement de la plateforme."
+  image="/assets/img/dictionnaire/nourriture-cafe.png"
+  ctaLabel="Nous contacter"
+  ctaHref="/contact"
+  secondaryLabel="Confidentialité"
+  secondaryHref="/confidentialite"
+  notice={{ label: "État actuel du projet", text: "Dans cette version, certaines informations de démonstration sont stockées localement dans le navigateur, par exemple le prénom utilisateur, les préférences de compte ou les scores de jeux. Aucun outil publicitaire n'est intégré." }}
+  cards={[
+    { label: "Nécessaire", title: "Session", text: "Conserver l'état connecté ou les informations utiles à l'accès à l'espace apprenant." },
+    { label: "Préférence", title: "Expérience", text: "Mémoriser certaines données locales pour éviter de répéter une action pendant la démonstration." },
+    { label: "Mesure", title: "Statistiques", text: "Aucun outil de mesure externe ou publicitaire n'est déclaré tant qu'il n'est pas réellement intégré." },
+  ]}
+  sections={[
+    { label: "Stockage utilisé", title: "Ce que le navigateur peut conserver.", text: "Le stockage local sert à faire fonctionner certaines parties de démonstration sans serveur complet.", items: ["Nom affiché dans l'espace apprenant", "Préférences de paramètres", "Scores temporaires de jeux", "État de session PocketBase quand l'authentification est branchée"] },
+    { label: "Gestion", title: "Contrôler le stockage.", text: "L'utilisateur peut supprimer les données locales depuis les paramètres de son navigateur ou en se déconnectant lorsque l'action est prévue.", items: ["Suppression via les réglages navigateur", "Déconnexion depuis l'espace apprenant", "Réinitialisation possible dans certains écrans de paramètres"] },
+    { label: "Consentement", title: "Cas des cookies non essentiels.", text: "Si des outils de mesure d'audience, marketing ou publicitaires sont ajoutés, un bandeau de consentement devra être mis en place avant activation.", items: ["Pas de cookies publicitaires actuellement", "Pas de tracker externe déclaré", "Mise à jour obligatoire avant mise en production"] },
+    { label: "Transparence", title: "Éviter les zones floues.", text: "La page cookies doit rester alignée avec les outils réellement utilisés sur le site.", items: ["Pas de promesse abstraite", "Description claire des usages", "Mise à jour si de nouveaux outils sont ajoutés"] },
+  ]}
+/>

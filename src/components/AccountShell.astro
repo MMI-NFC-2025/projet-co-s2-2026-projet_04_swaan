@@ -1,0 +1,77 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const {
+  title = "Espace apprenant",
+  description = "Espace connecté SWAAN.",
+  active = "dashboard",
+  padded = true,
+} = Astro.props;
+
+const navItems = [
+  ["dashboard", "Tableau de bord", "/tableau-de-bord"],
+  ["jeux", "Jeux", "/jeux"],
+  ["dictionnaire", "Dictionnaire", "/dictionnaire"],
+  ["admin", "Admin RH", "/espace-rh"],
+  ["parametres", "Paramètres", "/parametres"],
+  ["contact", "Contact", "/contact-apprenant"],
+];
+---
+
+<Layout title={title} description={description}>
+  <main class="min-h-screen bg-bg text-dark">
+    <div class="grid min-h-screen gap-6 p-5 lg:grid-cols-[260px_1fr] lg:p-7">
+      <aside class="flex flex-col rounded-[36px] bg-bg p-5 shadow-neu-out-lg lg:sticky lg:top-7 lg:min-h-[calc(100vh-56px)] lg:self-start">
+        <a href="/tableau-de-bord" class="mb-8 rounded-[30px] bg-bg px-7 py-8 text-center shadow-neu-in" aria-label="Accueil espace apprenant SWAAN">
+          <img
+            src="/assets/img/logo_swaan.avif"
+            alt="SWAAN"
+            class="mx-auto h-20 w-auto object-contain"
+            loading="eager"
+          />
+          <span class="mt-2 block text-[10px] font-medium tracking-[0.16em] text-soft uppercase">Espace apprenant</span>
+        </a>
+
+        <nav class="flex flex-wrap gap-3 lg:flex-col" aria-label="Navigation de l'espace apprenant">
+          {
+            navItems.map(([id, label, href]) => (
+              <a
+                href={href}
+                aria-current={active === id ? "page" : undefined}
+                class={`rounded-full px-6 py-4 text-sm font-medium transition ${active === id ? "bg-bg text-pop-dark shadow-neu-in" : "text-mid hover:text-dark hover:shadow-neu-out"}`}
+              >
+                {label}
+              </a>
+            ))
+          }
+        </nav>
+
+        <a href="/connexion" id="logout-link" class="mt-6 rounded-full px-6 py-4 text-sm font-medium text-mid hover:text-dark hover:shadow-neu-out lg:mt-auto" aria-label="Se déconnecter de l'espace apprenant">
+          Déconnexion
+        </a>
+      </aside>
+
+      <section class={`relative overflow-hidden rounded-[36px] bg-bg shadow-neu-in ${padded ? "px-5 py-7 md:px-9 lg:px-12" : ""}`}>
+        <div class="pointer-events-none absolute -right-24 -bottom-24 h-72 w-72 rounded-full bg-pop-light/35 blur-3xl"></div>
+        <div class="relative z-10">
+          <slot />
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    import { pb } from "../lib/pocketbase";
+
+    if (!pb.authStore.isValid) {
+      window.location.href = "/connexion";
+    }
+
+    document.getElementById("logout-link")?.addEventListener("click", () => {
+      pb.authStore.clear();
+      localStorage.removeItem("swaan_user_name");
+      localStorage.removeItem("swaan_user_role");
+      localStorage.removeItem("pocketbase_auth");
+    });
+  </script>
+</Layout>
