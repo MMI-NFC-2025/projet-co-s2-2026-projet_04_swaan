@@ -1,8 +1,5 @@
 import PocketBase from "pocketbase";
 const pb = new PocketBase("https://swaanpb.tebrouri.fr");
-
-const pb = new PocketBase(pbUrl);
-
 export { pb };
 
 // Image
