@@ -107,17 +107,33 @@
       </div>
 
       <div class="flex gap-3">
-        {
-          ["LinkedIn", "Email"].map((item) => (
-            <a
-              class="rounded-full bg-bg px-4 py-2 text-xs font-medium text-mid shadow-neu-out hover:text-dark hover:shadow-neu-in"
-              href="/contact"
-              aria-label={`Contacter SWAAN via ${item}`}
-            >
-              {item}
-            </a>
-          ))
-        }
+        <a
+          class="flex size-12 items-center justify-center rounded-full bg-bg shadow-neu-out hover:shadow-neu-in transition"
+          href="https://www.instagram.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="SWAAN sur Instagram"
+        >
+          <img src="/assets/img/insta1.avif" alt="Instagram" class="size-6 object-contain" />
+        </a>
+        <a
+          class="flex size-12 items-center justify-center rounded-full bg-bg shadow-neu-out hover:shadow-neu-in transition"
+          href="https://www.tiktok.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="SWAAN sur TikTok"
+        >
+          <img src="/assets/img/tiktok1.avif" alt="TikTok" class="size-6 object-contain" />
+        </a>
+        <a
+          class="flex size-12 items-center justify-center rounded-full bg-bg shadow-neu-out hover:shadow-neu-in transition"
+          href="https://www.linkedin.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="SWAAN sur LinkedIn"
+        >
+          <img src="/assets/img/linkedin.avif" alt="LinkedIn" class="size-6 object-contain" />
+        </a>
       </div>
     </div>
   </div>

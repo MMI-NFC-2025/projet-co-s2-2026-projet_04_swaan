@@ -2,18 +2,18 @@
 import AccountShell from "../components/AccountShell.astro";
 
 const cards = [
-  { word: "Bonjour", category: "quotidien", image: "/assets/img/dictionnaire/quotidien-bonjour.png" },
-  { word: "Merci", category: "quotidien", image: "/assets/img/dictionnaire/quotidien-merci.png" },
-  { word: "Aide", category: "quotidien", image: "/assets/img/dictionnaire/quotidien-aide.png" },
-  { word: "Main", category: "corps", image: "/assets/img/dictionnaire/corps-main.png" },
-  { word: "Yeux", category: "corps", image: "/assets/img/dictionnaire/corps-yeux.png" },
-  { word: "Bouche", category: "corps", image: "/assets/img/dictionnaire/corps-bouche.png" },
-  { word: "Chat", category: "animaux", image: "/assets/img/dictionnaire/animaux-chat.png" },
-  { word: "Chien", category: "animaux", image: "/assets/img/dictionnaire/animaux-chien.png" },
-  { word: "Oiseau", category: "animaux", image: "/assets/img/dictionnaire/animaux-oiseau.png" },
-  { word: "Eau", category: "nourriture", image: "/assets/img/dictionnaire/nourriture-eau.png" },
-  { word: "Pain", category: "nourriture", image: "/assets/img/dictionnaire/nourriture-pain.png" },
-  { word: "Pomme", category: "nourriture", image: "/assets/img/dictionnaire/nourriture-pomme.png" },
+  { word: "Bonjour", category: "quotidien", image: "/assets/img/sign-bonjour-game.png" },
+  { word: "Merci", category: "quotidien", image: "/assets/img/sign-merci-game.png" },
+  { word: "Aide", category: "quotidien", image: "/assets/img/sign-attention-game.png" },
+  { word: "Main", category: "corps", image: "/assets/img/sign-attention-game.png" },
+  { word: "Yeux", category: "corps", image: "/assets/img/sign-attention-game.png" },
+  { word: "Bouche", category: "corps", image: "/assets/img/sign-attention-game.png" },
+  { word: "Chat", category: "animaux", image: "/assets/img/sign-famille-game.png" },
+  { word: "Chien", category: "animaux", image: "/assets/img/sign-famille-game.png" },
+  { word: "Oiseau", category: "animaux", image: "/assets/img/sign-famille-game.png" },
+  { word: "Eau", category: "nourriture", image: "/assets/img/sign-merci-game.png" },
+  { word: "Pain", category: "nourriture", image: "/assets/img/sign-merci-game.png" },
+  { word: "Pomme", category: "nourriture", image: "/assets/img/sign-merci-game.png" },
 ];
 
 const categories = [
@@ -55,7 +55,7 @@ const categories = [
   <section class="grid gap-7 xl:grid-cols-[0.9fr_1.1fr]">
     <article class="rounded-[34px] bg-bg p-5 shadow-neu-out-lg md:p-7">
       <div class="mb-5 rounded-[30px] bg-bg p-5 shadow-neu-in">
-        <img id="sign-image" class="mx-auto h-72 w-full object-contain" src="/assets/img/dictionnaire/quotidien-bonjour.png" alt="Signe à classer" />
+        <img id="sign-image" class="mx-auto h-72 w-full object-contain" src="/assets/img/sign-bonjour-game.png" alt="Signe à classer" />
       </div>
       <p class="text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Signe affiché</p>
       <h2 id="sign-word" class="mt-2 font-serif text-[48px] leading-none font-light text-dark">Bonjour</h2>

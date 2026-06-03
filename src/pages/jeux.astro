@@ -7,7 +7,7 @@ const games = [
     subtitle: "Associer les signes à leurs mots",
     description: "Retournez les cartes, mémorisez les emplacements et retrouvez les paires signe/mot.",
     href: "/jeu-memoire",
-    image: "/assets/img/dictionnaire/quotidien-merci.png",
+    image: "/assets/img/sign-merci-game.png",
     status: "Disponible",
     meta: "6 paires",
   },
@@ -16,7 +16,7 @@ const games = [
     subtitle: "Valider une traduction",
     description: "Observez le signe affiché et décidez si la traduction proposée est correcte.",
     href: "/jeu-vrai-faux",
-    image: "/assets/img/dictionnaire/quotidien-bonjour.png",
+    image: "/assets/img/sign-bonjour-game.png",
     status: "Disponible",
     meta: "6 questions",
   },
@@ -25,7 +25,7 @@ const games = [
     subtitle: "Réviser en QCM",
     description: "Testez votre compréhension avec des questions courtes autour du vocabulaire LSF.",
     href: "/jeu-quiz",
-    image: "/assets/img/dictionnaire/corps-main.png",
+    image: "/assets/img/sign-attention-game.png",
     status: "À compléter",
     meta: "QCM",
   },
@@ -34,7 +34,7 @@ const games = [
     subtitle: "Classer les signes par thème",
     description: "Associez chaque signe à la bonne catégorie : quotidien, corps, animaux ou nourriture.",
     href: "/jeu-champ-lexical",
-    image: "/assets/img/dictionnaire/nourriture-pomme.png",
+    image: "/assets/img/sign-merci-game.png",
     status: "Disponible",
     meta: "12 cartes",
   },
@@ -95,12 +95,12 @@ const games = [
       champ_lexical: "/jeu-champ-lexical",
     };
     const gameImages = {
-      memory: "/assets/img/dictionnaire/quotidien-merci.png",
-      memoire: "/assets/img/dictionnaire/quotidien-merci.png",
-      quiz: "/assets/img/dictionnaire/corps-main.png",
-      vrai_faux: "/assets/img/dictionnaire/quotidien-bonjour.png",
-      "vrai/faux": "/assets/img/dictionnaire/quotidien-bonjour.png",
-      champ_lexical: "/assets/img/dictionnaire/nourriture-pomme.png",
+      memory: "/assets/img/sign-merci-game.png",
+      memoire: "/assets/img/sign-merci-game.png",
+      quiz: "/assets/img/sign-attention-game.png",
+      vrai_faux: "/assets/img/sign-bonjour-game.png",
+      "vrai/faux": "/assets/img/sign-bonjour-game.png",
+      champ_lexical: "/assets/img/sign-merci-game.png",
     };
 
     function titleFromType(type) {
@@ -117,7 +117,7 @@ const games = [
         subtitle: game.enonce || game.subtitle || "Réviser les signes LSF",
         description: game.description || game.enonce || "Mini-jeu connecté à PocketBase pour travailler les signes et la progression.",
         href: game.href || gamePages[key] || "/jeux",
-        image: game.image || gameImages[key] || "/assets/img/dictionnaire/quotidien-bonjour.png",
+        image: game.image || gameImages[key] || "/assets/img/sign-bonjour-game.png",
         status: "Disponible",
         meta: game.reponse_correct ? `Réponse : ${game.reponse_correct}` : game.meta || "SWAAN",
       };

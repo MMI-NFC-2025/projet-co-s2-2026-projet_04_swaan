@@ -10,192 +10,27 @@ const categories = [
     id: "quotidien",
     label: "Gestes du quotidien",
     intro: "Les signes à connaître en premier pour saluer, répondre et interagir simplement.",
-    image: "/assets/img/dictionnaire/quotidien-bonjour.png",
+    image: "/assets/img/sign-bonjour-game.png",
   },
   {
     id: "corps",
     label: "Corps",
     intro: "Le vocabulaire utile pour parler du corps, de la santé et des besoins immédiats.",
-    image: "/assets/img/dictionnaire/corps-main.png",
+    image: "/assets/img/sign-attention-game.png",
   },
   {
     id: "animaux",
     label: "Animaux",
     intro: "Une catégorie ludique pour enrichir le vocabulaire et travailler la mémorisation.",
-    image: "/assets/img/dictionnaire/animaux-chat.png",
+    image: "/assets/img/sign-famille-game.png",
   },
   {
     id: "nourriture",
     label: "Nourriture",
     intro: "Les signes pratiques pour parler de repas, de boissons et de préférences.",
-    image: "/assets/img/dictionnaire/nourriture-eau.png",
+    image: "/assets/img/sign-merci-game.png",
   },
 ];
-
-const signs = [
-  {
-    word: "Bonjour",
-    category: "quotidien",
-    level: "Débutant",
-    description: "Saluer une personne au début d'un échange.",
-    image: "/assets/img/dictionnaire/quotidien-bonjour.png",
-    videoUrl: "/assets/video/Bonjour.mp4",
-  },
-  {
-    word: "Merci",
-    category: "quotidien",
-    level: "Débutant",
-    description: "Remercier une personne après une aide ou une information.",
-    image: "/assets/img/dictionnaire/quotidien-merci.png",
-    videoUrl: "/assets/video/Merci.mp4",
-  },
-  {
-    word: "Oui",
-    category: "quotidien",
-    level: "Débutant",
-    description: "Répondre positivement à une question simple.",
-    image: "/assets/img/dictionnaire/quotidien-oui.png",
-    videoUrl: "/assets/video/Oui.mp4",
-  },
-  {
-    word: "Non",
-    category: "quotidien",
-    level: "Débutant",
-    description: "Répondre négativement ou indiquer un refus.",
-    image: "/assets/img/dictionnaire/quotidien-non.png",
-    videoUrl: "/assets/video/Non.mp4",
-  },
-  {
-    word: "Aide",
-    category: "quotidien",
-    level: "Débutant",
-    description: "Demander ou proposer de l'aide dans une situation simple.",
-    image: "/assets/img/dictionnaire/quotidien-aide.png",
-    videoUrl: "/assets/video/Aide.mp4",
-  },
-  {
-    word: "Main",
-    category: "corps",
-    level: "Débutant",
-    description: "Nommer la main et introduire les mouvements des signes.",
-    image: "/assets/img/dictionnaire/corps-main.png",
-    videoUrl: "/assets/video/Main.mp4",
-  },
-  {
-    word: "Yeux",
-    category: "corps",
-    level: "Débutant",
-    description: "Parler du regard, de l'observation ou d'une gêne visuelle.",
-    image: "/assets/img/dictionnaire/corps-yeux.png",
-    videoUrl: "/assets/video/yeux.mp4",
-  },
-  {
-    word: "Tête",
-    category: "corps",
-    level: "Débutant",
-    description: "Nommer une partie du corps dans une situation simple.",
-    image: "/assets/img/dictionnaire/corps-tete.png",
-    videoUrl: "/assets/video/tête.mp4",
-  },
-  {
-    word: "Coeur",
-    category: "corps",
-    level: "Intermédiaire",
-    description: "Exprimer une émotion, un ressenti ou une notion liée au corps.",
-    image: "/assets/img/dictionnaire/corps-coeur.png",
-    videoUrl: "/assets/video/coeur.mp4",
-  },
-  {
-    word: "Bouche",
-    category: "corps",
-    level: "Débutant",
-    description: "Nommer la bouche ou indiquer une action liée à la parole.",
-    image: "/assets/img/dictionnaire/corps-bouche.png",
-    videoUrl: "/assets/video/Bouche.mp4",
-  },
-  {
-    word: "Chat",
-    category: "animaux",
-    level: "Débutant",
-    description: "Découvrir un signe animal simple et mémorisable.",
-    image: "/assets/img/dictionnaire/animaux-chat.png",
-    videoUrl: "/assets/video/chat.mp4",
-  },
-  {
-    word: "Chien",
-    category: "animaux",
-    level: "Débutant",
-    description: "Associer un signe à un animal courant.",
-    image: "/assets/img/dictionnaire/animaux-chien.png",
-    videoUrl: "/assets/video/Chien.mp4",
-  },
-  {
-    word: "Oiseau",
-    category: "animaux",
-    level: "Intermédiaire",
-    description: "Travailler la précision du geste et du mouvement.",
-    image: "/assets/img/dictionnaire/animaux-oiseau.png",
-    videoUrl: "/assets/video/Oiseaux.mp4",
-  },
-  {
-    word: "Poisson",
-    category: "animaux",
-    level: "Intermédiaire",
-    description: "Enrichir le vocabulaire avec un signe visuel facile à retenir.",
-    image: "/assets/img/dictionnaire/animaux-poisson.png",
-    videoUrl: "/assets/video/poisson.mp4",
-  },
-  {
-    word: "Lapin",
-    category: "animaux",
-    level: "Intermédiaire",
-    description: "Découvrir un signe visuel avec un mouvement simple à mémoriser.",
-    image: "/assets/img/dictionnaire/animaux-lapin.png",
-    videoUrl: "/assets/video/Lapin.mp4",
-  },
-  {
-    word: "Eau",
-    category: "nourriture",
-    level: "Débutant",
-    description: "Demander ou proposer une boisson.",
-    image: "/assets/img/dictionnaire/nourriture-eau.png",
-    videoUrl: "/assets/video/Eau.mp4",
-  },
-  {
-    word: "Pain",
-    category: "nourriture",
-    level: "Débutant",
-    description: "Nommer un aliment simple dans une situation de repas.",
-    image: "/assets/img/dictionnaire/nourriture-pain.png",
-    videoUrl: "/assets/video/Pain.mp4",
-  },
-  {
-    word: "Pomme",
-    category: "nourriture",
-    level: "Débutant",
-    description: "Apprendre un mot concret lié aux aliments du quotidien.",
-    image: "/assets/img/dictionnaire/nourriture-pomme.png",
-    videoUrl: "/assets/video/Pomme.mp4",
-  },
-  {
-    word: "Café",
-    category: "nourriture",
-    level: "Intermédiaire",
-    description: "Utiliser un signe fréquent dans un contexte professionnel.",
-    image: "/assets/img/dictionnaire/nourriture-cafe.png",
-    videoUrl: "/assets/video/Café.mp4",
-  },
-  {
-    word: "Repas",
-    category: "nourriture",
-    level: "Intermédiaire",
-    description: "Parler d'un repas ou d'un moment de pause en contexte professionnel.",
-    image: "/assets/img/dictionnaire/nourriture-repas.png",
-    videoUrl: "/assets/video/Repas.mp4",
-  },
-];
-
-const categoryById = Object.fromEntries(categories.map((category) => [category.id, category]));
 ---
 
 <AccountShell title={title} description={description} active="dictionnaire">
@@ -236,15 +71,15 @@ const categoryById = Object.fromEntries(categories.map((category) => [category.i
           <div class="rounded-[32px] bg-bg p-4 shadow-neu-in">
             <img
               class="mx-auto h-[310px] w-full object-contain md:h-[380px]"
-              src="/assets/img/dictionnaire/quotidien-bonjour.png"
+              src="/assets/img/sign-bonjour-game.png"
               alt="Illustration LSF dans le style visuel de SWAAN"
               loading="eager"
             />
           </div>
           <div class="grid grid-cols-3 gap-4">
-            <img class="h-24 rounded-3xl bg-bg object-contain p-3 shadow-neu-out" src="/assets/img/dictionnaire/quotidien-merci.png" alt="Signe merci" loading="lazy" />
-            <img class="h-24 rounded-3xl bg-bg object-contain p-3 shadow-neu-out" src="/assets/img/dictionnaire/corps-main.png" alt="Signe main" loading="lazy" />
-            <img class="h-24 rounded-3xl bg-bg object-contain p-3 shadow-neu-out" src="/assets/img/dictionnaire/nourriture-eau.png" alt="Signe eau" loading="lazy" />
+            <img class="h-24 rounded-3xl bg-bg object-contain p-3 shadow-neu-out" src="/assets/img/sign-merci-game.png" alt="Signe merci" loading="lazy" />
+            <img class="h-24 rounded-3xl bg-bg object-contain p-3 shadow-neu-out" src="/assets/img/sign-attention-game.png" alt="Signe attention" loading="lazy" />
+            <img class="h-24 rounded-3xl bg-bg object-contain p-3 shadow-neu-out" src="/assets/img/sign-famille-game.png" alt="Signe famille" loading="lazy" />
           </div>
         </div>
       </figure>
@@ -263,7 +98,7 @@ const categoryById = Object.fromEntries(categories.map((category) => [category.i
           ))
         }
         <span id="filter-status" class="ml-auto rounded-full bg-bg px-4 py-2 text-[10px] font-medium tracking-[0.1em] text-soft uppercase shadow-neu-in-sm" aria-live="polite">
-          20 signes
+          Chargement
         </span>
       </div>
     </section>
@@ -306,46 +141,9 @@ const categoryById = Object.fromEntries(categories.map((category) => [category.i
       </h2>
 
       <div id="sign-grid" class="grid gap-7 md:grid-cols-2 xl:grid-cols-4">
-        {
-          signs.map((sign) => {
-            const category = categoryById[sign.category];
-
-            return (
-              <article
-                id={`${sign.category}-${sign.word.toLowerCase()}`}
-                class="sign-card reveal flex flex-col rounded-[30px] bg-bg p-4 shadow-neu-out transition hover:shadow-neu-in"
-                data-category={sign.category}
-                data-title={`${sign.word} ${category.label}`.toLowerCase()}
-              >
-                <div class="relative mb-5 overflow-hidden rounded-[24px] bg-bg shadow-neu-in">
-                  {
-                    sign.videoUrl ? (
-                      <video class="aspect-video w-full object-cover" controls preload="metadata" poster={sign.image}>
-                        <source src={sign.videoUrl} type="video/mp4" />
-                      </video>
-                    ) : (
-                      <div class="flex aspect-video flex-col items-center justify-center gap-3 px-4 text-center">
-                        <img class="max-h-24 object-contain" src={sign.image} alt={`Illustration du signe ${sign.word}`} loading="lazy" />
-                        <div class="rounded-full bg-bg px-4 py-2 text-[10px] font-medium tracking-[0.12em] text-soft uppercase shadow-neu-out">
-                          Emplacement vidéo
-                        </div>
-                      </div>
-                    )
-                  }
-                </div>
-
-                <div class="flex flex-1 flex-col px-2 pb-2">
-                  <div class="mb-4 flex flex-wrap items-center gap-2">
-                    <span class="rounded-full bg-bg px-3 py-1 text-[9px] font-medium tracking-[0.12em] text-pop-dark uppercase shadow-neu-in-sm">{category.label}</span>
-                    <span class="rounded-full bg-bg px-3 py-1 text-[9px] font-medium tracking-[0.12em] text-soft uppercase shadow-neu-in-sm">{sign.level}</span>
-                  </div>
-                  <h3 class="mb-2 font-serif text-3xl font-light text-dark">{sign.word}</h3>
-                  <p class="mb-6 text-sm leading-7 font-light text-mid">{sign.description}</p>
-                </div>
-              </article>
-            );
-          })
-        }
+        <article class="rounded-[30px] bg-bg p-8 text-sm leading-7 font-light text-mid shadow-neu-in">
+          Chargement des signes depuis PocketBase...
+        </article>
       </div>
 
       <p id="empty-state" class="mt-10 hidden rounded-3xl bg-bg p-8 text-center text-sm text-mid shadow-neu-in">
@@ -355,14 +153,131 @@ const categoryById = Object.fromEntries(categories.map((category) => [category.i
   </div>
 
   <script>
+    const POCKETBASE_URL = "https://swaanpb.tebrouri.fr";
+    const categoryLabels = {
+      quotidien: "Gestes du quotidien",
+      corps: "Corps",
+      animaux: "Animaux",
+      nourriture: "Nourriture",
+    };
+
     const searchInput = document.getElementById("sign-search");
-    const cards = Array.from(document.querySelectorAll(".sign-card"));
+    const signGrid = document.getElementById("sign-grid");
     const filterButtons = Array.from(document.querySelectorAll(".category-filter"));
     const categoryJumps = Array.from(document.querySelectorAll(".category-jump"));
     const signsSection = document.getElementById("signes");
     const emptyState = document.getElementById("empty-state");
     const filterStatus = document.getElementById("filter-status");
     let activeCategory = "all";
+    let cards = [];
+
+    function normalizeText(value) {
+      return String(value || "").trim();
+    }
+
+    function normalizeCategory(value) {
+      const category = normalizeText(value).toLowerCase();
+      if (category.includes("quotidien") || category.includes("geste")) return "quotidien";
+      if (category.includes("corps")) return "corps";
+      if (category.includes("animaux") || category.includes("animal")) return "animaux";
+      if (category.includes("nourriture")) return "nourriture";
+      return category || "quotidien";
+    }
+
+    function getFileUrl(record, fieldName) {
+      const file = record?.[fieldName];
+      const fileName = Array.isArray(file) ? file[0] : file;
+      if (!fileName) return "";
+
+      return `${POCKETBASE_URL}/api/files/${record.collectionId}/${record.id}/${encodeURIComponent(fileName)}`;
+    }
+
+    function normalizeSign(record) {
+      const category = normalizeCategory(record.categorie || record.category);
+
+      return {
+        word: normalizeText(record.mots || record.mot || record.word || record.title),
+        category,
+        categoryLabel: categoryLabels[category] || normalizeText(record.categorie) || "Signe",
+        level: normalizeText(record.level || record.niveau || "Débutant"),
+        description: normalizeText(record.description || "Signe disponible dans le dictionnaire SWAAN."),
+        image: getFileUrl(record, "img_signe") || normalizeText(record.image),
+        videoUrl:
+          getFileUrl(record, "video_signe") ||
+          getFileUrl(record, "video") ||
+          normalizeText(record.video_url || record.sign_video_url),
+      };
+    }
+
+    function renderSigns(signs) {
+      if (!signGrid) return;
+
+      if (signs.length === 0) {
+        signGrid.innerHTML = "";
+        emptyState?.classList.remove("hidden");
+        if (filterStatus) filterStatus.textContent = "0 signe";
+        return;
+      }
+
+      signGrid.innerHTML = signs.map((sign) => {
+        const media = sign.videoUrl
+          ? `
+            <video class="aspect-video w-full object-cover" controls preload="metadata" poster="${sign.image}">
+              <source src="${sign.videoUrl}" type="video/mp4" />
+            </video>
+          `
+          : `
+            <div class="flex aspect-video flex-col items-center justify-center gap-3 px-4 text-center">
+              <img class="max-h-24 object-contain" src="${sign.image}" alt="Illustration du signe ${sign.word}" loading="lazy" />
+            </div>
+          `;
+
+        return `
+          <article
+            id="${sign.category}-${sign.word.toLowerCase().replaceAll(" ", "-")}"
+            class="sign-card flex flex-col rounded-[30px] bg-bg p-4 shadow-neu-out transition hover:shadow-neu-in"
+            data-category="${sign.category}"
+            data-title="${`${sign.word} ${sign.categoryLabel}`.toLowerCase()}"
+          >
+            <div class="relative mb-5 overflow-hidden rounded-[24px] bg-bg shadow-neu-in">
+              ${media}
+            </div>
+
+            <div class="flex flex-1 flex-col px-2 pb-2">
+              <div class="mb-4 flex flex-wrap items-center gap-2">
+                <span class="rounded-full bg-bg px-3 py-1 text-[9px] font-medium tracking-[0.12em] text-pop-dark uppercase shadow-neu-in-sm">${sign.categoryLabel}</span>
+                <span class="rounded-full bg-bg px-3 py-1 text-[9px] font-medium tracking-[0.12em] text-soft uppercase shadow-neu-in-sm">${sign.level}</span>
+              </div>
+              <h3 class="mb-2 font-serif text-3xl font-light text-dark">${sign.word}</h3>
+              <p class="mb-6 text-sm leading-7 font-light text-mid">${sign.description}</p>
+            </div>
+          </article>
+        `;
+      }).join("");
+
+      cards = Array.from(document.querySelectorAll(".sign-card"));
+      refreshCards();
+    }
+
+    async function loadPocketBaseSigns() {
+      try {
+        const response = await fetch(`${POCKETBASE_URL}/api/collections/signe/records?perPage=100&sort=mots`);
+        if (!response.ok) throw new Error(`PocketBase ${response.status}`);
+
+        const data = await response.json();
+        const signs = (data.items || [])
+          .map(normalizeSign)
+          .filter((sign) => sign.word && sign.image);
+
+        renderSigns(signs);
+      } catch (error) {
+        console.error("Erreur dictionnaire PocketBase :", error);
+        if (signGrid) signGrid.innerHTML = "";
+        emptyState?.classList.remove("hidden");
+        emptyState.textContent = "Les signes PocketBase ne sont pas accessibles pour le moment.";
+        if (filterStatus) filterStatus.textContent = "0 signe";
+      }
+    }
 
     function setActiveButton(category) {
       filterButtons.forEach((item) => {
@@ -418,5 +333,6 @@ const categoryById = Object.fromEntries(categories.map((category) => [category.i
     });
 
     searchInput.addEventListener("input", refreshCards);
+    loadPocketBaseSigns();
   </script>
 </AccountShell>

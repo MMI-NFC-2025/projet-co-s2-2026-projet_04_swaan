@@ -48,7 +48,7 @@ import AccountShell from "../components/AccountShell.astro";
           <img
             id="quiz-image"
             class="mx-auto h-[320px] w-full object-contain md:h-[420px]"
-            src="/assets/img/dictionnaire/quotidien-bonjour.png"
+            src="/assets/img/sign-bonjour-game.png"
             alt="Signe LSF à identifier"
             loading="eager"
           />
@@ -76,16 +76,16 @@ import AccountShell from "../components/AccountShell.astro";
   <script>
     const POCKETBASE_URL = "https://swaanpb.tebrouri.fr";
     const fallbackSigns = [
-      { word: "Bonjour", image: "/assets/img/dictionnaire/quotidien-bonjour.png" },
-      { word: "Merci", image: "/assets/img/dictionnaire/quotidien-merci.png" },
-      { word: "Oui", image: "/assets/img/dictionnaire/quotidien-oui.png" },
-      { word: "Non", image: "/assets/img/dictionnaire/quotidien-non.png" },
-      { word: "Aide", image: "/assets/img/dictionnaire/quotidien-aide.png" },
-      { word: "Main", image: "/assets/img/dictionnaire/corps-main.png" },
-      { word: "Yeux", image: "/assets/img/dictionnaire/corps-yeux.png" },
-      { word: "Bouche", image: "/assets/img/dictionnaire/corps-bouche.png" },
-      { word: "Chat", image: "/assets/img/dictionnaire/animaux-chat.png" },
-      { word: "Pomme", image: "/assets/img/dictionnaire/nourriture-pomme.png" },
+      { word: "Bonjour", image: "/assets/img/sign-bonjour-game.png" },
+      { word: "Merci", image: "/assets/img/sign-merci-game.png" },
+      { word: "Oui", image: "/assets/img/sign-oui-game.png" },
+      { word: "Non", image: "/assets/img/sign-non-game.png" },
+      { word: "Aide", image: "/assets/img/sign-attention-game.png" },
+      { word: "Main", image: "/assets/img/sign-attention-game.png" },
+      { word: "Yeux", image: "/assets/img/sign-attention-game.png" },
+      { word: "Bouche", image: "/assets/img/sign-attention-game.png" },
+      { word: "Chat", image: "/assets/img/sign-famille-game.png" },
+      { word: "Pomme", image: "/assets/img/sign-merci-game.png" },
     ];
 
     const state = {
@@ -289,7 +289,7 @@ import AccountShell from "../components/AccountShell.astro";
     function finishQuiz() {
       progressBar.style.width = "100%";
       statusBox.textContent = `Partie terminée : ${state.score}/${state.total}.`;
-      image.src = "/assets/img/dictionnaire/quotidien-bonjour.png";
+      image.src = "/assets/img/sign-bonjour-game.png";
       image.alt = "Fin du quiz LSF";
       optionsBox.innerHTML = "";
       feedbackBox.classList.remove("hidden");

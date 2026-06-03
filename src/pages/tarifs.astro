@@ -3,214 +3,152 @@ import Layout from "../layouts/Layout.astro";
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
 
-const offers = [
+const fallbackOffres = [
   {
-    title: "Pack 5 utilisateurs",
-    monthly: "25 €",
-    yearly: "250 €",
-    slug: "pack-5",
-    teamSize: "1 à 5 personnes",
-    description: "Pour tester SWAAN avec une petite équipe pilote avant un déploiement plus large.",
+    nom_pack: "Pack 5 utilisateurs",
+    prix_mois: 25,
+    prix_annee: 250,
+    description: "Pour tester SWAAN avec une petite équipe.",
   },
   {
-    title: "Pack 20 utilisateurs",
-    monthly: "80 €",
-    yearly: "800 €",
-    slug: "pack-20",
-    teamSize: "6 à 20 personnes",
-    description: "Pour une équipe RH, accueil, relation client ou management qui démarre la formation.",
+    nom_pack: "Pack 20 utilisateurs",
+    prix_mois: 80,
+    prix_annee: 800,
+    description: "Pour former progressivement un service ou une équipe.",
   },
   {
-    title: "Pack 50 utilisateurs",
-    monthly: "175 €",
-    yearly: "1 750 €",
-    slug: "pack-50",
-    teamSize: "21 à 50 personnes",
-    description: "Pour former plusieurs services avec un accès progressif aux modules et aux jeux.",
+    nom_pack: "Pack 50 utilisateurs",
+    prix_mois: 175,
+    prix_annee: 1750,
+    description: "Pour déployer la formation LSF à grande échelle.",
   },
-  {
-    title: "Pack 100 utilisateurs",
-    monthly: "300 €",
-    yearly: "3 000 €",
-    slug: "pack-100",
-    teamSize: "51 à 100 personnes",
-    description: "Pour une organisation qui souhaite structurer une démarche de formation plus large.",
-  },
-  {
-    title: "Pack 250 utilisateurs",
-    monthly: "600 €",
-    yearly: "6 000 €",
-    slug: "pack-250",
-    teamSize: "Plus de 100 personnes",
-    description: "Pour les grandes équipes avec besoin de suivi RH et d'accompagnement au déploiement.",
-  },
-];
-
-const included = [
-  "Accès aux modules de formation LSF",
-  "Mini-jeux pédagogiques",
-  "Dictionnaire de signes avec vidéos",
-  "Suivi de progression apprenant",
-  "Badges et objectifs quotidiens",
 ];
 ---
 
 <Layout
-  title="Tarifs"
-  description="Découvrez les packs SWAAN pour former vos collaborateurs aux bases de la Langue des Signes Française."
-  image="/assets/img/dictionnaire/quotidien-bonjour.png"
+  title="Tarifs SWAAN"
+  description="Offres et tarifs SWAAN pour les entreprises qui souhaitent former leurs équipes à la Langue des Signes Française."
 >
   <Nav />
 
   <main class="px-6 pt-36 pb-16 md:px-12 lg:px-20">
-    <section class="mx-auto max-w-7xl">
-      <div class="max-w-4xl">
-        <div class="section-label reveal">Offres et tarifs</div>
-        <h1 class="reveal font-serif text-[46px] leading-[1.05] font-light text-dark md:text-[72px]">
-          Des packs adaptés à la <em class="title-em">taille de votre équipe.</em>
+    <section class="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+      <div>
+        <nav class="reveal mb-8 text-sm text-soft" aria-label="Fil d'Ariane">
+          <a class="hover:text-dark" href="/">Accueil</a>
+          <span class="mx-2">/</span>
+          <span>Tarifs</span>
+        </nav>
+
+        <div class="section-label reveal">Offres entreprise</div>
+        <h1 class="reveal max-w-3xl font-serif text-[44px] leading-[1.05] font-light tracking-[-1px] text-dark md:text-[64px] lg:text-[76px]">
+          Des tarifs adaptés à la <em class="title-em">taille de votre équipe.</em>
         </h1>
-        <p class="reveal mt-7 max-w-2xl text-base leading-8 font-light text-mid">
-          Chaque offre donne accès à l'expérience SWAAN pour un volume défini d'utilisateurs. La démo permet ensuite de valider le besoin, le contexte entreprise et les accès à ouvrir.
+        <p class="reveal mt-7 max-w-xl text-base leading-8 font-light text-mid">
+          Choisissez un pack, puis envoyez une demande de démonstration. L’accès à SWAAN est réservé aux structures qui souhaitent former leurs collaborateurs.
         </p>
+
+        <div class="reveal mt-10 flex flex-col gap-4 sm:flex-row">
+          <a class="btn btn-accent" href="/demande-demo">Demander une démo</a>
+          <a class="btn btn-soft" href="/contact">Nous contacter</a>
+        </div>
       </div>
 
-      <div id="offers-grid" class="mt-14 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+      <aside class="reveal rounded-[42px] bg-bg p-6 shadow-neu-out-lg">
+        <div class="rounded-[34px] bg-bg p-6 shadow-neu-in">
+          <img
+            class="mx-auto h-72 w-full object-contain md:h-80"
+            src="/assets/img/signes-pro-formation.png"
+            alt="Illustration SWAAN pour la formation LSF en entreprise"
+            loading="eager"
+          />
+        </div>
+      </aside>
+    </section>
+
+    <section class="mx-auto mt-16 max-w-7xl">
+      <div class="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <div class="section-label reveal">Packs SWAAN</div>
+          <h2 class="section-title reveal">Choisir une offre <em>professionnelle.</em></h2>
+        </div>
+        <span id="offres-status" class="rounded-full bg-bg px-5 py-2.5 text-xs font-medium tracking-[0.09em] text-pop-dark uppercase shadow-neu-in-sm">
+          Chargement
+        </span>
+      </div>
+
+      <div id="offres-grid" class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
         {
-          offers.map((offer) => (
-            <article class="reveal flex min-h-[430px] flex-col rounded-[34px] bg-bg p-8 shadow-neu-out-lg">
+          fallbackOffres.map((offre) => (
+            <article class="rounded-[34px] bg-bg p-7 shadow-neu-out-lg">
               <div class="mb-8 flex items-start justify-between gap-4">
-                <h2 class="font-serif text-3xl leading-tight font-light text-dark">{offer.title}</h2>
-                <span class="shrink-0 rounded-full bg-bg px-3 py-1 text-[9px] font-medium tracking-[0.14em] text-pop-dark uppercase shadow-neu-out">
+                <h3 class="font-serif text-[34px] leading-none font-light text-dark">{offre.nom_pack}</h3>
+                <span class="rounded-full bg-bg px-4 py-2 text-[10px] font-medium tracking-[0.12em] text-pop-dark uppercase shadow-neu-out">
                   B2B
                 </span>
               </div>
-
-              <div class="grid gap-5">
-                <div>
-                  <p class="mb-2 text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Mensuel</p>
-                  <p class="font-serif text-[44px] leading-none font-light text-dark">{offer.monthly} <span class="text-2xl text-mid">/ mois</span></p>
-                </div>
-
-                <div>
-                  <p class="mb-2 text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Annuel</p>
-                  <p class="font-serif text-3xl leading-none font-light text-pop-dark">{offer.yearly} <span class="text-xl text-pop-dark">/ an</span></p>
-                </div>
-              </div>
-
-              <p class="mt-7 text-sm leading-7 font-light text-mid">{offer.description}</p>
-
-              <div class="mt-auto pt-8">
-                <a
-                  class="btn btn-soft w-full justify-center"
-                  href={`/demande-demo?pack=${offer.slug}&taille=${encodeURIComponent(offer.teamSize)}`}
-                  aria-label={`Choisir ${offer.title}`}
-                >
-                  Choisir ce pack
-                </a>
-              </div>
+              <p class="text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Mensuel</p>
+              <p class="mt-3 font-serif text-[44px] leading-none font-light text-dark">{offre.prix_mois} € / mois</p>
+              <p class="mt-6 text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Annuel</p>
+              <p class="mt-3 font-serif text-[34px] leading-none font-light text-pop-dark">{offre.prix_annee} € / an</p>
+              <p class="mt-8 text-sm leading-7 font-light text-mid">{offre.description}</p>
+              <a class="mt-8 inline-flex rounded-full bg-bg px-5 py-2.5 text-xs font-medium tracking-[0.08em] text-pop-dark uppercase shadow-neu-out hover:shadow-neu-in" href="/demande-demo">
+                Choisir ce pack
+              </a>
             </article>
           ))
         }
-      </div>
-    </section>
-
-    <section class="mx-auto mt-16 grid max-w-7xl gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
-      <div class="reveal rounded-[34px] bg-bg p-8 shadow-neu-out-lg md:p-10">
-        <p class="mb-3 text-[11px] font-medium tracking-[0.14em] text-soft uppercase">Inclus</p>
-        <h2 class="font-serif text-[38px] leading-tight font-light text-dark">
-          Une base complète pour former les collaborateurs.
-        </h2>
-        <ul class="mt-8 grid gap-4">
-          {
-            included.map((item) => (
-              <li class="flex gap-4 rounded-[26px] bg-bg p-4 shadow-neu-in-sm">
-                <span class="mt-1 flex size-6 shrink-0 items-center justify-center rounded-full bg-pop-light text-xs text-pop-dark">✓</span>
-                <span class="text-sm leading-7 font-light text-mid">{item}</span>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
-
-      <div class="reveal rounded-[34px] bg-bg p-8 shadow-neu-out-lg md:p-10">
-        <p class="mb-3 text-[11px] font-medium tracking-[0.14em] text-soft uppercase">Démo avant accès</p>
-        <h2 class="font-serif text-[38px] leading-tight font-light text-dark">
-          Les comptes sont ouverts après validation du besoin.
-        </h2>
-        <p class="mt-5 text-sm leading-8 font-light text-mid">
-          SWAAN fonctionne comme une solution entreprise : le choix du pack prépare le cadre, puis la demande de démo permet de vérifier les informations professionnelles avant l'ouverture des accès.
-        </p>
-        <div class="mt-8 flex flex-col gap-4 sm:flex-row">
-          <a class="btn btn-accent" href="/demande-demo">Demander une démo</a>
-          <a class="btn btn-soft" href="/contact">Poser une question</a>
-        </div>
       </div>
     </section>
   </main>
 
   <Footer />
 
-  <script define:vars={{ offers }}>
+  <script>
     const POCKETBASE_URL = "https://swaanpb.tebrouri.fr";
-    const offersGrid = document.getElementById("offers-grid");
+    const offresGrid = document.getElementById("offres-grid");
+    const offresStatus = document.getElementById("offres-status");
 
     function formatPrice(value) {
-      const number = Number(value);
-      if (Number.isNaN(number)) return value || "Sur devis";
-      return new Intl.NumberFormat("fr-FR").format(number) + " €";
+      const number = Number(value || 0);
+      return new Intl.NumberFormat("fr-FR").format(number);
     }
 
-    function normalizeOffer(offer) {
-      return {
-        title: offer.nom_pack || offer.title || "Pack entreprise",
-        monthly: formatPrice(offer.prix_mois ?? offer.monthly),
-        yearly: formatPrice(offer.prix_annee ?? offer.yearly),
-        slug: (offer.nom_pack || offer.title || "pack").toLowerCase().replaceAll(" ", "-"),
-        teamSize: offer.teamSize || "Entreprise",
-        description: offer.description || "Offre SWAAN pour équiper une équipe avec les parcours, jeux et dictionnaire LSF.",
-      };
-    }
+    function renderOffres(offres) {
+      if (!offresGrid || offres.length === 0) return;
 
-    function renderOffers(items) {
-      if (!offersGrid || items.length === 0) return;
-      offersGrid.innerHTML = items.map((offer) => `
-        <article class="reveal flex min-h-[430px] flex-col rounded-[34px] bg-bg p-8 shadow-neu-out-lg">
+      offresStatus.textContent = `${offres.length} offre${offres.length > 1 ? "s" : ""}`;
+      offresGrid.innerHTML = offres.map((offre) => `
+        <article class="rounded-[34px] bg-bg p-7 shadow-neu-out-lg">
           <div class="mb-8 flex items-start justify-between gap-4">
-            <h2 class="font-serif text-3xl leading-tight font-light text-dark">${offer.title}</h2>
-            <span class="shrink-0 rounded-full bg-bg px-3 py-1 text-[9px] font-medium tracking-[0.14em] text-pop-dark uppercase shadow-neu-out">B2B</span>
+            <h3 class="font-serif text-[34px] leading-none font-light text-dark">${offre.nom_pack || "Pack SWAAN"}</h3>
+            <span class="rounded-full bg-bg px-4 py-2 text-[10px] font-medium tracking-[0.12em] text-pop-dark uppercase shadow-neu-out">B2B</span>
           </div>
-          <div class="grid gap-5">
-            <div>
-              <p class="mb-2 text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Mensuel</p>
-              <p class="font-serif text-[44px] leading-none font-light text-dark">${offer.monthly} <span class="text-2xl text-mid">/ mois</span></p>
-            </div>
-            <div>
-              <p class="mb-2 text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Annuel</p>
-              <p class="font-serif text-3xl leading-none font-light text-pop-dark">${offer.yearly} <span class="text-xl text-pop-dark">/ an</span></p>
-            </div>
-          </div>
-          <p class="mt-7 text-sm leading-7 font-light text-mid">${offer.description}</p>
-          <div class="mt-auto pt-8">
-            <a class="btn btn-soft w-full justify-center" href="/demande-demo?pack=${encodeURIComponent(offer.slug)}&taille=${encodeURIComponent(offer.teamSize)}" aria-label="Choisir ${offer.title}">
-              Choisir ce pack
-            </a>
-          </div>
+          <p class="text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Mensuel</p>
+          <p class="mt-3 font-serif text-[44px] leading-none font-light text-dark">${formatPrice(offre.prix_mois)} € / mois</p>
+          <p class="mt-6 text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Annuel</p>
+          <p class="mt-3 font-serif text-[34px] leading-none font-light text-pop-dark">${formatPrice(offre.prix_annee)} € / an</p>
+          <p class="mt-8 text-sm leading-7 font-light text-mid">${offre.description || "Offre entreprise pour accéder à SWAAN."}</p>
+          <a class="mt-8 inline-flex rounded-full bg-bg px-5 py-2.5 text-xs font-medium tracking-[0.08em] text-pop-dark uppercase shadow-neu-out hover:shadow-neu-in" href="/demande-demo">
+            Choisir ce pack
+          </a>
         </article>
       `).join("");
     }
 
-    async function loadPocketBaseOffers() {
+    async function loadOffres() {
       try {
         const response = await fetch(`${POCKETBASE_URL}/api/collections/offres/records?perPage=50&sort=prix_mois`);
         if (!response.ok) throw new Error(`PocketBase ${response.status}`);
+
         const data = await response.json();
-        renderOffers((data.items || []).map(normalizeOffer));
+        renderOffres(data.items || []);
       } catch (error) {
         console.error("Offres PocketBase indisponibles :", error);
-        renderOffers(offers.map(normalizeOffer));
+        offresStatus.textContent = "Exemples";
       }
     }
 
-    loadPocketBaseOffers();
+    loadOffres();
   </script>
 </Layout>
