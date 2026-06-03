@@ -1,0 +1,38 @@
+---
+import { Image } from "astro:assets";
+import { getImageUrl } from "../js/backend.mjs";
+
+const {
+  record,
+  imageField,
+  recordImage,
+  alt = "Image",
+  width = 400,
+  height = 300,
+  class: className = "",
+  loading = "lazy",
+} = Astro.props;
+
+let imageURL = "";
+
+if (record && imageField) {
+  imageURL = getImageUrl(record, imageField);
+}
+
+if (record && recordImage) {
+  imageURL = getImageUrl(record, recordImage);
+}
+---
+
+{
+  imageURL && (
+    <Image
+      src={imageURL}
+      alt={alt}
+      width={width}
+      height={height}
+      class={className}
+      loading={loading}
+    />
+  )
+}

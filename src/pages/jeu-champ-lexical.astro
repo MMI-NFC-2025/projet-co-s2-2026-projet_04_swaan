@@ -110,6 +110,7 @@ const categories = [
     let index = 0;
     let score = 0;
     let locked = false;
+    let activeCards = [...cards];
     const POCKETBASE_URL = "https://swaanpb.tebrouri.fr";
 
     function shuffle(items) {
@@ -213,15 +214,61 @@ const categories = [
     }
 
     function startGame() {
-      deck = shuffle(cards);
+      deck = shuffle(activeCards);
       index = 0;
       score = 0;
       endScreen.classList.add("hidden");
       renderCard();
     }
 
+    function normalizeCategory(value) {
+      const category = String(value || "").trim().toLowerCase();
+      if (category.includes("quotidien") || category.includes("geste")) return "quotidien";
+      if (category.includes("corps")) return "corps";
+      if (category.includes("animaux") || category.includes("animal")) return "animaux";
+      if (category.includes("nourriture")) return "nourriture";
+      return "";
+    }
+
+    function getFileUrl(record, fieldName) {
+      const file = record?.[fieldName];
+      const fileName = Array.isArray(file) ? file[0] : file;
+      if (!fileName) return "";
+
+      return `${POCKETBASE_URL}/api/files/${record.collectionId}/${record.id}/${encodeURIComponent(fileName)}`;
+    }
+
+    function normalizeSign(record) {
+      return {
+        word: String(record.mots || record.mot || record.word || "").trim(),
+        category: normalizeCategory(record.categorie || record.category),
+        image: getFileUrl(record, "img_signe") || String(record.image || "").trim(),
+      };
+    }
+
+    async function loadPocketBaseCards() {
+      try {
+        const response = await fetch(`${POCKETBASE_URL}/api/collections/signe/records?perPage=100&sort=mots`);
+        if (!response.ok) throw new Error(`PocketBase ${response.status}`);
+
+        const data = await response.json();
+        const pocketBaseCards = (data.items || [])
+          .map(normalizeSign)
+          .filter((card) => card.word && card.category && card.image)
+          .slice(0, 12);
+
+        if (pocketBaseCards.length >= 4) {
+          activeCards = pocketBaseCards;
+          startGame();
+        }
+      } catch (error) {
+        console.error("Signes PocketBase indisponibles pour le champ lexical :", error);
+      }
+    }
+
     buttons.forEach((button) => button.addEventListener("click", () => answer(button)));
     restartBtn.addEventListener("click", startGame);
     startGame();
+    loadPocketBaseCards();
   </script>
 </AccountShell>

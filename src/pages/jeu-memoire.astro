@@ -79,6 +79,7 @@ const signs = [
     let locked = false;
     let moves = 0;
     let pairs = 0;
+    let activeSigns = [...signs];
     const POCKETBASE_URL = "https://swaanpb.tebrouri.fr";
 
     function shuffle(items) {
@@ -86,7 +87,7 @@ const signs = [
     }
 
     function buildCards() {
-      const gameCards = signs.flatMap((sign) => [
+      const gameCards = activeSigns.flatMap((sign) => [
         {
           id: `${sign.word}-image`,
           pair: sign.word,
@@ -130,7 +131,7 @@ const signs = [
       moves = 0;
       pairs = 0;
       moveCounter.textContent = moves;
-      pairCounter.textContent = `${pairs} / ${signs.length}`;
+      pairCounter.textContent = `${pairs} / ${activeSigns.length}`;
       memoryStatus.textContent = "Choisissez une carte signe puis une carte mot.";
       endScreen.classList.add("hidden");
 
@@ -193,15 +194,15 @@ const signs = [
         first.classList.add("ring-pop");
         second.classList.add("ring-pop");
         pairs += 1;
-        pairCounter.textContent = `${pairs} / ${signs.length}`;
+        pairCounter.textContent = `${pairs} / ${activeSigns.length}`;
         memoryStatus.textContent = `Bonne paire : ${first.dataset.pair}.`;
         selected = [];
         locked = false;
 
-        if (pairs === signs.length) {
-          endMessage.textContent = `Vous avez retrouvé les ${signs.length} paires en ${moves} coups.`;
+        if (pairs === activeSigns.length) {
+          endMessage.textContent = `Vous avez retrouvé les ${activeSigns.length} paires en ${moves} coups.`;
           endScreen.classList.remove("hidden");
-          saveGameProgress(signs.length, signs.length);
+          saveGameProgress(activeSigns.length, activeSigns.length);
         }
       } else {
         memoryStatus.textContent = "Pas encore, essayez une autre association.";
@@ -211,6 +212,41 @@ const signs = [
           selected = [];
           locked = false;
         }, 900);
+      }
+    }
+
+    function getFileUrl(record, fieldName) {
+      const file = record?.[fieldName];
+      const fileName = Array.isArray(file) ? file[0] : file;
+      if (!fileName) return "";
+
+      return `${POCKETBASE_URL}/api/files/${record.collectionId}/${record.id}/${encodeURIComponent(fileName)}`;
+    }
+
+    function normalizeSign(record) {
+      return {
+        word: String(record.mots || record.mot || record.word || "").trim(),
+        image: getFileUrl(record, "img_signe") || String(record.image || "").trim(),
+      };
+    }
+
+    async function loadPocketBaseSigns() {
+      try {
+        const response = await fetch(`${POCKETBASE_URL}/api/collections/signe/records?perPage=50&sort=mots`);
+        if (!response.ok) throw new Error(`PocketBase ${response.status}`);
+
+        const data = await response.json();
+        const pocketBaseSigns = (data.items || [])
+          .map(normalizeSign)
+          .filter((sign) => sign.word && sign.image)
+          .slice(0, 6);
+
+        if (pocketBaseSigns.length >= 3) {
+          activeSigns = pocketBaseSigns;
+          renderBoard();
+        }
+      } catch (error) {
+        console.error("Signes PocketBase indisponibles pour le memory :", error);
       }
     }
 
@@ -257,5 +293,6 @@ const signs = [
 
     resetBtn.addEventListener("click", renderBoard);
     renderBoard();
+    loadPocketBaseSigns();
   </script>
 </AccountShell>

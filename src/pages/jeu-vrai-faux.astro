@@ -93,7 +93,7 @@ import AccountShell from "../components/AccountShell.astro";
     </div>
 
   <script>
-    const questions = [
+    let questions = [
       {
         image: "/assets/img/sign-bonjour-game.png",
         proposed: "Bonjour",
@@ -304,6 +304,63 @@ import AccountShell from "../components/AccountShell.astro";
       renderQuestion();
     }
 
+    function shuffle(items) {
+      return [...items].sort(() => Math.random() - 0.5);
+    }
+
+    function getFileUrl(record, fieldName) {
+      const file = record?.[fieldName];
+      const fileName = Array.isArray(file) ? file[0] : file;
+      if (!fileName) return "";
+
+      return `${POCKETBASE_URL}/api/files/${record.collectionId}/${record.id}/${encodeURIComponent(fileName)}`;
+    }
+
+    function normalizeSign(record) {
+      return {
+        word: String(record.mots || record.mot || record.word || "").trim(),
+        image: getFileUrl(record, "img_signe") || String(record.image || "").trim(),
+        description: String(record.description || "Observe bien l'illustration.").trim(),
+      };
+    }
+
+    function buildPocketBaseQuestions(signs) {
+      return shuffle(signs).slice(0, 6).map((sign, index, selectedSigns) => {
+        const shouldBeTrue = index % 2 === 0;
+        const wrongSign = shuffle(signs.filter((item) => item.word !== sign.word))[0] || selectedSigns[0] || sign;
+        const proposed = shouldBeTrue ? sign.word : wrongSign.word;
+
+        return {
+          image: sign.image,
+          proposed,
+          isTrue: shouldBeTrue,
+          hint: sign.description,
+          feedback: shouldBeTrue
+            ? `Ce signe représente bien ${sign.word}.`
+            : `Faux : cette illustration correspond au signe ${sign.word}.`,
+        };
+      });
+    }
+
+    async function loadPocketBaseQuestions() {
+      try {
+        const response = await fetch(`${POCKETBASE_URL}/api/collections/signe/records?perPage=100&sort=mots`);
+        if (!response.ok) throw new Error(`PocketBase ${response.status}`);
+
+        const data = await response.json();
+        const signs = (data.items || [])
+          .map(normalizeSign)
+          .filter((sign) => sign.word && sign.image);
+
+        if (signs.length >= 4) {
+          questions = buildPocketBaseQuestions(signs);
+          resetGame();
+        }
+      } catch (error) {
+        console.error("Signes PocketBase indisponibles pour Vrai/Faux :", error);
+      }
+    }
+
     buttons.forEach((button) => {
       button.addEventListener("click", () => selectAnswer(button.dataset.answer === "true"));
     });
@@ -311,5 +368,6 @@ import AccountShell from "../components/AccountShell.astro";
     nextBtn.addEventListener("click", nextQuestion);
     document.getElementById("reset-btn").addEventListener("click", resetGame);
     renderQuestion();
+    loadPocketBaseQuestions();
   </script>
 </AccountShell>

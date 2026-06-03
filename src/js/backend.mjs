@@ -10,7 +10,7 @@ export { pb };
 
 // Image
 export function getImageUrl(record, imageField) {
-    const image = record?.[imageField];
+    const image = record?.[imageField] || imageField;
     if (!record || !image) return "";
     return pb.files.getURL(record, image);
 }
