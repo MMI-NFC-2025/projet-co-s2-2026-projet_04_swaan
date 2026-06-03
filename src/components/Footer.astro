@@ -49,6 +49,7 @@
         </div>
         <ul class="flex flex-col gap-3 text-sm font-light text-mid">
           <li><a class="hover:text-dark" href="/blog">Blog LSF</a></li>
+
           <li>
             <a class="hover:text-dark" href="/documentation">Documentation</a>
           </li>
@@ -70,11 +71,13 @@
         <ul class="flex flex-col gap-3 text-sm font-light text-mid">
           <li>
             <a class="hover:text-dark" href="/mentions-legales"
-              >Mentions légales</a>
+              >Mentions légales</a
+            >
           </li>
           <li>
             <a class="hover:text-dark" href="/confidentialite"
-              >Confidentialité</a>
+              >Confidentialité</a
+            >
           </li>
           <li><a class="hover:text-dark" href="/cgu">CGU</a></li>
           <li><a class="hover:text-dark" href="/cookies">Cookies</a></li>
@@ -87,6 +90,9 @@
     >
       <div class="flex flex-wrap gap-5 text-xs text-soft">
         <span>© 2025 SWAAN — Formation LSF B2B</span>
+        <li>
+          <a class="hover:text-dark" href="/plan-du-site">Plan du site</a>
+        </li>
       </div>
 
       <div class="flex flex-wrap items-center gap-3">
@@ -101,17 +107,33 @@
       </div>
 
       <div class="flex gap-3">
-        {
-          ["LinkedIn", "Email"].map((item) => (
-            <a
-              class="rounded-full bg-bg px-4 py-2 text-xs font-medium text-mid shadow-neu-out hover:text-dark hover:shadow-neu-in"
-              href="/contact"
-              aria-label={`Contacter SWAAN via ${item}`}
-            >
-              {item}
-            </a>
-          ))
-        }
+        <a
+          class="flex size-12 items-center justify-center rounded-full bg-bg shadow-neu-out hover:shadow-neu-in transition"
+          href="https://www.instagram.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="SWAAN sur Instagram"
+        >
+          <img src="/assets/img/insta1.avif" alt="Instagram" class="size-6 object-contain" />
+        </a>
+        <a
+          class="flex size-12 items-center justify-center rounded-full bg-bg shadow-neu-out hover:shadow-neu-in transition"
+          href="https://www.tiktok.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="SWAAN sur TikTok"
+        >
+          <img src="/assets/img/tiktok1.avif" alt="TikTok" class="size-6 object-contain" />
+        </a>
+        <a
+          class="flex size-12 items-center justify-center rounded-full bg-bg shadow-neu-out hover:shadow-neu-in transition"
+          href="https://www.linkedin.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="SWAAN sur LinkedIn"
+        >
+          <img src="/assets/img/linkedin.avif" alt="LinkedIn" class="size-6 object-contain" />
+        </a>
       </div>
     </div>
   </div>
