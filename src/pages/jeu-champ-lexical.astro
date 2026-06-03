@@ -110,6 +110,7 @@ const categories = [
     let index = 0;
     let score = 0;
     let locked = false;
+    const POCKETBASE_URL = "https://swaanpb.tebrouri.fr";
 
     function shuffle(items) {
       return [...items].sort(() => Math.random() - 0.5);
@@ -138,6 +139,49 @@ const categories = [
       endMessage.textContent = `Tu as classé ${score} signes sur ${deck.length} dans le bon champ lexical.`;
       endScreen.classList.remove("hidden");
       localStorage.setItem("swaan_champ_lexical_score", String(score));
+      saveGameProgress(score, deck.length);
+    }
+
+    function saveLocalSession(session) {
+      const previous = JSON.parse(localStorage.getItem("swaan_game_sessions") || "[]");
+      localStorage.setItem("swaan_game_sessions", JSON.stringify([session, ...previous].slice(0, 50)));
+    }
+
+    async function saveGameProgress(score, total) {
+      const auth = JSON.parse(localStorage.getItem("pocketbase_auth") || "{}");
+      const userId = auth?.record?.id || auth?.model?.id;
+      const token = auth?.token;
+      const scorePercent = total > 0 ? Math.round((score / total) * 100) : 0;
+      const session = {
+        game: "champ_lexical",
+        score,
+        total,
+        learned: Math.min(3, score),
+        minutes: 7,
+        createdAt: new Date().toISOString(),
+      };
+
+      saveLocalSession(session);
+
+      if (!userId || !token) return;
+
+      try {
+        await fetch(`${POCKETBASE_URL}/api/collections/progress/records`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            user_id: userId,
+            completed: true,
+            score: scorePercent,
+            completed_at: session.createdAt,
+          }),
+        });
+      } catch (error) {
+        console.error("Erreur sauvegarde progression PocketBase :", error);
+      }
     }
 
     function answer(button) {

@@ -143,6 +143,7 @@ import AccountShell from "../components/AccountShell.astro";
     let bad = 0;
     let answered = false;
     let selectedAnswer = null;
+    const POCKETBASE_URL = "https://swaanpb.tebrouri.fr";
 
     const signImg = document.getElementById("sign-img");
     const proposedWord = document.getElementById("proposed-word");
@@ -236,6 +237,7 @@ import AccountShell from "../components/AccountShell.astro";
         endScreen.classList.remove("hidden");
         const percent = Math.round((good / questions.length) * 100);
         endScore.textContent = `${good} bonnes réponses sur ${questions.length} — ${percent}% de réussite`;
+        saveGameProgress(good, questions.length);
         if (percent >= 80) {
           endIcon.textContent = "🏆";
           endTitle.innerHTML = 'Excellent <em class="title-em">!</em>';
@@ -248,6 +250,48 @@ import AccountShell from "../components/AccountShell.astro";
         }
       } else {
         renderQuestion();
+      }
+    }
+
+    function saveLocalSession(session) {
+      const previous = JSON.parse(localStorage.getItem("swaan_game_sessions") || "[]");
+      localStorage.setItem("swaan_game_sessions", JSON.stringify([session, ...previous].slice(0, 50)));
+    }
+
+    async function saveGameProgress(score, total) {
+      const auth = JSON.parse(localStorage.getItem("pocketbase_auth") || "{}");
+      const userId = auth?.record?.id || auth?.model?.id;
+      const token = auth?.token;
+      const scorePercent = total > 0 ? Math.round((score / total) * 100) : 0;
+      const session = {
+        game: "vrai_faux",
+        score,
+        total,
+        learned: Math.min(3, score),
+        minutes: 5,
+        createdAt: new Date().toISOString(),
+      };
+
+      saveLocalSession(session);
+
+      if (!userId || !token) return;
+
+      try {
+        await fetch(`${POCKETBASE_URL}/api/collections/progress/records`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            user_id: userId,
+            completed: true,
+            score: scorePercent,
+            completed_at: session.createdAt,
+          }),
+        });
+      } catch (error) {
+        console.error("Erreur sauvegarde progression PocketBase :", error);
       }
     }
 

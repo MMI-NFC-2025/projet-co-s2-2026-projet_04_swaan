@@ -14,13 +14,9 @@ import {
     registerUser,
 } from "./backend.mjs";
 
-// ── Test getOffres ─────────────────────────────────────────────────────────
-
 console.log("\n=== Test getOffres ===");
 const offres = await getOffres();
 console.log(offres);
-
-// ── Test getSignes ─────────────────────────────────────────────────────────
 
 console.log("\n=== Test getSignes (tous) ===");
 const signes = await getSignes();
@@ -30,19 +26,13 @@ console.log("\n=== Test getSignes (recherche 'bonjour') ===");
 const signesSearch = await getSignes(null, null, "bonjour");
 console.log(signesSearch);
 
-// ── Test getJeux ───────────────────────────────────────────────────────────
-
 console.log("\n=== Test getJeux ===");
 const jeux = await getJeux();
 console.log(jeux);
 
-// ── Test getModules ────────────────────────────────────────────────────────
-
 console.log("\n=== Test getModules ===");
 const modules = await getModules();
 console.log(modules);
-
-// ── Test getModuleById ─────────────────────────────────────────────────────
 
 /*
 console.log("\n=== Test getModuleById ===");
@@ -50,13 +40,15 @@ const module = await getModuleById("REMPLACE_PAR_UN_VRAI_ID");
 console.log(module);
 */
 
-// ── Test getLessons ────────────────────────────────────────────────────────
-
 console.log("\n=== Test getLessons (toutes) ===");
 const lessons = await getLessons();
 console.log(lessons);
 
-// ── Test Auth : login / logout / isAuthValid ───────────────────────────────
+/*
+console.log("\n=== Test getLessonById ===");
+const lesson = await getLessonById("REMPLACE_PAR_UN_VRAI_ID");
+console.log(lesson);
+*/
 
 console.log("\n=== Test login (mauvais mot de passe) ===");
 try {
@@ -79,8 +71,6 @@ logout();
 console.log("isAuthValid après logout :", isAuthValid());
 */
 
-// ── Test createNewUser ─────────────────────────────────────────────────────
-
 /*
 console.log("\n=== Test createNewUser ===");
 try {
@@ -98,8 +88,6 @@ try {
     console.log("Erreur création utilisateur :", error.message);
 }
 */
-
-// ── Test registerUser ──────────────────────────────────────────────────────
 
 /*
 console.log("\n=== Test registerUser ===");

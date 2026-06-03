@@ -3,31 +3,312 @@ import AccountShell from "../components/AccountShell.astro";
 ---
 
 <AccountShell title="Quiz LSF" active="jeux">
-  <div class="max-w-5xl">
-    <p class="section-label mb-3">Jeu pédagogique</p>
-    <h1 class="font-serif text-[44px] leading-[1.05] font-light text-dark md:text-[58px]">
-      Quiz <em class="title-em">LSF.</em>
-    </h1>
-    <p class="mt-5 max-w-2xl text-sm leading-7 font-light text-mid">
-      Répondez à des questions courtes pour vérifier la compréhension des signes et du vocabulaire LSF.
-    </p>
+  <div class="max-w-6xl">
+    <header class="mb-9 grid gap-6 xl:grid-cols-[1fr_auto] xl:items-end">
+      <div>
+        <p class="section-label mb-3">Jeu pédagogique</p>
+        <h1 class="font-serif text-[44px] leading-[1.05] font-light text-dark md:text-[58px]">
+          Quiz <em class="title-em">LSF.</em>
+        </h1>
+        <p class="mt-5 max-w-2xl text-sm leading-7 font-light text-mid">
+          Observe l'image du signe, puis choisis le mot qui correspond. Chaque partie contient 6 questions tirées du dictionnaire.
+        </p>
+      </div>
 
-    <div class="mt-10 grid gap-6 md:grid-cols-3">
-      {[
-        ["Questions", "QCM avec une réponse correcte et plusieurs distracteurs."],
-        ["Score", "Chaque réponse pourra alimenter la progression PocketBase."],
-        ["Révision", "Les erreurs renverront vers le dictionnaire."],
-      ].map(([title, text]) => (
-        <article class="rounded-[30px] bg-bg p-7 shadow-neu-out">
-          <h2 class="mb-3 font-serif text-3xl font-light text-dark">{title}</h2>
-          <p class="text-sm leading-7 font-light text-mid">{text}</p>
-        </article>
-      ))}
-    </div>
+      <a class="btn btn-soft" href="/jeux">Tous les jeux</a>
+    </header>
 
-    <div class="mt-8 flex flex-wrap gap-4">
-      <a class="btn btn-accent" href="/jeu-vrai-faux">Jouer au vrai ou faux</a>
-      <a class="btn btn-soft" href="/jeu-memoire">Ouvrir le memory</a>
-    </div>
+    <section class="mb-7 grid gap-5 md:grid-cols-[160px_160px_1fr]">
+      <article class="rounded-[28px] bg-bg p-6 shadow-neu-out-lg">
+        <p class="text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Question</p>
+        <p class="mt-3 font-serif text-[44px] leading-none font-light text-dark">
+          <span id="quiz-current">1</span>/<span id="quiz-total">6</span>
+        </p>
+      </article>
+
+      <article class="rounded-[28px] bg-bg p-6 shadow-neu-out-lg">
+        <p class="text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Score</p>
+        <p class="mt-3 font-serif text-[44px] leading-none font-light text-pop-dark" id="quiz-score">0</p>
+      </article>
+
+      <article class="rounded-[28px] bg-bg p-6 shadow-neu-out-lg">
+        <p class="mb-4 text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Progression</p>
+        <div class="h-5 rounded-full bg-bg p-1 shadow-neu-in" aria-hidden="true">
+          <div id="quiz-progress" class="h-full w-0 rounded-full bg-pop transition-all"></div>
+        </div>
+        <p id="quiz-status" class="mt-4 text-sm leading-7 font-light text-mid" role="status" aria-live="polite">
+          Chargement des signes...
+        </p>
+      </article>
+    </section>
+
+    <section class="grid gap-7 xl:grid-cols-[0.9fr_1.1fr] xl:items-stretch">
+      <article class="rounded-[38px] bg-bg p-6 shadow-neu-out-lg md:p-8">
+        <div class="rounded-[32px] bg-bg p-4 shadow-neu-in">
+          <img
+            id="quiz-image"
+            class="mx-auto h-[320px] w-full object-contain md:h-[420px]"
+            src="/assets/img/dictionnaire/quotidien-bonjour.png"
+            alt="Signe LSF à identifier"
+            loading="eager"
+          />
+        </div>
+      </article>
+
+      <article class="rounded-[38px] bg-bg p-6 shadow-neu-out-lg md:p-8">
+        <p class="mb-3 text-[11px] font-medium tracking-[0.14em] text-soft uppercase">Quel mot correspond à ce signe ?</p>
+        <h2 id="quiz-question" class="font-serif text-[38px] leading-tight font-light text-dark">
+          Choisis la bonne réponse.
+        </h2>
+
+        <div id="quiz-options" class="mt-8 grid gap-4 sm:grid-cols-2"></div>
+
+        <div id="quiz-feedback" class="mt-7 hidden rounded-[28px] bg-pop-light/55 p-5 text-sm leading-7 text-pop-dark shadow-neu-in-sm" role="status" aria-live="polite"></div>
+
+        <div class="mt-8 flex flex-col gap-4 sm:flex-row">
+          <button id="quiz-next" class="btn btn-accent" type="button" disabled>Question suivante</button>
+          <button id="quiz-restart" class="btn btn-soft" type="button">Recommencer</button>
+        </div>
+      </article>
+    </section>
   </div>
+
+  <script>
+    const POCKETBASE_URL = "https://swaanpb.tebrouri.fr";
+    const fallbackSigns = [
+      { word: "Bonjour", image: "/assets/img/dictionnaire/quotidien-bonjour.png" },
+      { word: "Merci", image: "/assets/img/dictionnaire/quotidien-merci.png" },
+      { word: "Oui", image: "/assets/img/dictionnaire/quotidien-oui.png" },
+      { word: "Non", image: "/assets/img/dictionnaire/quotidien-non.png" },
+      { word: "Aide", image: "/assets/img/dictionnaire/quotidien-aide.png" },
+      { word: "Main", image: "/assets/img/dictionnaire/corps-main.png" },
+      { word: "Yeux", image: "/assets/img/dictionnaire/corps-yeux.png" },
+      { word: "Bouche", image: "/assets/img/dictionnaire/corps-bouche.png" },
+      { word: "Chat", image: "/assets/img/dictionnaire/animaux-chat.png" },
+      { word: "Pomme", image: "/assets/img/dictionnaire/nourriture-pomme.png" },
+    ];
+
+    const state = {
+      signs: fallbackSigns,
+      round: [],
+      current: 0,
+      score: 0,
+      answered: false,
+      total: 6,
+      baseTotal: 6,
+    };
+
+    const image = document.getElementById("quiz-image");
+    const optionsBox = document.getElementById("quiz-options");
+    const currentBox = document.getElementById("quiz-current");
+    const totalBox = document.getElementById("quiz-total");
+    const scoreBox = document.getElementById("quiz-score");
+    const progressBar = document.getElementById("quiz-progress");
+    const statusBox = document.getElementById("quiz-status");
+    const feedbackBox = document.getElementById("quiz-feedback");
+    const nextButton = document.getElementById("quiz-next");
+    const restartButton = document.getElementById("quiz-restart");
+
+    function shuffle(items) {
+      return [...items].sort(() => Math.random() - 0.5);
+    }
+
+    function normalizeSign(record) {
+      const word = record.mots || record.mot || record.word || "";
+      const fileName = Array.isArray(record.img_signe) ? record.img_signe[0] : record.img_signe;
+      const collectionId = record.collectionId || record.collectionName || "signe";
+      const imageUrl = fileName
+        ? `${POCKETBASE_URL}/api/files/${collectionId}/${record.id}/${encodeURIComponent(fileName)}`
+        : record.image;
+
+      return {
+        word,
+        image: imageUrl,
+        category: record.categorie || record.category || "",
+      };
+    }
+
+    function withTimeout(promise, duration = 2500) {
+      return Promise.race([
+        promise,
+        new Promise((_, reject) => {
+          window.setTimeout(() => reject(new Error("timeout")), duration);
+        }),
+      ]);
+    }
+
+    function saveLocalSession(session) {
+      const previous = JSON.parse(localStorage.getItem("swaan_game_sessions") || "[]");
+      localStorage.setItem("swaan_game_sessions", JSON.stringify([session, ...previous].slice(0, 50)));
+    }
+
+    async function savePocketBaseProgress(score, total) {
+      const auth = JSON.parse(localStorage.getItem("pocketbase_auth") || "{}");
+      const userId = auth?.record?.id || auth?.model?.id;
+      const token = auth?.token;
+      const scorePercent = total > 0 ? Math.round((score / total) * 100) : 0;
+      const session = {
+        game: "quiz",
+        score,
+        total,
+        learned: Math.min(3, score),
+        minutes: 6,
+        createdAt: new Date().toISOString(),
+      };
+
+      saveLocalSession(session);
+
+      if (!userId || !token) return;
+
+      try {
+        await fetch(`${POCKETBASE_URL}/api/collections/progress/records`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            user_id: userId,
+            completed: true,
+            score: scorePercent,
+            completed_at: session.createdAt,
+          }),
+        });
+      } catch (error) {
+        console.error("Erreur sauvegarde progression PocketBase :", error);
+      }
+    }
+
+    async function loadSigns() {
+      try {
+        const response = await withTimeout(
+          fetch(`${POCKETBASE_URL}/api/collections/signe/records?sort=mots&perPage=100`),
+        );
+        if (!response.ok) throw new Error(`PocketBase ${response.status}`);
+
+        const data = await response.json();
+        const records = data.items || [];
+
+        const signs = records
+          .map(normalizeSign)
+          .filter((sign) => sign.word && sign.image);
+
+        if (signs.length >= 4) {
+          state.signs = signs;
+          statusBox.textContent = "Les signes sont chargés.";
+          createRound();
+        }
+      } catch (error) {
+        console.error("Erreur chargement quiz :", error);
+        statusBox.textContent = "Observe le signe puis choisis le bon mot.";
+      }
+    }
+
+    function createRound() {
+      state.total = Math.min(state.baseTotal, state.signs.length);
+      state.round = shuffle(state.signs).slice(0, state.total);
+      state.total = state.round.length;
+      state.current = 0;
+      state.score = 0;
+      state.answered = false;
+      totalBox.textContent = String(state.total);
+      scoreBox.textContent = "0";
+      renderQuestion();
+    }
+
+    function getOptions(correctSign) {
+      const wrongWords = shuffle(state.signs)
+        .map((sign) => sign.word)
+        .filter((word) => word !== correctSign.word)
+        .slice(0, 3);
+
+      return shuffle([correctSign.word, ...wrongWords]);
+    }
+
+    function renderQuestion() {
+      const sign = state.round[state.current];
+      if (!sign) {
+        finishQuiz();
+        return;
+      }
+
+      state.answered = false;
+      currentBox.textContent = String(state.current + 1);
+      scoreBox.textContent = String(state.score);
+      progressBar.style.width = `${(state.current / state.total) * 100}%`;
+      statusBox.textContent = "Observe le signe puis choisis le bon mot.";
+      feedbackBox.classList.add("hidden");
+      feedbackBox.textContent = "";
+      nextButton.disabled = true;
+
+      image.src = sign.image;
+      image.alt = "Image d'un signe LSF à identifier";
+
+      optionsBox.innerHTML = "";
+      getOptions(sign).forEach((word) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "rounded-[26px] bg-bg px-6 py-5 text-left text-lg font-medium text-dark shadow-neu-out transition hover:text-pop-dark hover:shadow-neu-in";
+        button.textContent = word;
+        button.addEventListener("click", () => answerQuestion(word, button));
+        optionsBox.appendChild(button);
+      });
+    }
+
+    function answerQuestion(word, selectedButton) {
+      if (state.answered) return;
+      state.answered = true;
+
+      const sign = state.round[state.current];
+      const isCorrect = word === sign.word;
+      const buttons = optionsBox.querySelectorAll("button");
+
+      buttons.forEach((button) => {
+        button.disabled = true;
+        button.classList.remove("hover:text-pop-dark", "hover:shadow-neu-in");
+
+        if (button.textContent === sign.word) {
+          button.classList.add("text-pop-dark", "shadow-neu-in");
+        }
+      });
+
+      if (isCorrect) {
+        state.score += 1;
+        selectedButton.classList.add("text-pop-dark");
+        feedbackBox.textContent = `Bonne réponse : ${sign.word}.`;
+      } else {
+        selectedButton.classList.add("text-red-700", "shadow-neu-in");
+        feedbackBox.textContent = `Ce signe correspond à : ${sign.word}.`;
+      }
+
+      scoreBox.textContent = String(state.score);
+      feedbackBox.classList.remove("hidden");
+      nextButton.disabled = false;
+    }
+
+    function finishQuiz() {
+      progressBar.style.width = "100%";
+      statusBox.textContent = `Partie terminée : ${state.score}/${state.total}.`;
+      image.src = "/assets/img/dictionnaire/quotidien-bonjour.png";
+      image.alt = "Fin du quiz LSF";
+      optionsBox.innerHTML = "";
+      feedbackBox.classList.remove("hidden");
+      feedbackBox.textContent = state.score >= Math.ceil(state.total * 0.7)
+        ? "Très bien, tu reconnais déjà plusieurs signes."
+        : "Continue à t'entraîner avec le dictionnaire et relance une partie.";
+      nextButton.disabled = true;
+      localStorage.setItem("swaan_quiz_score", String(state.score));
+      savePocketBaseProgress(state.score, state.total);
+    }
+
+    nextButton?.addEventListener("click", () => {
+      state.current += 1;
+      renderQuestion();
+    });
+
+    restartButton?.addEventListener("click", createRound);
+
+    createRound();
+    loadSigns();
+  </script>
 </AccountShell>

@@ -14,7 +14,7 @@ import AccountShell from "../components/AccountShell.astro";
         Paramètres du <em class="title-em">compte.</em>
       </h1>
       <p class="mt-5 max-w-2xl text-sm leading-7 font-light text-mid">
-        Modifiez les informations visibles dans votre espace apprenant. Dans la version finale, ces champs seront synchronisés avec PocketBase.
+        Modifiez les informations visibles dans votre espace apprenant et ajustez vos préférences d'apprentissage.
       </p>
     </div>
 
@@ -68,7 +68,7 @@ import AccountShell from "../components/AccountShell.astro";
         </label>
         <label class="flex gap-4 rounded-[26px] bg-bg p-5 text-sm leading-7 text-mid shadow-neu-in-sm">
           <input id="save-scores" class="mt-1 size-4 accent-pop" name="saveScores" type="checkbox" />
-          <span>Conserver localement mes scores de mini-jeux pendant la démonstration.</span>
+          <span>Conserver mes scores de mini-jeux pour suivre ma progression.</span>
         </label>
       </div>
 
@@ -96,14 +96,6 @@ import AccountShell from "../components/AccountShell.astro";
           <p><span class="font-medium text-dark">Entreprise :</span> <span id="preview-company">Non renseignée</span></p>
           <p><span class="font-medium text-dark">Rôle :</span> <span id="preview-role">Collaborateur</span></p>
         </div>
-      </article>
-
-      <article class="rounded-[34px] bg-[#ead7cd] p-6 shadow-neu-out-lg">
-        <p class="mb-2 text-[10px] font-medium tracking-[0.14em] text-mid uppercase">PocketBase</p>
-        <h2 class="font-serif text-[34px] leading-none font-light text-dark">Prochaine étape</h2>
-        <p class="mt-4 text-sm leading-7 font-light text-mid">
-          Quand tu rempliras PocketBase, ces champs pourront être branchés sur la collection <code class="text-pop-dark">users</code> : name, prenom, email, role et company.
-        </p>
       </article>
     </aside>
   </section>

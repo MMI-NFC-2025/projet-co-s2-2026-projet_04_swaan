@@ -1,17 +1,21 @@
 import PocketBase from "pocketbase";
 
-const pb = new PocketBase("http://127.0.0.1:8090");
+const pbUrl =
+    import.meta.env?.PUBLIC_POCKETBASE_URL ||
+    "https://swaanpb.tebrouri.fr";
+
+const pb = new PocketBase(pbUrl);
 
 export { pb };
 
-// ── Image ──────────────────────────────────────────────────────────────────
-
-export async function getImageUrl(record, imageField) {
-    return pb.files.getURL(record, record[imageField]);
+// Image
+export function getImageUrl(record, imageField) {
+    const image = record?.[imageField];
+    if (!record || !image) return "";
+    return pb.files.getURL(record, image);
 }
 
-// ── Offres ─────────────────────────────────────────────────────────────────
-
+// Offres
 export async function getOffres() {
     try {
         return await pb.collection("offres").getFullList({ sort: "created" });
@@ -21,8 +25,7 @@ export async function getOffres() {
     }
 }
 
-// ── Signes ─────────────────────────────────────────────────────────────────
-
+// Signes
 export async function getSignes(categorie, niveau, search) {
     try {
         const filters = [];
@@ -40,8 +43,7 @@ export async function getSignes(categorie, niveau, search) {
     }
 }
 
-// ── Jeux ───────────────────────────────────────────────────────────────────
-
+// Jeux
 export async function getJeux() {
     try {
         return await pb.collection("jeux").getFullList({ sort: "created" });
@@ -51,8 +53,7 @@ export async function getJeux() {
     }
 }
 
-// ── Modules ────────────────────────────────────────────────────────────────
-
+// Modules
 export async function getModules() {
     try {
         return await pb.collection("modules").getFullList({ sort: "order" });
@@ -71,8 +72,7 @@ export async function getModuleById(id) {
     }
 }
 
-// ── Leçons ─────────────────────────────────────────────────────────────────
-
+// Leçons
 export async function getLessons(moduleId) {
     try {
         const filter = moduleId ? `module_id = "${moduleId}"` : "";
@@ -92,10 +92,13 @@ export async function getLessonById(id) {
     }
 }
 
-// ── Auth ───────────────────────────────────────────────────────────────────
-
+// Authentification
 export async function login(email, password) {
     return await pb.collection("users").authWithPassword(email, password);
+}
+
+export async function Userauth(login, mdp) {
+    return await pb.collection("users").authWithPassword(login, mdp);
 }
 
 export async function createNewUser(userData) {
@@ -113,6 +116,7 @@ export async function registerUser(nom, prenom, email, password, company) {
         role: "collaborateur",
         company: company || "",
     });
+
     await login(email, password);
     return user;
 }

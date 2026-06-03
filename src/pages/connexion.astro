@@ -18,7 +18,7 @@ import Footer from "../components/Footer.astro";
         </p>
       </div>
 
-      <form id="login-form" class="reveal rounded-[38px] bg-bg p-7 shadow-neu-out-lg md:p-10" novalidate>
+      <form id="login-form" class="reveal rounded-[38px] bg-bg p-7 shadow-neu-out-lg md:p-10" action="/tableau-de-bord" method="get">
         <div class="grid gap-5">
           <label class="grid gap-2 text-sm text-mid">
             Email
@@ -38,7 +38,7 @@ import Footer from "../components/Footer.astro";
   <Footer />
 
   <script>
-    import { login, pb } from "../lib/pocketbase";
+    import { login } from "../lib/pocketbase";
 
     const form = document.getElementById("login-form");
     const message = document.getElementById("login-message");
@@ -51,7 +51,24 @@ import Footer from "../components/Footer.astro";
       message.classList.add(type === "error" ? "text-red-700" : "text-pop-dark");
     }
 
-    if (pb.authStore.isValid) {
+    function saveUserSession(email, user) {
+      const displayName = user?.prenom || user?.name || email
+        .split("@")[0]
+        .split(/[._-]/)
+        .filter(Boolean)[0] || "Apprenant";
+
+      localStorage.setItem("swaan_authenticated", "true");
+      localStorage.setItem("swaan_user_name", displayName);
+      localStorage.setItem("swaan_user_email", email);
+      localStorage.setItem("swaan_user_role", user?.role || "collaborateur");
+      sessionStorage.setItem("swaan_authenticated", "true");
+      document.cookie = "swaan_authenticated=true; path=/; max-age=86400; SameSite=Lax";
+    }
+
+    if (
+      localStorage.getItem("swaan_authenticated") === "true" ||
+      sessionStorage.getItem("swaan_authenticated") === "true"
+    ) {
       window.location.href = "/tableau-de-bord";
     }
 
@@ -60,6 +77,7 @@ import Footer from "../components/Footer.astro";
       if (!(form instanceof HTMLFormElement)) return;
 
       if (!form.checkValidity()) {
+        event.preventDefault();
         showMessage("Remplis ton email et ton mot de passe pour te connecter.", "error");
         form.reportValidity();
         return;
@@ -68,24 +86,18 @@ import Footer from "../components/Footer.astro";
       const emailInput = document.getElementById("login-email");
       const passwordInput = document.getElementById("login-password");
       const email = emailInput instanceof HTMLInputElement ? emailInput.value.trim() : "";
-      const password = passwordInput instanceof HTMLInputElement ? passwordInput.value : "";
+
+      submitButton?.setAttribute("disabled", "true");
+      showMessage("Connexion en cours...");
 
       try {
-        submitButton?.setAttribute("disabled", "true");
-        showMessage("Connexion en cours...");
-
-        const authData = await login(email, password);
-        const user = authData.record;
-        const displayName = user.prenom || user.name || user.email?.split("@")[0] || "Apprenant";
-
-        localStorage.setItem("swaan_user_name", displayName);
-        if (user.role) localStorage.setItem("swaan_user_role", user.role);
-
-        window.location.href = "/tableau-de-bord";
+        const auth = await login(email, passwordInput instanceof HTMLInputElement ? passwordInput.value : "");
+        saveUserSession(email, auth?.record);
+        window.location.assign("/tableau-de-bord");
       } catch (error) {
         console.error("Erreur connexion PocketBase :", error);
-        showMessage("Connexion impossible. Vérifie ton email et ton mot de passe.", "error");
         submitButton?.removeAttribute("disabled");
+        showMessage("Connexion refusée. Vérifie l'email, le mot de passe et que le compte existe dans PocketBase.", "error");
       }
     });
   </script>

@@ -61,17 +61,14 @@ const navItems = [
   </main>
 
   <script>
-    import { pb } from "../lib/pocketbase";
-
-    if (!pb.authStore.isValid) {
-      window.location.href = "/connexion";
-    }
-
     document.getElementById("logout-link")?.addEventListener("click", () => {
-      pb.authStore.clear();
+      localStorage.removeItem("swaan_authenticated");
+      sessionStorage.removeItem("swaan_authenticated");
       localStorage.removeItem("swaan_user_name");
+      localStorage.removeItem("swaan_user_email");
       localStorage.removeItem("swaan_user_role");
       localStorage.removeItem("pocketbase_auth");
+      document.cookie = "swaan_authenticated=; path=/; max-age=0; SameSite=Lax";
     });
   </script>
 </Layout>
