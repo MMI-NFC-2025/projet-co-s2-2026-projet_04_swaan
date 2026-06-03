@@ -2,27 +2,14 @@
 import Layout from "../layouts/Layout.astro";
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
+import { getOffres } from "../js/backend.mjs";
 
-const fallbackOffres = [
-  {
-    nom_pack: "Pack 5 utilisateurs",
-    prix_mois: 25,
-    prix_annee: 250,
-    description: "Pour tester SWAAN avec une petite équipe.",
-  },
-  {
-    nom_pack: "Pack 20 utilisateurs",
-    prix_mois: 80,
-    prix_annee: 800,
-    description: "Pour former progressivement un service ou une équipe.",
-  },
-  {
-    nom_pack: "Pack 50 utilisateurs",
-    prix_mois: 175,
-    prix_annee: 1750,
-    description: "Pour déployer la formation LSF à grande échelle.",
-  },
-];
+const offres = await getOffres();
+
+function formatPrice(value) {
+  const number = Number(value || 0);
+  return new Intl.NumberFormat("fr-FR").format(number);
+}
 ---
 
 <Layout
@@ -32,7 +19,7 @@ const fallbackOffres = [
   <Nav />
 
   <main class="px-6 pt-36 pb-16 md:px-12 lg:px-20">
-    <section class="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+    <section class="mx-auto grid max-w-7xl gap-10 lg:grid-cols-(--grid-two-soft) lg:items-center">
       <div>
         <nav class="reveal mb-8 text-sm text-soft" aria-label="Fil d'Ariane">
           <a class="hover:text-dark" href="/">Accueil</a>
@@ -41,7 +28,7 @@ const fallbackOffres = [
         </nav>
 
         <div class="section-label reveal">Offres entreprise</div>
-        <h1 class="reveal max-w-3xl font-serif text-[44px] leading-[1.05] font-light tracking-[-1px] text-dark md:text-[64px] lg:text-[76px]">
+        <h1 class="reveal max-w-3xl font-serif text-display-sm leading-tight font-light tracking-title text-dark md:text-display-xl lg:text-display-3xl">
           Des tarifs adaptés à la <em class="title-em">taille de votre équipe.</em>
         </h1>
         <p class="reveal mt-7 max-w-xl text-base leading-8 font-light text-mid">
@@ -54,8 +41,8 @@ const fallbackOffres = [
         </div>
       </div>
 
-      <aside class="reveal rounded-[42px] bg-bg p-6 shadow-neu-out-lg">
-        <div class="rounded-[34px] bg-bg p-6 shadow-neu-in">
+      <aside class="reveal rounded-hero-lg bg-bg p-6 shadow-neu-out-lg">
+        <div class="rounded-card-lg bg-bg p-6 shadow-neu-in">
           <img
             class="mx-auto h-72 w-full object-contain md:h-80"
             src="/assets/img/signes-pro-formation.png"
@@ -72,83 +59,42 @@ const fallbackOffres = [
           <div class="section-label reveal">Packs SWAAN</div>
           <h2 class="section-title reveal">Choisir une offre <em>professionnelle.</em></h2>
         </div>
-        <span id="offres-status" class="rounded-full bg-bg px-5 py-2.5 text-xs font-medium tracking-[0.09em] text-pop-dark uppercase shadow-neu-in-sm">
-          Chargement
+        <span id="offres-status" class="rounded-full bg-bg px-5 py-2.5 text-xs font-medium tracking-nav text-pop-dark uppercase shadow-neu-in-sm">
+          {offres.length} offre{offres.length > 1 ? "s" : ""}
         </span>
       </div>
 
       <div id="offres-grid" class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
         {
-          fallbackOffres.map((offre) => (
-            <article class="rounded-[34px] bg-bg p-7 shadow-neu-out-lg">
+          offres.map((offre) => (
+            <article class="rounded-card-lg bg-bg p-7 shadow-neu-out-lg">
               <div class="mb-8 flex items-start justify-between gap-4">
-                <h3 class="font-serif text-[34px] leading-none font-light text-dark">{offre.nom_pack}</h3>
-                <span class="rounded-full bg-bg px-4 py-2 text-[10px] font-medium tracking-[0.12em] text-pop-dark uppercase shadow-neu-out">
+                <h3 class="font-serif text-section leading-none font-light text-dark">{offre.nom_pack || "Pack SWAAN"}</h3>
+                <span class="rounded-full bg-bg px-4 py-2 text-10 font-medium tracking-card text-pop-dark uppercase shadow-neu-out">
                   B2B
                 </span>
               </div>
-              <p class="text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Mensuel</p>
-              <p class="mt-3 font-serif text-[44px] leading-none font-light text-dark">{offre.prix_mois} € / mois</p>
-              <p class="mt-6 text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Annuel</p>
-              <p class="mt-3 font-serif text-[34px] leading-none font-light text-pop-dark">{offre.prix_annee} € / an</p>
-              <p class="mt-8 text-sm leading-7 font-light text-mid">{offre.description}</p>
-              <a class="mt-8 inline-flex rounded-full bg-bg px-5 py-2.5 text-xs font-medium tracking-[0.08em] text-pop-dark uppercase shadow-neu-out hover:shadow-neu-in" href="/demande-demo">
+              <p class="text-10 font-medium tracking-section text-soft uppercase">Mensuel</p>
+              <p class="mt-3 font-serif text-display-sm leading-none font-light text-dark">{formatPrice(offre.prix_mois)} € / mois</p>
+              <p class="mt-6 text-10 font-medium tracking-section text-soft uppercase">Annuel</p>
+              <p class="mt-3 font-serif text-section leading-none font-light text-pop-dark">{formatPrice(offre.prix_annee)} € / an</p>
+              <p class="mt-8 text-sm leading-7 font-light text-mid">{offre.description || "Offre entreprise pour accéder à SWAAN."}</p>
+              <a class="mt-8 inline-flex rounded-full bg-bg px-5 py-2.5 text-xs font-medium tracking-button text-pop-dark uppercase shadow-neu-out hover:shadow-neu-in" href="/demande-demo">
                 Choisir ce pack
               </a>
             </article>
           ))
         }
       </div>
+      {
+        offres.length === 0 && (
+          <p class="rounded-card bg-bg p-8 text-sm leading-7 font-light text-mid shadow-neu-in">
+            Aucune offre n'est encore renseignée dans PocketBase.
+          </p>
+        )
+      }
     </section>
   </main>
 
   <Footer />
-
-  <script>
-    const POCKETBASE_URL = "https://swaanpb.tebrouri.fr";
-    const offresGrid = document.getElementById("offres-grid");
-    const offresStatus = document.getElementById("offres-status");
-
-    function formatPrice(value) {
-      const number = Number(value || 0);
-      return new Intl.NumberFormat("fr-FR").format(number);
-    }
-
-    function renderOffres(offres) {
-      if (!offresGrid || offres.length === 0) return;
-
-      offresStatus.textContent = `${offres.length} offre${offres.length > 1 ? "s" : ""}`;
-      offresGrid.innerHTML = offres.map((offre) => `
-        <article class="rounded-[34px] bg-bg p-7 shadow-neu-out-lg">
-          <div class="mb-8 flex items-start justify-between gap-4">
-            <h3 class="font-serif text-[34px] leading-none font-light text-dark">${offre.nom_pack || "Pack SWAAN"}</h3>
-            <span class="rounded-full bg-bg px-4 py-2 text-[10px] font-medium tracking-[0.12em] text-pop-dark uppercase shadow-neu-out">B2B</span>
-          </div>
-          <p class="text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Mensuel</p>
-          <p class="mt-3 font-serif text-[44px] leading-none font-light text-dark">${formatPrice(offre.prix_mois)} € / mois</p>
-          <p class="mt-6 text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Annuel</p>
-          <p class="mt-3 font-serif text-[34px] leading-none font-light text-pop-dark">${formatPrice(offre.prix_annee)} € / an</p>
-          <p class="mt-8 text-sm leading-7 font-light text-mid">${offre.description || "Offre entreprise pour accéder à SWAAN."}</p>
-          <a class="mt-8 inline-flex rounded-full bg-bg px-5 py-2.5 text-xs font-medium tracking-[0.08em] text-pop-dark uppercase shadow-neu-out hover:shadow-neu-in" href="/demande-demo">
-            Choisir ce pack
-          </a>
-        </article>
-      `).join("");
-    }
-
-    async function loadOffres() {
-      try {
-        const response = await fetch(`${POCKETBASE_URL}/api/collections/offres/records?perPage=50&sort=prix_mois`);
-        if (!response.ok) throw new Error(`PocketBase ${response.status}`);
-
-        const data = await response.json();
-        renderOffres(data.items || []);
-      } catch (error) {
-        console.error("Offres PocketBase indisponibles :", error);
-        offresStatus.textContent = "Exemples";
-      }
-    }
-
-    loadOffres();
-  </script>
 </Layout>

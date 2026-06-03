@@ -20,6 +20,20 @@ const imageUrl = image.startsWith("http") ? image : `${baseUrl}${image}`;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{titleHead}</title>
+    <link
+      rel="icon"
+      type="image/png"
+      href="/favicon/favicon-96x96.png"
+      sizes="96x96"
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon/favicon.ico" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/favicon/apple-touch-icon.png"
+    />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
     <meta name="robots" content="index, follow" />
@@ -42,14 +56,17 @@ const imageUrl = image.startsWith("http") ? image : `${baseUrl}${image}`;
     />
   </head>
   <body>
-    <a class="skip-link" href="#contenu-principal">Aller au contenu principal</a>
+    <a class="skip-link" href="#contenu-principal">Aller au contenu principal</a
+    >
     <slot />
     <script>
       const main = document.querySelector("main");
       if (main && !main.id) main.id = "contenu-principal";
 
       const revealedElements = document.querySelectorAll(".reveal");
-      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const reduceMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
 
       if (reduceMotion) {
         revealedElements.forEach((el) => el.classList.add("visible"));

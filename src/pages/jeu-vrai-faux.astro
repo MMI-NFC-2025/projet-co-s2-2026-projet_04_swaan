@@ -1,5 +1,9 @@
 ---
 import AccountShell from "../components/AccountShell.astro";
+import { getVraiFauxQuestions } from "../js/backend.mjs";
+
+const questions = await getVraiFauxQuestions();
+const firstQuestion = questions[0];
 ---
 
 <AccountShell title="SWAAN — Vrai ou Faux" active="jeux">
@@ -7,7 +11,7 @@ import AccountShell from "../components/AccountShell.astro";
       <div class="mb-8 flex flex-wrap items-start justify-between gap-6">
         <div>
           <div class="section-label">Jeux — LSF</div>
-          <h1 class="font-serif text-[40px] leading-[1.1] font-light text-dark">Vrai <em class="title-em">ou</em> Faux</h1>
+          <h1 class="font-serif text-game-title leading-tight font-light text-dark">Vrai <em class="title-em">ou</em> Faux</h1>
           <p class="mt-2 max-w-xl text-sm leading-7 font-light text-mid">
             Observe le signe affiché et décide si la traduction proposée est correcte ou non.
           </p>
@@ -17,19 +21,19 @@ import AccountShell from "../components/AccountShell.astro";
       <div class="mb-8 flex flex-wrap items-stretch gap-4">
         <div class="flex min-w-32 items-center gap-3 rounded-2xl bg-bg px-5 py-4 shadow-neu-out">
           <div>
-            <div class="mb-1 text-[9px] tracking-[0.1em] text-soft uppercase">Question</div>
+            <div class="mb-1 text-9 tracking-chip text-soft uppercase">Question</div>
             <div id="q-counter" class="font-serif text-3xl leading-none font-light text-dark">1 / 6</div>
           </div>
         </div>
         <div class="flex min-w-32 items-center gap-3 rounded-2xl bg-bg px-5 py-4 shadow-neu-out">
           <div>
-            <div class="mb-1 text-[9px] tracking-[0.1em] text-soft uppercase">Bonnes rép.</div>
+            <div class="mb-1 text-9 tracking-chip text-soft uppercase">Bonnes rép.</div>
             <div id="good-counter" class="font-serif text-3xl leading-none font-light text-pop-dark">0</div>
           </div>
         </div>
         <div class="flex min-w-32 items-center gap-3 rounded-2xl bg-bg px-5 py-4 shadow-neu-out">
           <div>
-            <div class="mb-1 text-[9px] tracking-[0.1em] text-soft uppercase">Erreurs</div>
+            <div class="mb-1 text-9 tracking-chip text-soft uppercase">Erreurs</div>
             <div id="bad-counter" class="font-serif text-3xl leading-none font-light text-red-soft">0</div>
           </div>
         </div>
@@ -41,32 +45,32 @@ import AccountShell from "../components/AccountShell.astro";
       </div>
 
       <div id="game-area" class="flex flex-col gap-7">
-        <section class="relative grid gap-8 overflow-hidden rounded-[32px] bg-bg p-6 shadow-neu-out-lg md:grid-cols-[260px_1fr] md:items-center md:p-10">
-          <div class="flex min-h-72 items-center justify-center rounded-[28px] bg-bg p-4 shadow-neu-in">
-            <img id="sign-img" src="/assets/img/bonjour-detail.png" alt="Signe LSF" class="max-h-80 w-full object-contain" />
+        <section class="relative grid gap-8 overflow-hidden rounded-card-md bg-bg p-6 shadow-neu-out-lg md:grid-cols-(--grid-account) md:items-center md:p-10">
+          <div class="flex min-h-72 items-center justify-center rounded-card-sm bg-bg p-4 shadow-neu-in">
+            <img id="sign-img" src={firstQuestion?.image || "/assets/img/logo_swaan.avif"} alt="Signe LSF" class="max-h-80 w-full object-contain" />
           </div>
           <div>
-            <div class="mb-5 inline-flex items-center gap-2 rounded-full bg-bg px-4 py-1.5 text-[10px] font-medium tracking-[0.09em] text-pop-dark uppercase shadow-neu-out">
+            <div class="mb-5 inline-flex items-center gap-2 rounded-full bg-bg px-4 py-1.5 text-10 font-medium tracking-nav text-pop-dark uppercase shadow-neu-out">
               <div class="size-1.5 rounded-full bg-pop"></div>
               Que signifie ce signe ?
             </div>
             <div class="mb-3 font-serif text-3xl leading-tight font-light text-dark">
-              Ce signe veut dire <em id="proposed-word" class="title-em">"Bonjour"</em>
+              Ce signe veut dire <em id="proposed-word" class="title-em">"{firstQuestion?.proposed || "..." }"</em>
             </div>
             <p id="question-hint" class="text-sm leading-7 font-light text-soft">Observe bien l'illustration.</p>
           </div>
         </section>
 
         <div class="grid gap-4 md:grid-cols-2">
-          <button id="btn-vrai" class="answer-btn rounded-3xl bg-bg px-6 py-7 text-center shadow-neu-out transition hover:scale-[0.985] hover:shadow-neu-in" data-answer="true" type="button" aria-pressed="false">
+          <button id="btn-vrai" class="answer-btn rounded-3xl bg-bg px-6 py-7 text-center shadow-neu-out transition hover:scale-985 hover:shadow-neu-in" data-answer="true" type="button" aria-pressed="false">
             <div class="mx-auto mb-3 flex size-16 items-center justify-center rounded-full bg-bg font-serif text-3xl font-bold text-pop-dark shadow-neu-in-sm">✓</div>
-            <div class="text-lg font-medium tracking-[0.04em] text-pop-dark">VRAI</div>
+            <div class="text-lg font-medium tracking-mini text-pop-dark">VRAI</div>
             <div class="mt-1 text-xs font-light text-soft">Ce signe correspond au mot proposé</div>
           </button>
 
-          <button id="btn-faux" class="answer-btn rounded-3xl bg-bg px-6 py-7 text-center shadow-neu-out transition hover:scale-[0.985] hover:shadow-neu-in" data-answer="false" type="button" aria-pressed="false">
+          <button id="btn-faux" class="answer-btn rounded-3xl bg-bg px-6 py-7 text-center shadow-neu-out transition hover:scale-985 hover:shadow-neu-in" data-answer="false" type="button" aria-pressed="false">
             <div class="mx-auto mb-3 flex size-16 items-center justify-center rounded-full bg-bg font-serif text-3xl font-bold text-red-soft shadow-neu-in-sm">✗</div>
-            <div class="text-lg font-medium tracking-[0.04em] text-red-soft">FAUX</div>
+            <div class="text-lg font-medium tracking-mini text-red-soft">FAUX</div>
             <div class="mt-1 text-xs font-light text-soft">Ce signe ne correspond pas au mot proposé</div>
           </button>
         </div>
@@ -74,76 +78,32 @@ import AccountShell from "../components/AccountShell.astro";
         <div id="feedback-banner" class="hidden rounded-2xl bg-bg px-6 py-5 text-sm leading-6 shadow-neu-in" role="status" aria-live="polite"></div>
 
         <div class="flex flex-wrap justify-end gap-3">
-          <button id="validate-btn" class="hidden items-center gap-2 rounded-full bg-bg px-9 py-3.5 text-sm font-medium text-pop-dark shadow-neu-out hover:scale-[0.98] hover:shadow-neu-in" type="button">
+          <button id="validate-btn" class="hidden items-center gap-2 rounded-full bg-bg px-9 py-3.5 text-sm font-medium text-pop-dark shadow-neu-out hover:scale-98 hover:shadow-neu-in" type="button">
             Valider ma réponse
           </button>
-          <button id="next-btn" class="hidden items-center gap-2 rounded-full bg-pop px-9 py-3.5 text-sm font-medium text-white shadow-[5px_5px_12px_rgba(90,120,72,0.45),-3px_-3px_8px_rgba(255,255,255,0.55)] hover:scale-[0.98]" type="button">
+          <button id="next-btn" class="hidden items-center gap-2 rounded-full bg-pop px-9 py-3.5 text-sm font-medium text-white shadow-pop-out hover:scale-98" type="button">
             Question suivante
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" focusable="false"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
           </button>
         </div>
       </div>
 
-      <div id="end-screen" class="hidden rounded-[32px] bg-bg px-8 py-14 text-center shadow-neu-out-lg">
+      <div id="end-screen" class="hidden rounded-card-md bg-bg px-8 py-14 text-center shadow-neu-out-lg">
         <div id="end-icon" class="mx-auto mb-5 flex size-20 items-center justify-center rounded-full bg-bg text-4xl shadow-neu-in">🏆</div>
-        <h2 id="end-title" class="font-serif text-[40px] font-light text-dark">Bravo <em class="title-em">!</em></h2>
+        <h2 id="end-title" class="font-serif text-game-title font-light text-dark">Bravo <em class="title-em">!</em></h2>
         <p id="end-score" class="mt-3 text-mid"></p>
         <button id="reset-btn" class="btn btn-accent mt-8" type="button">Rejouer</button>
       </div>
     </div>
 
-  <script>
-    let questions = [
-      {
-        image: "/assets/img/sign-bonjour-game.png",
-        proposed: "Bonjour",
-        isTrue: true,
-        hint: "La main ouverte s'agite vers l'extérieur.",
-        feedback: "Ce signe représente bien Bonjour.",
-      },
-      {
-        image: "/assets/img/sign-merci-game.png",
-        proposed: "Bonjour",
-        isTrue: false,
-        hint: "Observe le mouvement de la main depuis le menton.",
-        feedback: "Ce n'est pas Bonjour : cette illustration montre le signe Merci.",
-      },
-      {
-        image: "/assets/img/sign-oui-game.png",
-        proposed: "Oui",
-        isTrue: true,
-        hint: "Le poing effectue un petit mouvement vers le bas.",
-        feedback: "Bonne réponse : ce signe correspond bien à Oui.",
-      },
-      {
-        image: "/assets/img/sign-non-game.png",
-        proposed: "Oui",
-        isTrue: false,
-        hint: "Regarde les deux doigts levés et la flèche de mouvement.",
-        feedback: "Faux : cette illustration correspond au signe Non.",
-      },
-      {
-        image: "/assets/img/sign-attention-game.png",
-        proposed: "Attention",
-        isTrue: true,
-        hint: "L'index levé sert à attirer l'attention.",
-        feedback: "Oui, cette illustration correspond au signe Attention.",
-      },
-      {
-        image: "/assets/img/sign-famille-game.png",
-        proposed: "Famille",
-        isTrue: true,
-        hint: "Les deux mains forment un cercle.",
-        feedback: "Bonne réponse : ce signe représente la Famille.",
-      },
-    ];
+  <script define:vars={{ questions }}>
+    import { saveGameProgress } from "../js/backend.mjs";
 
     let current = 0;
     let good = 0;
     let bad = 0;
     let answered = false;
     let selectedAnswer = null;
-    const POCKETBASE_URL = "https://swaanpb.tebrouri.fr";
 
     const signImg = document.getElementById("sign-img");
     const proposedWord = document.getElementById("proposed-word");
@@ -164,6 +124,12 @@ import AccountShell from "../components/AccountShell.astro";
 
     function renderQuestion() {
       const question = questions[current];
+      if (!question) {
+        questionHint.textContent = "Ajoute au moins 4 signes avec image dans PocketBase pour lancer ce jeu.";
+        buttons.forEach((button) => (button.disabled = true));
+        return;
+      }
+
       answered = false;
       selectedAnswer = null;
       signImg.src = question.image;
@@ -181,7 +147,7 @@ import AccountShell from "../components/AccountShell.astro";
       nextBtn.classList.remove("inline-flex");
       buttons.forEach((button) => {
         button.disabled = false;
-        button.classList.remove("ring-2", "ring-pop", "ring-red-soft", "shadow-neu-in", "scale-[0.985]");
+        button.classList.remove("ring-2", "ring-pop", "ring-red-soft", "shadow-neu-in", "scale-985");
         button.setAttribute("aria-pressed", "false");
       });
     }
@@ -196,7 +162,7 @@ import AccountShell from "../components/AccountShell.astro";
         button.classList.toggle("ring-pop", isSelected && value === true);
         button.classList.toggle("ring-red-soft", isSelected && value === false);
         button.classList.toggle("shadow-neu-in", isSelected);
-        button.classList.toggle("scale-[0.985]", isSelected);
+        button.classList.toggle("scale-985", isSelected);
         button.setAttribute("aria-pressed", String(isSelected));
       });
 
@@ -237,7 +203,7 @@ import AccountShell from "../components/AccountShell.astro";
         endScreen.classList.remove("hidden");
         const percent = Math.round((good / questions.length) * 100);
         endScore.textContent = `${good} bonnes réponses sur ${questions.length} — ${percent}% de réussite`;
-        saveGameProgress(good, questions.length);
+        saveGameProgress("vrai_faux", good, questions.length, 5);
         if (percent >= 80) {
           endIcon.textContent = "🏆";
           endTitle.innerHTML = 'Excellent <em class="title-em">!</em>';
@@ -253,48 +219,6 @@ import AccountShell from "../components/AccountShell.astro";
       }
     }
 
-    function saveLocalSession(session) {
-      const previous = JSON.parse(localStorage.getItem("swaan_game_sessions") || "[]");
-      localStorage.setItem("swaan_game_sessions", JSON.stringify([session, ...previous].slice(0, 50)));
-    }
-
-    async function saveGameProgress(score, total) {
-      const auth = JSON.parse(localStorage.getItem("pocketbase_auth") || "{}");
-      const userId = auth?.record?.id || auth?.model?.id;
-      const token = auth?.token;
-      const scorePercent = total > 0 ? Math.round((score / total) * 100) : 0;
-      const session = {
-        game: "vrai_faux",
-        score,
-        total,
-        learned: Math.min(3, score),
-        minutes: 5,
-        createdAt: new Date().toISOString(),
-      };
-
-      saveLocalSession(session);
-
-      if (!userId || !token) return;
-
-      try {
-        await fetch(`${POCKETBASE_URL}/api/collections/progress/records`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            user_id: userId,
-            completed: true,
-            score: scorePercent,
-            completed_at: session.createdAt,
-          }),
-        });
-      } catch (error) {
-        console.error("Erreur sauvegarde progression PocketBase :", error);
-      }
-    }
-
     function resetGame() {
       current = 0;
       good = 0;
@@ -304,63 +228,6 @@ import AccountShell from "../components/AccountShell.astro";
       renderQuestion();
     }
 
-    function shuffle(items) {
-      return [...items].sort(() => Math.random() - 0.5);
-    }
-
-    function getFileUrl(record, fieldName) {
-      const file = record?.[fieldName];
-      const fileName = Array.isArray(file) ? file[0] : file;
-      if (!fileName) return "";
-
-      return `${POCKETBASE_URL}/api/files/${record.collectionId}/${record.id}/${encodeURIComponent(fileName)}`;
-    }
-
-    function normalizeSign(record) {
-      return {
-        word: String(record.mots || record.mot || record.word || "").trim(),
-        image: getFileUrl(record, "img_signe") || String(record.image || "").trim(),
-        description: String(record.description || "Observe bien l'illustration.").trim(),
-      };
-    }
-
-    function buildPocketBaseQuestions(signs) {
-      return shuffle(signs).slice(0, 6).map((sign, index, selectedSigns) => {
-        const shouldBeTrue = index % 2 === 0;
-        const wrongSign = shuffle(signs.filter((item) => item.word !== sign.word))[0] || selectedSigns[0] || sign;
-        const proposed = shouldBeTrue ? sign.word : wrongSign.word;
-
-        return {
-          image: sign.image,
-          proposed,
-          isTrue: shouldBeTrue,
-          hint: sign.description,
-          feedback: shouldBeTrue
-            ? `Ce signe représente bien ${sign.word}.`
-            : `Faux : cette illustration correspond au signe ${sign.word}.`,
-        };
-      });
-    }
-
-    async function loadPocketBaseQuestions() {
-      try {
-        const response = await fetch(`${POCKETBASE_URL}/api/collections/signe/records?perPage=100&sort=mots`);
-        if (!response.ok) throw new Error(`PocketBase ${response.status}`);
-
-        const data = await response.json();
-        const signs = (data.items || [])
-          .map(normalizeSign)
-          .filter((sign) => sign.word && sign.image);
-
-        if (signs.length >= 4) {
-          questions = buildPocketBaseQuestions(signs);
-          resetGame();
-        }
-      } catch (error) {
-        console.error("Signes PocketBase indisponibles pour Vrai/Faux :", error);
-      }
-    }
-
     buttons.forEach((button) => {
       button.addEventListener("click", () => selectAnswer(button.dataset.answer === "true"));
     });
@@ -368,6 +235,5 @@ import AccountShell from "../components/AccountShell.astro";
     nextBtn.addEventListener("click", nextQuestion);
     document.getElementById("reset-btn").addEventListener("click", resetGame);
     renderQuestion();
-    loadPocketBaseQuestions();
   </script>
 </AccountShell>

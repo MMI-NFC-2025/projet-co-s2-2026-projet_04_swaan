@@ -50,18 +50,18 @@ const tarifs = [
     <Hero />
 
     <div class="px-6 py-10 md:px-12 lg:px-20">
-    <div class="reveal grid rounded-[28px] bg-bg shadow-neu-out-lg md:grid-cols-3">
+    <div class="reveal grid rounded-card-sm bg-bg shadow-neu-out-lg md:grid-cols-3">
       <div class="relative px-8 py-10 text-center after:absolute after:top-1/4 after:right-0 after:bottom-1/4 after:hidden after:w-px after:bg-shadow-dark md:after:block">
-        <div class="mb-2 font-serif text-[44px] leading-none font-light">LSF<span class="text-pop-dark">.</span></div>
-        <div class="text-[11px] tracking-[0.1em] text-soft uppercase">Langue des Signes Française</div>
+        <div class="mb-2 font-serif text-display-sm leading-none font-light">LSF<span class="text-pop-dark">.</span></div>
+        <div class="text-11 tracking-chip text-soft uppercase">Langue des Signes Française</div>
       </div>
       <div class="relative px-8 py-10 text-center after:absolute after:top-1/4 after:right-0 after:bottom-1/4 after:hidden after:w-px after:bg-shadow-dark md:after:block">
-        <div class="mb-2 font-serif text-[44px] leading-none font-light">5<span class="text-pop-dark">+</span></div>
-        <div class="text-[11px] tracking-[0.1em] text-soft uppercase">Packs d'équipes disponibles</div>
+        <div class="mb-2 font-serif text-display-sm leading-none font-light">5<span class="text-pop-dark">+</span></div>
+        <div class="text-11 tracking-chip text-soft uppercase">Packs d'équipes disponibles</div>
       </div>
       <div class="px-8 py-10 text-center">
-        <div class="mb-2 font-serif text-[44px] leading-none font-light">7<span class="text-pop-dark">j</span></div>
-        <div class="text-[11px] tracking-[0.1em] text-soft uppercase">Essai entreprise offert</div>
+        <div class="mb-2 font-serif text-display-sm leading-none font-light">7<span class="text-pop-dark">j</span></div>
+        <div class="text-11 tracking-chip text-soft uppercase">Essai entreprise offert</div>
       </div>
     </div>
     </div>
@@ -85,18 +85,18 @@ const tarifs = [
     <section class="grid gap-8 px-6 pb-16 md:px-12 lg:grid-cols-2 lg:items-center lg:px-20 lg:pb-20">
     <div>
       <div class="section-label reveal">Signes illustrés</div>
-      <h2 class="mb-5 font-serif text-[32px] leading-[1.15] font-light text-dark lg:text-[40px]">
+      <h2 class="mb-5 font-serif text-section-sm leading-tight font-light text-dark lg:text-game-title">
         Apprenez les signes du <em class="title-em">quotidien professionnel.</em>
       </h2>
       <p class="reveal max-w-xl text-sm leading-8 font-light text-mid">
         Chaque parcours SWAAN commence par les gestes essentiels : bonjour, merci, aide, comprendre… Des signes concrets pour des situations réelles en entreprise.
       </p>
     </div>
-    <div class="reveal rounded-[32px] bg-bg p-4 shadow-neu-out-lg md:p-6">
+    <div class="reveal rounded-card-md bg-bg p-4 shadow-neu-out-lg md:p-6">
       <img
         src="/assets/img/signes-pro-formation.png"
         alt="Illustration d'une formation aux signes LSF en contexte professionnel"
-        class="mx-auto w-full max-w-[430px] object-contain"
+        class="mx-auto w-full max-w-md object-contain"
         loading="lazy"
       />
     </div>
@@ -111,7 +111,7 @@ const tarifs = [
           <div class="reveal neu-card p-8">
             <SimpleIcon type={icon} />
             <div class="mb-3 font-serif text-2xl font-normal text-dark">{title}</div>
-            <p class="text-[13px] leading-7 font-light text-mid">{text}</p>
+            <p class="text-13 leading-7 font-light text-mid">{text}</p>
           </div>
         ))
       }
@@ -133,8 +133,8 @@ const tarifs = [
               <rect x="40" y="4" width="8" height="32" rx="3" fill="#6A8A58" />
               <path d="M4 36 L52 36" stroke="#ADA8A2" stroke-width="1" stroke-dasharray="3 2" />
             </svg>
-            <div class="mb-2.5 text-[15px] font-medium text-dark">{title}</div>
-            <p class="text-[13px] leading-7 font-light text-mid">{text}</p>
+            <div class="mb-2.5 text-15 font-medium text-dark">{title}</div>
+            <p class="text-13 leading-7 font-light text-mid">{text}</p>
           </div>
         ))
       }
@@ -148,26 +148,26 @@ const tarifs = [
       {
         tarifs.map(([pack, month, year, slug, teamSize]) => (
           <a
-            class="reveal block rounded-[32px] bg-bg p-8 shadow-neu-out transition hover:-translate-y-1 hover:shadow-neu-in"
+            class="reveal block rounded-card-md bg-bg p-8 shadow-neu-out transition hover:-translate-y-1 hover:shadow-neu-in"
             href={`/demande-demo?pack=${slug}&taille=${encodeURIComponent(teamSize)}`}
             aria-label={`Choisir ${pack}`}
           >
             <div class="mb-8 flex items-center justify-between gap-3">
               <div class="font-serif text-2xl leading-tight font-light text-dark">{pack}</div>
-              <span class="shrink-0 rounded-full bg-bg px-3 py-1 text-[9px] font-medium tracking-[0.14em] text-pop-dark uppercase shadow-neu-out">B2B</span>
+              <span class="shrink-0 rounded-full bg-bg px-3 py-1 text-9 font-medium tracking-section text-pop-dark uppercase shadow-neu-out">B2B</span>
             </div>
             <div class="mb-5">
-              <div class="mb-1.5 text-[10px] font-medium tracking-[0.12em] text-soft uppercase">Mensuel</div>
-              <div class="font-serif text-[38px] leading-none font-light text-dark">{month}</div>
+              <div class="mb-1.5 text-10 font-medium tracking-card text-soft uppercase">Mensuel</div>
+              <div class="font-serif text-card-xl leading-none font-light text-dark">{month}</div>
             </div>
             <div class="mb-5">
-              <div class="mb-1.5 text-[10px] font-medium tracking-[0.12em] text-soft uppercase">Annuel</div>
+              <div class="mb-1.5 text-10 font-medium tracking-card text-soft uppercase">Annuel</div>
               <div class="font-serif text-3xl leading-none font-light text-pop-dark">{year}</div>
             </div>
             <p class="mt-4 text-xs leading-7 font-light text-mid">
               Tarification accessible par pack d'utilisateurs, pensée pour les organisations qui veulent équiper leurs équipes progressivement.
             </p>
-            <span class="mt-6 inline-flex rounded-full bg-bg px-5 py-2.5 text-xs font-medium tracking-[0.08em] text-pop-dark uppercase shadow-neu-out">
+            <span class="mt-6 inline-flex rounded-full bg-bg px-5 py-2.5 text-xs font-medium tracking-button text-pop-dark uppercase shadow-neu-out">
               Choisir ce pack
             </span>
           </a>
@@ -176,25 +176,25 @@ const tarifs = [
     </div>
     </section>
 
-    <section id="essai" class="grid gap-10 px-6 py-16 md:px-12 lg:grid-cols-[1.2fr_1fr] lg:items-center lg:gap-16 lg:px-20 lg:py-20">
+    <section id="essai" class="grid gap-10 px-6 py-16 md:px-12 lg:grid-cols-(--grid-two-landing) lg:items-center lg:gap-16 lg:px-20 lg:py-20">
     <div>
-      <div class="reveal mb-7 inline-flex w-fit items-center gap-2 rounded-full bg-bg px-5 py-2 text-[11px] font-medium tracking-[0.08em] text-pop-dark uppercase shadow-neu-out">
+      <div class="reveal mb-7 inline-flex w-fit items-center gap-2 rounded-full bg-bg px-5 py-2 text-11 font-medium tracking-button text-pop-dark uppercase shadow-neu-out">
         <div class="size-1.5 rounded-full bg-pop"></div>
         Essai ciblé
       </div>
-      <h2 class="reveal mb-5 font-serif text-[34px] leading-[1.1] font-light text-dark lg:text-[48px]">
+      <h2 class="reveal mb-5 font-serif text-section leading-tight font-light text-dark lg:text-display-md">
         Testez SWAAN pendant <em class="title-em">7 jours</em>, côté entreprise.
       </h2>
-      <p class="reveal mb-9 max-w-[480px] text-[15px] leading-7 font-light text-mid">
+      <p class="reveal mb-9 max-w-lg text-15 leading-7 font-light text-mid">
         L'essai est réservé à une seule personne dans l'organisation, par exemple un RH ou un responsable formation, afin de découvrir la plateforme avant un déploiement plus large.
       </p>
       <a href="/demande-demo" class="btn btn-accent reveal">Demander une démo</a>
     </div>
 
-    <div class="reveal relative rounded-[32px] bg-bg px-8 py-12 shadow-neu-out-lg md:px-11">
+    <div class="reveal relative rounded-card-md bg-bg px-8 py-12 shadow-neu-out-lg md:px-11">
       <div class="absolute top-7 right-7 rounded-full bg-bg px-3.5 py-1 font-serif text-sm text-soft italic shadow-neu-in-sm">Vue entreprise</div>
       <div class="mb-1.5 pr-24 font-serif text-3xl font-light text-dark">Un tableau de bord pour suivre vos équipes</div>
-      <div class="mb-7 text-[11px] tracking-[0.07em] text-soft uppercase">Dashboard entreprise</div>
+      <div class="mb-7 text-11 tracking-wider text-soft uppercase">Dashboard entreprise</div>
       <div class="text-sm leading-8 font-light text-mid">
         SWAAN propose une vue entreprise dédiée au suivi global des collaborateurs, à l'engagement dans les modules et à la progression sur les parcours.
       </div>
@@ -202,12 +202,12 @@ const tarifs = [
     </section>
 
     <section id="demo" class="px-6 py-16 md:px-12 lg:px-20">
-    <div class="reveal rounded-[32px] bg-bg px-8 py-12 shadow-neu-out-lg md:px-18 md:py-16">
-      <div class="mb-4 text-[11px] font-medium tracking-[0.14em] text-soft uppercase">Démo</div>
-      <h2 class="mb-5 max-w-[700px] font-serif text-[34px] leading-[1.1] font-light text-dark lg:text-[48px]">
+    <div class="reveal rounded-card-md bg-bg px-8 py-12 shadow-neu-out-lg md:px-18 md:py-16">
+      <div class="mb-4 text-11 font-medium tracking-section text-soft uppercase">Démo</div>
+      <h2 class="mb-5 max-w-3xl font-serif text-section leading-tight font-light text-dark lg:text-display-md">
         Faites le premier pas vers une communication <em class="title-em">plus inclusive.</em>
       </h2>
-      <p class="mb-10 max-w-[680px] text-[15px] leading-7 font-light text-mid">
+      <p class="mb-10 max-w-2xl text-15 leading-7 font-light text-mid">
         Découvrez comment SWAAN peut s'intégrer à vos actions de formation, améliorer l'accueil des publics sourds ou malentendants et soutenir vos engagements d'accessibilité.
       </p>
       <div class="flex flex-wrap gap-5">

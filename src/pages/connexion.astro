@@ -7,10 +7,10 @@ import Footer from "../components/Footer.astro";
 <Layout title="Connexion" description="Connectez-vous à votre espace SWAAN pour retrouver vos cours LSF, votre progression et vos jeux pédagogiques.">
   <Nav />
   <main class="grid min-h-screen items-center px-6 pt-36 pb-16 md:px-12 lg:px-20">
-    <section class="mx-auto grid w-full max-w-6xl gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+    <section class="mx-auto grid w-full max-w-6xl gap-10 lg:grid-cols-(--grid-two-soft) lg:items-center">
       <div>
         <div class="section-label reveal">Connexion</div>
-        <h1 class="reveal font-serif text-[44px] leading-[1.05] font-light text-dark md:text-[64px]">
+        <h1 class="reveal font-serif text-display-sm leading-tight font-light text-dark md:text-display-xl">
           Reprendre votre parcours <em class="title-em">LSF.</em>
         </h1>
         <p class="reveal mt-6 max-w-xl text-base leading-8 font-light text-mid">
@@ -18,7 +18,7 @@ import Footer from "../components/Footer.astro";
         </p>
       </div>
 
-      <form id="login-form" class="reveal rounded-[38px] bg-bg p-7 shadow-neu-out-lg md:p-10" action="/tableau-de-bord" method="get">
+      <form id="login-form" class="reveal rounded-form bg-bg p-7 shadow-neu-out-lg md:p-10" action="/tableau-de-bord" method="get">
         <div class="grid gap-5">
           <label class="grid gap-2 text-sm text-mid">
             Email
@@ -28,7 +28,7 @@ import Footer from "../components/Footer.astro";
             Mot de passe
             <input id="login-password" class="min-h-14 rounded-full bg-bg px-6 text-dark shadow-neu-in outline-none" name="password" type="password" autocomplete="current-password" placeholder="••••••••" required />
           </label>
-          <p id="login-message" class="hidden rounded-[24px] bg-bg px-5 py-4 text-sm leading-6 text-mid shadow-neu-in-sm" role="status" aria-live="polite"></p>
+          <p id="login-message" class="hidden rounded-img bg-bg px-5 py-4 text-sm leading-6 text-mid shadow-neu-in-sm" role="status" aria-live="polite"></p>
           <button id="login-submit" class="btn btn-accent mt-3" type="submit">Se connecter</button>
           <a class="text-center text-sm text-mid hover:text-dark" href="/tarifs">Pas encore d'accès ? Voir les offres entreprise</a>
         </div>

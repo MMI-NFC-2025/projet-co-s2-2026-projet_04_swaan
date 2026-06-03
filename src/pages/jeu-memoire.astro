@@ -1,14 +1,8 @@
 ---
 import AccountShell from "../components/AccountShell.astro";
+import { getGameSignes } from "../js/backend.mjs";
 
-const signs = [
-  { word: "Bonjour", image: "/assets/img/sign-bonjour-game.png" },
-  { word: "Merci", image: "/assets/img/sign-merci-game.png" },
-  { word: "Oui", image: "/assets/img/sign-oui-game.png" },
-  { word: "Non", image: "/assets/img/sign-non-game.png" },
-  { word: "Aide", image: "/assets/img/sign-attention-game.png" },
-  { word: "Main", image: "/assets/img/sign-attention-game.png" },
-];
+const signs = await getGameSignes(6);
 ---
 
 <AccountShell
@@ -19,7 +13,7 @@ const signs = [
   <header class="mb-8 flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
     <div>
       <p class="section-label mb-3">Jeu pédagogique</p>
-      <h1 class="font-serif text-[44px] leading-[1.05] font-light text-dark md:text-[58px]">
+      <h1 class="font-serif text-display-sm leading-tight font-light text-dark md:text-game-lg">
         Memory <em class="title-em">LSF.</em>
       </h1>
       <p class="mt-5 max-w-2xl text-sm leading-7 font-light text-mid">
@@ -29,21 +23,21 @@ const signs = [
 
     <div class="flex flex-wrap gap-3">
       <div class="rounded-2xl bg-bg px-5 py-4 shadow-neu-out">
-        <p class="text-[9px] font-medium tracking-[0.12em] text-soft uppercase">Coups</p>
+        <p class="text-9 font-medium tracking-card text-soft uppercase">Coups</p>
         <p id="move-counter" class="font-serif text-3xl leading-none font-light text-dark">0</p>
       </div>
       <div class="rounded-2xl bg-bg px-5 py-4 shadow-neu-out">
-        <p class="text-[9px] font-medium tracking-[0.12em] text-soft uppercase">Paires</p>
+        <p class="text-9 font-medium tracking-card text-soft uppercase">Paires</p>
         <p id="pair-counter" class="font-serif text-3xl leading-none font-light text-pop-dark">0 / 6</p>
       </div>
     </div>
   </header>
 
-  <section class="mb-7 rounded-[32px] bg-[#ead7cd] p-5 shadow-neu-out-lg md:p-7">
+  <section class="mb-7 rounded-card-md bg-sand p-5 shadow-neu-out-lg md:p-7">
     <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
       <div>
-        <p class="text-[10px] font-medium tracking-[0.14em] text-mid uppercase">Objectif</p>
-        <h2 class="mt-2 font-serif text-[32px] leading-none font-light text-dark">Trouver les 6 paires</h2>
+        <p class="text-10 font-medium tracking-section text-mid uppercase">Objectif</p>
+        <h2 class="mt-2 font-serif text-section-sm leading-none font-light text-dark">Trouver les 6 paires</h2>
       </div>
       <p id="memory-status" class="max-w-xl text-sm leading-7 font-medium text-mid" role="status" aria-live="polite">
         Choisissez une carte signe puis une carte mot.
@@ -53,9 +47,9 @@ const signs = [
 
   <section id="memory-board" class="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4"></section>
 
-  <section id="end-screen" class="mt-8 hidden rounded-[34px] bg-bg p-8 text-center shadow-neu-out-lg">
-    <p class="mb-3 text-[11px] font-medium tracking-[0.14em] text-soft uppercase">Partie terminée</p>
-    <h2 class="font-serif text-[44px] font-light text-dark">
+  <section id="end-screen" class="mt-8 hidden rounded-card-lg bg-bg p-8 text-center shadow-neu-out-lg">
+    <p class="mb-3 text-11 font-medium tracking-section text-soft uppercase">Partie terminée</p>
+    <h2 class="font-serif text-display-sm font-light text-dark">
       Bravo <em class="title-em">!</em>
     </h2>
     <p id="end-message" class="mx-auto mt-4 max-w-xl text-sm leading-7 font-light text-mid"></p>
@@ -66,6 +60,8 @@ const signs = [
   </section>
 
   <script define:vars={{ signs }}>
+    import { saveGameProgress } from "../js/backend.mjs";
+
     const board = document.getElementById("memory-board");
     const moveCounter = document.getElementById("move-counter");
     const pairCounter = document.getElementById("pair-counter");
@@ -80,7 +76,6 @@ const signs = [
     let moves = 0;
     let pairs = 0;
     let activeSigns = [...signs];
-    const POCKETBASE_URL = "https://swaanpb.tebrouri.fr";
 
     function shuffle(items) {
       return [...items].sort(() => Math.random() - 0.5);
@@ -111,20 +106,27 @@ const signs = [
         return `
           <div class="flex h-full flex-col items-center justify-center gap-3">
             <img src="${card.image}" alt="Signe ${card.label}" class="max-h-28 w-full object-contain" />
-            <span class="rounded-full bg-bg px-3 py-1 text-[9px] font-medium uppercase tracking-[0.12em] text-soft shadow-neu-in-sm">Signe</span>
+            <span class="rounded-full bg-bg px-3 py-1 text-9 font-medium uppercase tracking-card text-soft shadow-neu-in-sm">Signe</span>
           </div>
         `;
       }
 
       return `
         <div class="flex h-full flex-col items-center justify-center text-center">
-          <span class="mb-3 rounded-full bg-bg px-3 py-1 text-[9px] font-medium uppercase tracking-[0.12em] text-pop-dark shadow-neu-in-sm">Mot</span>
-          <span class="font-serif text-[34px] leading-none font-light text-dark">${card.label}</span>
+          <span class="mb-3 rounded-full bg-bg px-3 py-1 text-9 font-medium uppercase tracking-card text-pop-dark shadow-neu-in-sm">Mot</span>
+          <span class="font-serif text-section leading-none font-light text-dark">${card.label}</span>
         </div>
       `;
     }
 
     function renderBoard() {
+      if (activeSigns.length < 3) {
+        board.innerHTML = "";
+        pairCounter.textContent = "0 / 0";
+        memoryStatus.textContent = "Ajoute au moins 3 signes avec image dans PocketBase pour lancer le memory.";
+        return;
+      }
+
       cards = buildCards();
       selected = [];
       locked = false;
@@ -139,7 +141,7 @@ const signs = [
         .map(
           (card, index) => `
             <button
-              class="memory-card group min-h-44 rounded-[28px] bg-bg p-4 text-left shadow-neu-out transition hover:-translate-y-1 hover:shadow-neu-in"
+              class="memory-card group min-h-44 rounded-card-sm bg-bg p-4 text-left shadow-neu-out transition hover:-translate-y-1 hover:shadow-neu-in"
               type="button"
               data-index="${index}"
               data-pair="${card.pair}"
@@ -147,10 +149,10 @@ const signs = [
               aria-label="Carte memory face cachée"
               aria-pressed="false"
             >
-              <div class="card-back flex h-full min-h-36 items-center justify-center rounded-[22px] bg-bg shadow-neu-in">
-                <span class="font-serif text-[42px] italic text-pop-dark">S</span>
+              <div class="card-back flex h-full min-h-36 items-center justify-center rounded-soft bg-bg shadow-neu-in">
+                <span class="font-serif text-hero-sm italic text-pop-dark">S</span>
               </div>
-              <div class="card-front hidden h-full min-h-36 rounded-[22px] bg-bg p-4 shadow-neu-in">
+              <div class="card-front hidden h-full min-h-36 rounded-soft bg-bg p-4 shadow-neu-in">
                 ${cardInner(card)}
               </div>
             </button>
@@ -202,7 +204,7 @@ const signs = [
         if (pairs === activeSigns.length) {
           endMessage.textContent = `Vous avez retrouvé les ${activeSigns.length} paires en ${moves} coups.`;
           endScreen.classList.remove("hidden");
-          saveGameProgress(activeSigns.length, activeSigns.length);
+          saveGameProgress("memory", activeSigns.length, activeSigns.length, 8);
         }
       } else {
         memoryStatus.textContent = "Pas encore, essayez une autre association.";
@@ -215,84 +217,7 @@ const signs = [
       }
     }
 
-    function getFileUrl(record, fieldName) {
-      const file = record?.[fieldName];
-      const fileName = Array.isArray(file) ? file[0] : file;
-      if (!fileName) return "";
-
-      return `${POCKETBASE_URL}/api/files/${record.collectionId}/${record.id}/${encodeURIComponent(fileName)}`;
-    }
-
-    function normalizeSign(record) {
-      return {
-        word: String(record.mots || record.mot || record.word || "").trim(),
-        image: getFileUrl(record, "img_signe") || String(record.image || "").trim(),
-      };
-    }
-
-    async function loadPocketBaseSigns() {
-      try {
-        const response = await fetch(`${POCKETBASE_URL}/api/collections/signe/records?perPage=50&sort=mots`);
-        if (!response.ok) throw new Error(`PocketBase ${response.status}`);
-
-        const data = await response.json();
-        const pocketBaseSigns = (data.items || [])
-          .map(normalizeSign)
-          .filter((sign) => sign.word && sign.image)
-          .slice(0, 6);
-
-        if (pocketBaseSigns.length >= 3) {
-          activeSigns = pocketBaseSigns;
-          renderBoard();
-        }
-      } catch (error) {
-        console.error("Signes PocketBase indisponibles pour le memory :", error);
-      }
-    }
-
-    function saveLocalSession(session) {
-      const previous = JSON.parse(localStorage.getItem("swaan_game_sessions") || "[]");
-      localStorage.setItem("swaan_game_sessions", JSON.stringify([session, ...previous].slice(0, 50)));
-    }
-
-    async function saveGameProgress(score, total) {
-      const auth = JSON.parse(localStorage.getItem("pocketbase_auth") || "{}");
-      const userId = auth?.record?.id || auth?.model?.id;
-      const token = auth?.token;
-      const session = {
-        game: "memory",
-        score,
-        total,
-        learned: Math.min(3, score),
-        minutes: 8,
-        createdAt: new Date().toISOString(),
-      };
-
-      saveLocalSession(session);
-
-      if (!userId || !token) return;
-
-      try {
-        await fetch(`${POCKETBASE_URL}/api/collections/progress/records`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            user_id: userId,
-            completed: true,
-            score: 100,
-            completed_at: session.createdAt,
-          }),
-        });
-      } catch (error) {
-        console.error("Erreur sauvegarde progression PocketBase :", error);
-      }
-    }
-
     resetBtn.addEventListener("click", renderBoard);
     renderBoard();
-    loadPocketBaseSigns();
   </script>
 </AccountShell>

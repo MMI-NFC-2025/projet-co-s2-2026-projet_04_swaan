@@ -1,27 +1,10 @@
 ---
 import AccountShell from "../components/AccountShell.astro";
+import { getLexicalCategories, getLexicalGameSignes } from "../js/backend.mjs";
 
-const cards = [
-  { word: "Bonjour", category: "quotidien", image: "/assets/img/sign-bonjour-game.png" },
-  { word: "Merci", category: "quotidien", image: "/assets/img/sign-merci-game.png" },
-  { word: "Aide", category: "quotidien", image: "/assets/img/sign-attention-game.png" },
-  { word: "Main", category: "corps", image: "/assets/img/sign-attention-game.png" },
-  { word: "Yeux", category: "corps", image: "/assets/img/sign-attention-game.png" },
-  { word: "Bouche", category: "corps", image: "/assets/img/sign-attention-game.png" },
-  { word: "Chat", category: "animaux", image: "/assets/img/sign-famille-game.png" },
-  { word: "Chien", category: "animaux", image: "/assets/img/sign-famille-game.png" },
-  { word: "Oiseau", category: "animaux", image: "/assets/img/sign-famille-game.png" },
-  { word: "Eau", category: "nourriture", image: "/assets/img/sign-merci-game.png" },
-  { word: "Pain", category: "nourriture", image: "/assets/img/sign-merci-game.png" },
-  { word: "Pomme", category: "nourriture", image: "/assets/img/sign-merci-game.png" },
-];
-
-const categories = [
-  { id: "quotidien", label: "Gestes du quotidien" },
-  { id: "corps", label: "Corps" },
-  { id: "animaux", label: "Animaux" },
-  { id: "nourriture", label: "Nourriture" },
-];
+const cards = await getLexicalGameSignes();
+const categories = getLexicalCategories();
+const firstCard = cards[0];
 ---
 
 <AccountShell
@@ -32,7 +15,7 @@ const categories = [
   <header class="mb-8 flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
     <div>
       <p class="section-label mb-3">Jeu pédagogique</p>
-      <h1 class="font-serif text-[44px] leading-[1.05] font-light text-dark md:text-[58px]">
+      <h1 class="font-serif text-display-sm leading-tight font-light text-dark md:text-game-lg">
         Champ <em class="title-em">lexical.</em>
       </h1>
       <p class="mt-5 max-w-2xl text-sm leading-7 font-light text-mid">
@@ -42,48 +25,48 @@ const categories = [
 
     <div class="flex flex-wrap gap-3">
       <div class="rounded-2xl bg-bg px-5 py-4 shadow-neu-out">
-        <p class="text-[9px] font-medium tracking-[0.12em] text-soft uppercase">Question</p>
+        <p class="text-9 font-medium tracking-card text-soft uppercase">Question</p>
         <p id="question-count" class="font-serif text-3xl leading-none font-light text-dark">1 / 12</p>
       </div>
       <div class="rounded-2xl bg-bg px-5 py-4 shadow-neu-out">
-        <p class="text-[9px] font-medium tracking-[0.12em] text-soft uppercase">Score</p>
+        <p class="text-9 font-medium tracking-card text-soft uppercase">Score</p>
         <p id="score-count" class="font-serif text-3xl leading-none font-light text-pop-dark">0</p>
       </div>
     </div>
   </header>
 
-  <section class="grid gap-7 xl:grid-cols-[0.9fr_1.1fr]">
-    <article class="rounded-[34px] bg-bg p-5 shadow-neu-out-lg md:p-7">
-      <div class="mb-5 rounded-[30px] bg-bg p-5 shadow-neu-in">
-        <img id="sign-image" class="mx-auto h-72 w-full object-contain" src="/assets/img/sign-bonjour-game.png" alt="Signe à classer" />
+  <section class="grid gap-7 xl:grid-cols-(--grid-game)">
+    <article class="rounded-card-lg bg-bg p-5 shadow-neu-out-lg md:p-7">
+      <div class="mb-5 rounded-card bg-bg p-5 shadow-neu-in">
+        <img id="sign-image" class="mx-auto h-72 w-full object-contain" src={firstCard?.image || "/assets/img/logo_swaan.avif"} alt="Signe à classer" />
       </div>
-      <p class="text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Signe affiché</p>
-      <h2 id="sign-word" class="mt-2 font-serif text-[48px] leading-none font-light text-dark">Bonjour</h2>
-      <p id="feedback" class="mt-5 rounded-[24px] bg-bg p-5 text-sm leading-7 font-medium text-mid shadow-neu-in-sm" role="status" aria-live="polite">
+      <p class="text-10 font-medium tracking-section text-soft uppercase">Signe affiché</p>
+      <h2 id="sign-word" class="mt-2 font-serif text-display-md leading-none font-light text-dark">{firstCard?.word || "Chargement"}</h2>
+      <p id="feedback" class="mt-5 rounded-img bg-bg p-5 text-sm leading-7 font-medium text-mid shadow-neu-in-sm" role="status" aria-live="polite">
         Choisis le bon champ lexical.
       </p>
     </article>
 
-    <article class="rounded-[34px] bg-bg p-6 shadow-neu-out-lg md:p-8">
-      <p class="mb-3 text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Catégories</p>
-      <h2 class="mb-7 font-serif text-[38px] leading-none font-light text-dark">Où ranger ce signe ?</h2>
+    <article class="rounded-card-lg bg-bg p-6 shadow-neu-out-lg md:p-8">
+      <p class="mb-3 text-10 font-medium tracking-section text-soft uppercase">Catégories</p>
+      <h2 class="mb-7 font-serif text-card-xl leading-none font-light text-dark">Où ranger ce signe ?</h2>
       <div class="grid gap-4 md:grid-cols-2">
         {
           categories.map((category) => (
             <button
-              class="category-btn min-h-28 rounded-[28px] bg-bg p-5 text-left shadow-neu-out transition hover:-translate-y-1 hover:shadow-neu-in"
+              class="category-btn min-h-28 rounded-card-sm bg-bg p-5 text-left shadow-neu-out transition hover:-translate-y-1 hover:shadow-neu-in"
               type="button"
               data-category={category.id}
             >
-              <span class="text-[10px] font-medium tracking-[0.14em] text-pop-dark uppercase">Champ lexical</span>
+              <span class="text-10 font-medium tracking-section text-pop-dark uppercase">Champ lexical</span>
               <span class="mt-3 block font-serif text-3xl leading-none font-light text-dark">{category.label}</span>
             </button>
           ))
         }
       </div>
 
-      <div id="end-screen" class="mt-7 hidden rounded-[30px] bg-pop-light/55 p-6 shadow-neu-in-sm">
-        <p class="mb-2 text-[11px] font-medium tracking-[0.14em] text-pop-dark uppercase">Session terminée</p>
+      <div id="end-screen" class="mt-7 hidden rounded-card bg-pop-light/55 p-6 shadow-neu-in-sm">
+        <p class="mb-2 text-11 font-medium tracking-section text-pop-dark uppercase">Session terminée</p>
         <h3 class="font-serif text-4xl font-light text-dark">Bravo !</h3>
         <p id="end-message" class="mt-3 text-sm leading-7 font-light text-mid"></p>
         <div class="mt-6 flex flex-wrap gap-4">
@@ -95,6 +78,8 @@ const categories = [
   </section>
 
   <script define:vars={{ cards, categories }}>
+    import { saveGameProgress } from "../js/backend.mjs";
+
     const signImage = document.getElementById("sign-image");
     const signWord = document.getElementById("sign-word");
     const feedback = document.getElementById("feedback");
@@ -111,7 +96,6 @@ const categories = [
     let score = 0;
     let locked = false;
     let activeCards = [...cards];
-    const POCKETBASE_URL = "https://swaanpb.tebrouri.fr";
 
     function shuffle(items) {
       return [...items].sort(() => Math.random() - 0.5);
@@ -119,13 +103,20 @@ const categories = [
 
     function renderCard() {
       const card = deck[index];
+      if (!card) {
+        signWord.textContent = "Aucun signe disponible";
+        feedback.textContent = "Ajoute des signes avec image et catégorie dans PocketBase pour lancer ce jeu.";
+        buttons.forEach((button) => (button.disabled = true));
+        return;
+      }
+
       signImage.src = card.image;
       signImage.alt = `Signe ${card.word}`;
       signWord.textContent = card.word;
       questionCount.textContent = `${index + 1} / ${deck.length}`;
       scoreCount.textContent = score;
       feedback.textContent = "Choisis le bon champ lexical.";
-      feedback.className = "mt-5 rounded-[24px] bg-bg p-5 text-sm leading-7 font-medium text-mid shadow-neu-in-sm";
+      feedback.className = "mt-5 rounded-img bg-bg p-5 text-sm leading-7 font-medium text-mid shadow-neu-in-sm";
       locked = false;
 
       buttons.forEach((button) => {
@@ -140,49 +131,7 @@ const categories = [
       endMessage.textContent = `Tu as classé ${score} signes sur ${deck.length} dans le bon champ lexical.`;
       endScreen.classList.remove("hidden");
       localStorage.setItem("swaan_champ_lexical_score", String(score));
-      saveGameProgress(score, deck.length);
-    }
-
-    function saveLocalSession(session) {
-      const previous = JSON.parse(localStorage.getItem("swaan_game_sessions") || "[]");
-      localStorage.setItem("swaan_game_sessions", JSON.stringify([session, ...previous].slice(0, 50)));
-    }
-
-    async function saveGameProgress(score, total) {
-      const auth = JSON.parse(localStorage.getItem("pocketbase_auth") || "{}");
-      const userId = auth?.record?.id || auth?.model?.id;
-      const token = auth?.token;
-      const scorePercent = total > 0 ? Math.round((score / total) * 100) : 0;
-      const session = {
-        game: "champ_lexical",
-        score,
-        total,
-        learned: Math.min(3, score),
-        minutes: 7,
-        createdAt: new Date().toISOString(),
-      };
-
-      saveLocalSession(session);
-
-      if (!userId || !token) return;
-
-      try {
-        await fetch(`${POCKETBASE_URL}/api/collections/progress/records`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            user_id: userId,
-            completed: true,
-            score: scorePercent,
-            completed_at: session.createdAt,
-          }),
-        });
-      } catch (error) {
-        console.error("Erreur sauvegarde progression PocketBase :", error);
-      }
+      saveGameProgress("champ_lexical", score, deck.length, 7);
     }
 
     function answer(button) {
@@ -221,54 +170,8 @@ const categories = [
       renderCard();
     }
 
-    function normalizeCategory(value) {
-      const category = String(value || "").trim().toLowerCase();
-      if (category.includes("quotidien") || category.includes("geste")) return "quotidien";
-      if (category.includes("corps")) return "corps";
-      if (category.includes("animaux") || category.includes("animal")) return "animaux";
-      if (category.includes("nourriture")) return "nourriture";
-      return "";
-    }
-
-    function getFileUrl(record, fieldName) {
-      const file = record?.[fieldName];
-      const fileName = Array.isArray(file) ? file[0] : file;
-      if (!fileName) return "";
-
-      return `${POCKETBASE_URL}/api/files/${record.collectionId}/${record.id}/${encodeURIComponent(fileName)}`;
-    }
-
-    function normalizeSign(record) {
-      return {
-        word: String(record.mots || record.mot || record.word || "").trim(),
-        category: normalizeCategory(record.categorie || record.category),
-        image: getFileUrl(record, "img_signe") || String(record.image || "").trim(),
-      };
-    }
-
-    async function loadPocketBaseCards() {
-      try {
-        const response = await fetch(`${POCKETBASE_URL}/api/collections/signe/records?perPage=100&sort=mots`);
-        if (!response.ok) throw new Error(`PocketBase ${response.status}`);
-
-        const data = await response.json();
-        const pocketBaseCards = (data.items || [])
-          .map(normalizeSign)
-          .filter((card) => card.word && card.category && card.image)
-          .slice(0, 12);
-
-        if (pocketBaseCards.length >= 4) {
-          activeCards = pocketBaseCards;
-          startGame();
-        }
-      } catch (error) {
-        console.error("Signes PocketBase indisponibles pour le champ lexical :", error);
-      }
-    }
-
     buttons.forEach((button) => button.addEventListener("click", () => answer(button)));
     restartBtn.addEventListener("click", startGame);
     startGame();
-    loadPocketBaseCards();
   </script>
 </AccountShell>

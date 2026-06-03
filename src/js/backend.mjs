@@ -10,8 +10,17 @@ export { pb };
 
 // Image
 export function getImageUrl(record, imageField) {
-    const image = record?.[imageField] || imageField;
-    if (!record || !image) return "";
+    if (!record || !imageField) return "";
+
+    const fieldExists = Object.prototype.hasOwnProperty.call(record, imageField);
+    if (!fieldExists && typeof imageField === "string" && !imageField.includes(".")) {
+        return "";
+    }
+
+    const imageValue = fieldExists ? record[imageField] : imageField;
+    const image = Array.isArray(imageValue) ? imageValue[0] : imageValue;
+    if (!image) return "";
+
     return pb.files.getURL(record, image);
 }
 
@@ -43,6 +52,118 @@ export async function getSignes(categorie, niveau, search) {
     }
 }
 
+export function getSignWord(record) {
+    return String(record?.mots || record?.mot || record?.word || "").trim();
+}
+
+export function normalizeSignCategory(value) {
+    const category = String(value || "").trim().toLowerCase();
+    if (category.includes("quotidien") || category.includes("geste")) return "quotidien";
+    if (category.includes("corps")) return "corps";
+    if (category.includes("animaux") || category.includes("animal")) return "animaux";
+    if (category.includes("nourriture")) return "nourriture";
+    return category;
+}
+
+export function getLexicalCategories() {
+    return [
+        { id: "quotidien", label: "Gestes du quotidien" },
+        { id: "corps", label: "Corps" },
+        { id: "animaux", label: "Animaux" },
+        { id: "nourriture", label: "Nourriture" },
+    ];
+}
+
+export function getCategoryLabels() {
+    return Object.fromEntries(getLexicalCategories().map((category) => [category.id, category.label]));
+}
+
+export function getCategoryIntro(categoryId) {
+    const intros = {
+        quotidien: "Les signes à connaître en premier pour saluer, répondre et interagir simplement.",
+        corps: "Le vocabulaire utile pour parler du corps, de la santé et des besoins immédiats.",
+        animaux: "Une catégorie ludique pour enrichir le vocabulaire et travailler la mémorisation.",
+        nourriture: "Les signes pratiques pour parler de repas, de boissons et de préférences.",
+    };
+
+    return intros[categoryId] || "Une sélection de signes pour enrichir votre vocabulaire LSF.";
+}
+
+export function getDictionaryCategories(signes = []) {
+    return getLexicalCategories().map((category) => {
+        const signe = signes.find((record) => normalizeSignCategory(record.categorie || record.category) === category.id);
+
+        return {
+            ...category,
+            intro: getCategoryIntro(category.id),
+            image: signe ? getImageUrl(signe, "img_signe") : "",
+        };
+    });
+}
+
+export function getSignVideoUrl(signe) {
+    return (
+        getImageUrl(signe, "video_signe") ||
+        getImageUrl(signe, "video") ||
+        signe?.video_url ||
+        signe?.sign_video_url ||
+        ""
+    );
+}
+
+export function formatGameSign(record) {
+    return {
+        id: record.id,
+        word: getSignWord(record),
+        category: normalizeSignCategory(record.categorie || record.category),
+        image: getImageUrl(record, "img_signe"),
+    };
+}
+
+export async function getGameSignes(limit = 100) {
+    const signes = await getSignes();
+
+    return signes
+        .map(formatGameSign)
+        .filter((signe) => signe.word && signe.image)
+        .slice(0, limit);
+}
+
+export async function getLexicalGameSignes(limit = 12) {
+    const allowedCategories = getLexicalCategories().map((category) => category.id);
+    const signes = await getGameSignes(100);
+
+    return signes
+        .filter((signe) => allowedCategories.includes(signe.category))
+        .slice(0, limit);
+}
+
+function shuffleItems(items) {
+    return [...items].sort(() => Math.random() - 0.5);
+}
+
+export async function getVraiFauxQuestions(limit = 6) {
+    const signes = await getGameSignes(100);
+
+    return shuffleItems(signes)
+        .slice(0, limit)
+        .map((signe, index, selectedSigns) => {
+            const shouldBeTrue = index % 2 === 0;
+            const wrongSign = shuffleItems(signes.filter((item) => item.word !== signe.word))[0] || selectedSigns[0] || signe;
+            const proposed = shouldBeTrue ? signe.word : wrongSign.word;
+
+            return {
+                image: signe.image,
+                proposed,
+                isTrue: shouldBeTrue,
+                hint: "Observe bien l'illustration.",
+                feedback: shouldBeTrue
+                    ? `Ce signe représente bien ${signe.word}.`
+                    : `Faux : cette illustration correspond au signe ${signe.word}.`,
+            };
+        });
+}
+
 // Jeux
 export async function getJeux() {
     try {
@@ -51,6 +172,86 @@ export async function getJeux() {
         console.error("Erreur récupération jeux :", error);
         return [];
     }
+}
+
+function getGamePage(type) {
+    const pages = {
+        memory: "/jeu-memoire",
+        memoire: "/jeu-memoire",
+        quiz: "/jeu-quiz",
+        vrai_faux: "/jeu-vrai-faux",
+        "vrai/faux": "/jeu-vrai-faux",
+        champ_lexical: "/jeu-champ-lexical",
+    };
+
+    return pages[type] || "/jeux";
+}
+
+function getGameTitle(type) {
+    const titles = {
+        memory: "Memory",
+        memoire: "Memory",
+        quiz: "Quiz",
+        vrai_faux: "Vrai / Faux",
+        "vrai/faux": "Vrai / Faux",
+        champ_lexical: "Champ lexical",
+    };
+
+    return titles[type] || String(type || "Jeu").replace("_", " ");
+}
+
+function getGameTag(type) {
+    const tags = {
+        memory: "Associer",
+        memoire: "Associer",
+        quiz: "Tester",
+        vrai_faux: "Réviser",
+        "vrai/faux": "Réviser",
+        champ_lexical: "Catégoriser",
+    };
+
+    return tags[type] || "SWAAN";
+}
+
+function getGameSubtitle(type) {
+    const subtitles = {
+        memory: "Vocabulaire du quotidien",
+        memoire: "Vocabulaire du quotidien",
+        quiz: "Révision rapide",
+        vrai_faux: "Expressions courantes",
+        "vrai/faux": "Expressions courantes",
+        champ_lexical: "Classer par thème",
+    };
+
+    return subtitles[type] || "Réviser les signes LSF";
+}
+
+export async function getGameCatalog() {
+    const [jeuxRecords, signes] = await Promise.all([getJeux(), getGameSignes(8)]);
+    const seen = new Set();
+
+    return jeuxRecords
+        .filter((game) => {
+            const type = String(game.type_jeux || game.type || "quiz").toLowerCase();
+            if (seen.has(type)) return false;
+            seen.add(type);
+            return true;
+        })
+        .map((game, index) => {
+            const type = String(game.type_jeux || game.type || "quiz").toLowerCase();
+            const signImage = signes[index % Math.max(signes.length, 1)]?.image || "";
+
+            return {
+                title: game.title || getGameTitle(type),
+                subtitle: game.subtitle || getGameSubtitle(type),
+                description: game.description || game.enonce || "Mini-jeu connecté à PocketBase pour travailler les signes et la progression.",
+                href: game.href || getGamePage(type),
+                image: game.image ? getImageUrl(game, "image") : signImage,
+                status: "Disponible",
+                meta: game.reponse_correct ? `Réponse : ${game.reponse_correct}` : game.meta || "SWAAN",
+                tag: getGameTag(type),
+            };
+        });
 }
 
 // Modules
@@ -126,4 +327,144 @@ export function getCurrentUser() {
 export function isAdmin() {
     const user = getCurrentUser();
     return user?.role === "admin";
+}
+
+export function saveLocalGameSession(session) {
+    if (typeof localStorage === "undefined") return;
+
+    const previous = JSON.parse(localStorage.getItem("swaan_game_sessions") || "[]");
+    localStorage.setItem("swaan_game_sessions", JSON.stringify([session, ...previous].slice(0, 50)));
+}
+
+export async function saveGameProgress(game, score, total, minutes = 6) {
+    const scorePercent = total > 0 ? Math.round((score / total) * 100) : 0;
+    const session = {
+        game,
+        score,
+        total,
+        learned: Math.min(3, score),
+        minutes,
+        createdAt: new Date().toISOString(),
+    };
+
+    saveLocalGameSession(session);
+
+    if (!pb.authStore.isValid) return false;
+
+    try {
+        await pb.collection("progress").create({
+            user_id: pb.authStore.record.id,
+            completed: true,
+            score: scorePercent,
+            completed_at: session.createdAt,
+        });
+        return true;
+    } catch (error) {
+        console.error("Erreur sauvegarde progression :", error);
+        return false;
+    }
+}
+
+export const defaultBadges = [
+    {
+        id: "premiere-session",
+        name: "Première session",
+        description: "Terminer un premier mini-jeu.",
+        icon: "✓",
+        condition: "1 jeu terminé",
+        neededSessions: 1,
+    },
+    {
+        id: "memoire-active",
+        name: "Mémoire active",
+        description: "Réviser au moins 3 signes.",
+        icon: "S",
+        condition: "3 signes travaillés",
+        neededSigns: 3,
+    },
+    {
+        id: "bon-score",
+        name: "Bon score",
+        description: "Atteindre 70 % de réussite.",
+        icon: "%",
+        condition: "70 % de réussite",
+        neededSuccess: 70,
+    },
+    {
+        id: "regularite",
+        name: "Régularité",
+        description: "Apprendre sur deux journées différentes.",
+        icon: "2",
+        condition: "2 jours actifs",
+        neededDays: 2,
+    },
+];
+
+export async function getCurrentUserProgressSessions() {
+    if (!pb.authStore.isValid) return [];
+
+    try {
+        const records = await pb.collection("progress").getFullList({
+            sort: "-completed_at",
+            filter: `user_id = "${pb.authStore.record.id}"`,
+        });
+
+        return records.map((record) => ({
+            game: "pocketbase",
+            score: Number(record.score || 0),
+            total: 100,
+            learned: record.completed ? 3 : 0,
+            minutes: 6,
+            createdAt: record.completed_at || record.updated || record.created,
+            fromPocketBase: true,
+        }));
+    } catch (error) {
+        console.error("Erreur lecture progression :", error);
+        return [];
+    }
+}
+
+export async function getCurrentUserBadges() {
+    try {
+        const badges = await pb.collection("badges").getFullList({ sort: "created" });
+
+        if (!pb.authStore.isValid) {
+            return badges.map((badge) => ({ ...badge, earned: false }));
+        }
+
+        const earnedBadges = await pb.collection("user_badges").getFullList({
+            expand: "badge_id",
+            filter: `user_id = "${pb.authStore.record.id}"`,
+        });
+        const earnedIds = new Set(earnedBadges.map((item) => item.badge_id));
+
+        return badges.map((badge) => ({
+            id: badge.id,
+            name: badge.name,
+            description: badge.description,
+            icon: badge.icon,
+            condition: badge.condition,
+            earned: earnedIds.has(badge.id),
+        }));
+    } catch (error) {
+        console.error("Erreur lecture badges :", error);
+        return [];
+    }
+}
+
+export function buildFallbackBadges(sessions) {
+    const totalScore = sessions.reduce((sum, session) => sum + Number(session.score || 0), 0);
+    const totalQuestions = sessions.reduce((sum, session) => sum + Number(session.total || 0), 0);
+    const totalLearned = sessions.reduce((sum, session) => sum + Number(session.learned || 0), 0);
+    const successRate = totalQuestions > 0 ? Math.round((totalScore / totalQuestions) * 100) : 0;
+    const activeDays = new Set(sessions.map((session) => new Date(session.createdAt).toDateString())).size;
+
+    return defaultBadges.map((badge) => ({
+        ...badge,
+        earned:
+            (badge.neededSessions && sessions.length >= badge.neededSessions) ||
+            (badge.neededSigns && totalLearned >= badge.neededSigns) ||
+            (badge.neededSuccess && successRate >= badge.neededSuccess) ||
+            (badge.neededDays && activeDays >= badge.neededDays),
+    }));
 }

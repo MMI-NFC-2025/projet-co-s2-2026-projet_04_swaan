@@ -29,10 +29,10 @@ const steps = [
   <Nav />
 
   <main class="px-6 pt-36 pb-16 md:px-12 lg:px-20">
-    <section class="mx-auto grid w-full max-w-6xl gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+    <section class="mx-auto grid w-full max-w-6xl gap-10 lg:grid-cols-(--grid-two-soft-alt) lg:items-center">
       <div>
         <div class="section-label reveal">Accès SWAAN</div>
-        <h1 class="reveal font-serif text-[44px] leading-[1.05] font-light text-dark md:text-[64px]">
+        <h1 class="reveal font-serif text-display-sm leading-tight font-light text-dark md:text-display-xl">
           L'inscription se fait après le choix d'une <em class="title-em">offre entreprise.</em>
         </h1>
         <p class="reveal mt-6 max-w-xl text-base leading-8 font-light text-mid">
@@ -45,13 +45,13 @@ const steps = [
         </div>
       </div>
 
-      <div class="reveal rounded-[40px] bg-bg p-7 shadow-neu-out-lg md:p-10">
-        <p class="mb-7 text-[11px] font-medium tracking-[0.14em] text-soft uppercase">Parcours d'accès</p>
+      <div class="reveal rounded-hero bg-bg p-7 shadow-neu-out-lg md:p-10">
+        <p class="mb-7 text-11 font-medium tracking-section text-soft uppercase">Parcours d'accès</p>
         <div class="grid gap-5">
           {
             steps.map((step) => (
-              <article class="rounded-[30px] bg-bg p-6 shadow-neu-in-sm">
-                <p class="mb-3 text-[11px] font-medium tracking-[0.14em] text-pop-dark uppercase">{step.number}</p>
+              <article class="rounded-card bg-bg p-6 shadow-neu-in-sm">
+                <p class="mb-3 text-11 font-medium tracking-section text-pop-dark uppercase">{step.number}</p>
                 <h2 class="font-serif text-3xl font-light text-dark">{step.title}</h2>
                 <p class="mt-3 text-sm leading-7 font-light text-mid">{step.text}</p>
               </article>

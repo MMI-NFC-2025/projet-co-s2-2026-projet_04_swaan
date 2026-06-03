@@ -1,41 +1,29 @@
 ---
 import AccountShell from "../components/AccountShell.astro";
+import PbImage from "../components/PbImage.astro";
+import {
+  getCategoryLabels,
+  getDictionaryCategories,
+  getImageUrl,
+  getSignVideoUrl,
+  getSignWord,
+  getSignes,
+  normalizeSignCategory,
+} from "../js/backend.mjs";
 
 const title = "Dictionnaire LSF";
 const description =
   "Dictionnaire de signes LSF SWAAN avec catégories corps, animaux, nourriture et gestes du quotidien, conçu pour apprendre et réviser les bases en entreprise.";
-
-const categories = [
-  {
-    id: "quotidien",
-    label: "Gestes du quotidien",
-    intro: "Les signes à connaître en premier pour saluer, répondre et interagir simplement.",
-    image: "/assets/img/sign-bonjour-game.png",
-  },
-  {
-    id: "corps",
-    label: "Corps",
-    intro: "Le vocabulaire utile pour parler du corps, de la santé et des besoins immédiats.",
-    image: "/assets/img/sign-attention-game.png",
-  },
-  {
-    id: "animaux",
-    label: "Animaux",
-    intro: "Une catégorie ludique pour enrichir le vocabulaire et travailler la mémorisation.",
-    image: "/assets/img/sign-famille-game.png",
-  },
-  {
-    id: "nourriture",
-    label: "Nourriture",
-    intro: "Les signes pratiques pour parler de repas, de boissons et de préférences.",
-    image: "/assets/img/sign-merci-game.png",
-  },
-];
+const signes = await getSignes();
+const categories = getDictionaryCategories(signes);
+const categoryLabels = getCategoryLabels();
+const heroSigns = signes.slice(0, 4);
+const heroSign = heroSigns[0];
 ---
 
 <AccountShell title={title} description={description} active="dictionnaire">
   <div>
-    <section class="grid items-center gap-12 pb-14 lg:grid-cols-[1fr_0.95fr]">
+    <section class="grid items-center gap-12 pb-14 lg:grid-cols-(--grid-two-dico)">
       <div>
         <nav class="reveal mb-8 text-sm text-soft" aria-label="Fil d'Ariane">
           <a class="hover:text-dark" href="/">Accueil</a>
@@ -44,14 +32,14 @@ const categories = [
         </nav>
 
         <div class="section-label reveal">Dictionnaire & cours</div>
-        <h1 class="reveal max-w-3xl font-serif text-[44px] leading-[1.05] font-light tracking-[-1px] text-dark md:text-[64px] lg:text-[76px]">
+        <h1 class="reveal max-w-3xl font-serif text-display-sm leading-tight font-light tracking-title text-dark md:text-display-xl lg:text-display-3xl">
           Retrouvez les signes LSF par <em class="title-em">catégorie.</em>
         </h1>
         <p class="reveal mt-7 max-w-xl text-base leading-8 font-light text-mid">
           Cette page rassemble les signes utiles pour apprendre progressivement : gestes du quotidien, corps, animaux et nourriture. Chaque carte prévoit un emplacement vidéo pour intégrer tes démonstrations LSF plus tard.
         </p>
 
-        <div class="reveal mt-10 grid max-w-xl gap-4 sm:grid-cols-[1fr_auto]">
+        <div class="reveal mt-10 grid max-w-xl gap-4 sm:grid-cols-(--grid-form-inline)">
           <label class="sr-only" for="sign-search">Rechercher un signe</label>
           <input
             id="sign-search"
@@ -63,42 +51,44 @@ const categories = [
         </div>
       </div>
 
-      <figure class="reveal relative overflow-hidden rounded-[42px] bg-bg p-6 shadow-neu-out-lg">
-        <div class="absolute top-8 right-8 z-10 rounded-full bg-bg px-4 py-2 text-[10px] font-medium tracking-[0.12em] text-pop-dark uppercase shadow-neu-out">
+      <figure class="reveal relative overflow-hidden rounded-hero-lg bg-bg p-6 shadow-neu-out-lg">
+        <div class="absolute top-8 right-8 z-10 rounded-full bg-bg px-4 py-2 text-10 font-medium tracking-card text-pop-dark uppercase shadow-neu-out">
           20 illustrations
         </div>
         <div class="grid gap-5">
-          <div class="rounded-[32px] bg-bg p-4 shadow-neu-in">
+          <div class="rounded-card-md bg-bg p-4 shadow-neu-in">
             <img
-              class="mx-auto h-[310px] w-full object-contain md:h-[380px]"
-              src="/assets/img/sign-bonjour-game.png"
-              alt="Illustration LSF dans le style visuel de SWAAN"
+              class="mx-auto h-77 w-full object-contain md:h-95"
+              src={heroSign ? getImageUrl(heroSign, "img_signe") || categories[0]?.image : "/assets/img/logo_swaan.avif"}
+              alt="Illustration LSF issue de PocketBase"
               loading="eager"
             />
           </div>
           <div class="grid grid-cols-3 gap-4">
-            <img class="h-24 rounded-3xl bg-bg object-contain p-3 shadow-neu-out" src="/assets/img/sign-merci-game.png" alt="Signe merci" loading="lazy" />
-            <img class="h-24 rounded-3xl bg-bg object-contain p-3 shadow-neu-out" src="/assets/img/sign-attention-game.png" alt="Signe attention" loading="lazy" />
-            <img class="h-24 rounded-3xl bg-bg object-contain p-3 shadow-neu-out" src="/assets/img/sign-famille-game.png" alt="Signe famille" loading="lazy" />
+            {
+              heroSigns.slice(1, 4).map((signe) => (
+                <img class="h-24 rounded-3xl bg-bg object-contain p-3 shadow-neu-out" src={getImageUrl(signe, "img_signe") || "/assets/img/logo_swaan.avif"} alt={`Signe ${getSignWord(signe)}`} loading="lazy" />
+              ))
+            }
           </div>
         </div>
       </figure>
     </section>
 
     <section class="pb-8">
-      <div class="reveal flex flex-wrap items-center gap-3 rounded-[30px] bg-bg p-3 shadow-neu-in" aria-label="Filtres de catégories">
-        <button class="category-filter rounded-full bg-bg px-5 py-3 text-xs font-medium tracking-[0.08em] text-pop-dark uppercase shadow-neu-in" type="button" data-category="all" aria-pressed="true">
+      <div class="reveal flex flex-wrap items-center gap-3 rounded-card bg-bg p-3 shadow-neu-in" aria-label="Filtres de catégories">
+        <button class="category-filter rounded-full bg-bg px-5 py-3 text-xs font-medium tracking-button text-pop-dark uppercase shadow-neu-in" type="button" data-category="all" aria-pressed="true">
           Tous
         </button>
         {
           categories.map((category) => (
-            <button class="category-filter rounded-full bg-bg px-5 py-3 text-xs font-medium tracking-[0.08em] text-mid uppercase shadow-neu-out hover:text-dark hover:shadow-neu-in" type="button" data-category={category.id} aria-pressed="false">
+            <button class="category-filter rounded-full bg-bg px-5 py-3 text-xs font-medium tracking-button text-mid uppercase shadow-neu-out hover:text-dark hover:shadow-neu-in" type="button" data-category={category.id} aria-pressed="false">
               {category.label}
             </button>
           ))
         }
-        <span id="filter-status" class="ml-auto rounded-full bg-bg px-4 py-2 text-[10px] font-medium tracking-[0.1em] text-soft uppercase shadow-neu-in-sm" aria-live="polite">
-          Chargement
+        <span id="filter-status" class="ml-auto rounded-full bg-bg px-4 py-2 text-10 font-medium tracking-chip text-soft uppercase shadow-neu-in-sm" aria-live="polite">
+          {signes.length} signe{signes.length > 1 ? "s" : ""}
         </span>
       </div>
     </section>
@@ -114,14 +104,14 @@ const categories = [
           categories.map((category) => (
             <article class="reveal neu-card overflow-hidden">
               <div class="flex h-44 items-center justify-center bg-bg p-5 shadow-neu-in">
-                <img class="h-full w-full object-contain" src={category.image} alt={`Illustration de la catégorie ${category.label}`} loading="lazy" />
+                <img class="h-full w-full object-contain" src={category.image || "/assets/img/logo_swaan.avif"} alt={`Illustration de la catégorie ${category.label}`} loading="lazy" />
               </div>
               <div class="p-7">
-                <p class="mb-2 text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Catégorie</p>
+                <p class="mb-2 text-10 font-medium tracking-section text-soft uppercase">Catégorie</p>
                 <h3 class="mb-3 font-serif text-3xl font-light text-dark">{category.label}</h3>
                 <p class="mb-6 text-sm leading-7 font-light text-mid">{category.intro}</p>
                 <a
-                  class="category-jump inline-flex rounded-full bg-bg px-5 py-2.5 text-xs font-medium tracking-[0.08em] text-pop-dark uppercase shadow-neu-out hover:shadow-neu-in"
+                  class="category-jump inline-flex rounded-full bg-bg px-5 py-2.5 text-xs font-medium tracking-button text-pop-dark uppercase shadow-neu-out hover:shadow-neu-in"
                   href="#signes"
                   data-category={category.id}
                 >
@@ -141,9 +131,54 @@ const categories = [
       </h2>
 
       <div id="sign-grid" class="grid gap-7 md:grid-cols-2 xl:grid-cols-4">
-        <article class="rounded-[30px] bg-bg p-8 text-sm leading-7 font-light text-mid shadow-neu-in">
-          Chargement des signes depuis PocketBase...
-        </article>
+        {
+          signes.map((signe) => {
+            const word = getSignWord(signe);
+            const category = normalizeSignCategory(signe.categorie || signe.category);
+            const categoryLabel = categoryLabels[category] || signe.categorie || "Signe";
+            const level = signe.level || signe.niveau || "Débutant";
+            const videoUrl = getSignVideoUrl(signe);
+
+            return (
+              <article
+                id={`${category}-${word.toLowerCase().replaceAll(" ", "-")}`}
+                class="sign-card flex flex-col rounded-card bg-bg p-4 shadow-neu-out transition hover:shadow-neu-in"
+                data-category={category}
+                data-title={`${word} ${categoryLabel}`.toLowerCase()}
+              >
+                <div class="relative mb-5 overflow-hidden rounded-img bg-bg shadow-neu-in">
+                  {
+                    videoUrl ? (
+                      <video class="aspect-video w-full object-cover" controls preload="metadata">
+                        <source src={videoUrl} type="video/mp4" />
+                      </video>
+                    ) : (
+                      <div class="flex aspect-video flex-col items-center justify-center gap-3 px-4 text-center">
+                        <PbImage
+                          record={signe}
+                          imageField="img_signe"
+                          alt={`Illustration du signe ${word}`}
+                          width={300}
+                          height={220}
+                          class="max-h-24 object-contain"
+                        />
+                      </div>
+                    )
+                  }
+                </div>
+
+                <div class="flex flex-1 flex-col px-2 pb-2">
+                  <div class="mb-4 flex flex-wrap items-center gap-2">
+                    <span class="rounded-full bg-bg px-3 py-1 text-9 font-medium tracking-card text-pop-dark uppercase shadow-neu-in-sm">{categoryLabel}</span>
+                    <span class="rounded-full bg-bg px-3 py-1 text-9 font-medium tracking-card text-soft uppercase shadow-neu-in-sm">{level}</span>
+                  </div>
+                  <h3 class="mb-2 font-serif text-3xl font-light text-dark">{word}</h3>
+                  <p class="mb-6 text-sm leading-7 font-light text-mid">{signe.description || "Signe disponible dans le dictionnaire SWAAN."}</p>
+                </div>
+              </article>
+            );
+          })
+        }
       </div>
 
       <p id="empty-state" class="mt-10 hidden rounded-3xl bg-bg p-8 text-center text-sm text-mid shadow-neu-in">
@@ -153,131 +188,14 @@ const categories = [
   </div>
 
   <script>
-    const POCKETBASE_URL = "https://swaanpb.tebrouri.fr";
-    const categoryLabels = {
-      quotidien: "Gestes du quotidien",
-      corps: "Corps",
-      animaux: "Animaux",
-      nourriture: "Nourriture",
-    };
-
     const searchInput = document.getElementById("sign-search");
-    const signGrid = document.getElementById("sign-grid");
     const filterButtons = Array.from(document.querySelectorAll(".category-filter"));
     const categoryJumps = Array.from(document.querySelectorAll(".category-jump"));
     const signsSection = document.getElementById("signes");
     const emptyState = document.getElementById("empty-state");
     const filterStatus = document.getElementById("filter-status");
     let activeCategory = "all";
-    let cards = [];
-
-    function normalizeText(value) {
-      return String(value || "").trim();
-    }
-
-    function normalizeCategory(value) {
-      const category = normalizeText(value).toLowerCase();
-      if (category.includes("quotidien") || category.includes("geste")) return "quotidien";
-      if (category.includes("corps")) return "corps";
-      if (category.includes("animaux") || category.includes("animal")) return "animaux";
-      if (category.includes("nourriture")) return "nourriture";
-      return category || "quotidien";
-    }
-
-    function getFileUrl(record, fieldName) {
-      const file = record?.[fieldName];
-      const fileName = Array.isArray(file) ? file[0] : file;
-      if (!fileName) return "";
-
-      return `${POCKETBASE_URL}/api/files/${record.collectionId}/${record.id}/${encodeURIComponent(fileName)}`;
-    }
-
-    function normalizeSign(record) {
-      const category = normalizeCategory(record.categorie || record.category);
-
-      return {
-        word: normalizeText(record.mots || record.mot || record.word || record.title),
-        category,
-        categoryLabel: categoryLabels[category] || normalizeText(record.categorie) || "Signe",
-        level: normalizeText(record.level || record.niveau || "Débutant"),
-        description: normalizeText(record.description || "Signe disponible dans le dictionnaire SWAAN."),
-        image: getFileUrl(record, "img_signe") || normalizeText(record.image),
-        videoUrl:
-          getFileUrl(record, "video_signe") ||
-          getFileUrl(record, "video") ||
-          normalizeText(record.video_url || record.sign_video_url),
-      };
-    }
-
-    function renderSigns(signs) {
-      if (!signGrid) return;
-
-      if (signs.length === 0) {
-        signGrid.innerHTML = "";
-        emptyState?.classList.remove("hidden");
-        if (filterStatus) filterStatus.textContent = "0 signe";
-        return;
-      }
-
-      signGrid.innerHTML = signs.map((sign) => {
-        const media = sign.videoUrl
-          ? `
-            <video class="aspect-video w-full object-cover" controls preload="metadata" poster="${sign.image}">
-              <source src="${sign.videoUrl}" type="video/mp4" />
-            </video>
-          `
-          : `
-            <div class="flex aspect-video flex-col items-center justify-center gap-3 px-4 text-center">
-              <img class="max-h-24 object-contain" src="${sign.image}" alt="Illustration du signe ${sign.word}" loading="lazy" />
-            </div>
-          `;
-
-        return `
-          <article
-            id="${sign.category}-${sign.word.toLowerCase().replaceAll(" ", "-")}"
-            class="sign-card flex flex-col rounded-[30px] bg-bg p-4 shadow-neu-out transition hover:shadow-neu-in"
-            data-category="${sign.category}"
-            data-title="${`${sign.word} ${sign.categoryLabel}`.toLowerCase()}"
-          >
-            <div class="relative mb-5 overflow-hidden rounded-[24px] bg-bg shadow-neu-in">
-              ${media}
-            </div>
-
-            <div class="flex flex-1 flex-col px-2 pb-2">
-              <div class="mb-4 flex flex-wrap items-center gap-2">
-                <span class="rounded-full bg-bg px-3 py-1 text-[9px] font-medium tracking-[0.12em] text-pop-dark uppercase shadow-neu-in-sm">${sign.categoryLabel}</span>
-                <span class="rounded-full bg-bg px-3 py-1 text-[9px] font-medium tracking-[0.12em] text-soft uppercase shadow-neu-in-sm">${sign.level}</span>
-              </div>
-              <h3 class="mb-2 font-serif text-3xl font-light text-dark">${sign.word}</h3>
-              <p class="mb-6 text-sm leading-7 font-light text-mid">${sign.description}</p>
-            </div>
-          </article>
-        `;
-      }).join("");
-
-      cards = Array.from(document.querySelectorAll(".sign-card"));
-      refreshCards();
-    }
-
-    async function loadPocketBaseSigns() {
-      try {
-        const response = await fetch(`${POCKETBASE_URL}/api/collections/signe/records?perPage=100&sort=mots`);
-        if (!response.ok) throw new Error(`PocketBase ${response.status}`);
-
-        const data = await response.json();
-        const signs = (data.items || [])
-          .map(normalizeSign)
-          .filter((sign) => sign.word && sign.image);
-
-        renderSigns(signs);
-      } catch (error) {
-        console.error("Erreur dictionnaire PocketBase :", error);
-        if (signGrid) signGrid.innerHTML = "";
-        emptyState?.classList.remove("hidden");
-        emptyState.textContent = "Les signes PocketBase ne sont pas accessibles pour le moment.";
-        if (filterStatus) filterStatus.textContent = "0 signe";
-      }
-    }
+    const cards = Array.from(document.querySelectorAll(".sign-card"));
 
     function setActiveButton(category) {
       filterButtons.forEach((item) => {
@@ -333,6 +251,6 @@ const categories = [
     });
 
     searchInput.addEventListener("input", refreshCards);
-    loadPocketBaseSigns();
+    refreshCards();
   </script>
 </AccountShell>

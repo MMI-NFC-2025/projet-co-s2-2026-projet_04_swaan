@@ -57,7 +57,7 @@ const jsonLd = {
   <Nav />
 
   <main>
-    <section class="grid min-h-screen items-center gap-12 px-6 pt-36 pb-16 md:px-12 lg:grid-cols-[1.05fr_0.95fr] lg:px-20">
+    <section class="grid min-h-screen items-center gap-12 px-6 pt-36 pb-16 md:px-12 lg:grid-cols-(--grid-two-hero) lg:px-20">
       <div>
         <nav class="reveal mb-8 text-sm text-soft" aria-label="Fil d'Ariane">
           <a class="hover:text-dark" href="/">Accueil</a>
@@ -66,7 +66,7 @@ const jsonLd = {
         </nav>
 
         <div class="section-label reveal">Notre mission</div>
-        <h1 class="reveal max-w-3xl font-serif text-[44px] leading-[1.05] font-light tracking-[-1px] text-dark md:text-[64px] lg:text-[76px]">
+        <h1 class="reveal max-w-3xl font-serif text-display-sm leading-tight font-light tracking-title text-dark md:text-display-xl lg:text-display-3xl">
           Rendre la LSF plus accessible aux <em class="text-pop-dark italic">équipes professionnelles.</em>
         </h1>
         <p class="reveal mt-7 max-w-xl text-base leading-8 font-light text-mid">
@@ -78,20 +78,20 @@ const jsonLd = {
         </div>
       </div>
 
-      <figure class="reveal rounded-[40px] bg-bg p-5 shadow-neu-out-lg">
+      <figure class="reveal rounded-hero bg-bg p-5 shadow-neu-out-lg">
         <img
-          class="h-[360px] w-full rounded-[30px] object-cover md:h-[440px]"
+          class="h-90 w-full rounded-card object-cover md:h-110"
           src="/assets/img/swaan-hero.png"
           alt="Illustration de deux personnes qui communiquent en langue des signes"
           loading="eager"
         />
         <figcaption class="mt-5 grid gap-4 sm:grid-cols-2">
           <div class="rounded-3xl bg-bg p-5 shadow-neu-in-sm">
-            <p class="mb-2 text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Public</p>
+            <p class="mb-2 text-10 font-medium tracking-section text-soft uppercase">Public</p>
             <p class="text-sm leading-7 font-light text-mid">RH, responsables formation, RSE et structures accueillant du public.</p>
           </div>
           <div class="rounded-3xl bg-bg p-5 shadow-neu-in-sm">
-            <p class="mb-2 text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Format</p>
+            <p class="mb-2 text-10 font-medium tracking-section text-soft uppercase">Format</p>
             <p class="text-sm leading-7 font-light text-mid">Parcours courts, jeux pédagogiques et dictionnaire consultable.</p>
           </div>
         </figcaption>
@@ -112,7 +112,7 @@ const jsonLd = {
       </div>
     </section>
 
-    <section class="page-section grid gap-12 lg:grid-cols-[0.9fr_1.1fr]">
+    <section class="page-section grid gap-12 lg:grid-cols-(--grid-two-soft)">
       <div>
         <div class="section-label reveal">UX & parcours</div>
         <h2 class="section-title reveal">
@@ -143,11 +143,11 @@ const jsonLd = {
     </section>
 
     <section class="page-section">
-      <div class="reveal rounded-[36px] bg-bg p-8 shadow-neu-out-lg md:p-12">
-        <div class="grid gap-10 lg:grid-cols-[0.75fr_1.25fr]">
+      <div class="reveal rounded-card-xl bg-bg p-8 shadow-neu-out-lg md:p-12">
+        <div class="grid gap-10 lg:grid-cols-(--grid-two-card)">
           <div>
             <div class="section-label">Principes</div>
-            <h2 class="font-serif text-[38px] leading-[1.1] font-light text-dark">
+            <h2 class="font-serif text-card-xl leading-tight font-light text-dark">
               Ce que SWAAN doit faire ressentir.
             </h2>
           </div>
@@ -167,9 +167,9 @@ const jsonLd = {
     </section>
 
     <section class="px-6 py-16 text-center md:px-12 lg:px-20">
-      <div class="reveal mx-auto max-w-5xl rounded-[36px] bg-bg px-8 py-12 shadow-neu-out-lg md:px-16">
-        <p class="mb-3 text-[11px] font-medium tracking-[0.14em] text-soft uppercase">Prochaine étape</p>
-        <h2 class="mx-auto max-w-3xl font-serif text-[34px] leading-[1.1] font-light text-dark md:text-[48px]">
+      <div class="reveal mx-auto max-w-5xl rounded-card-xl bg-bg px-8 py-12 shadow-neu-out-lg md:px-16">
+        <p class="mb-3 text-11 font-medium tracking-section text-soft uppercase">Prochaine étape</p>
+        <h2 class="mx-auto max-w-3xl font-serif text-section leading-tight font-light text-dark md:text-display-md">
           Construire une formation LSF utile, mesurable et adaptée à vos équipes.
         </h2>
         <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">

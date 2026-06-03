@@ -27,32 +27,18 @@ const sections = [
     ],
   },
   {
-    title: "Espace apprenant",
-    text: "Les pages accessibles une fois connecté à l'espace SWAAN.",
+    title: "Accès apprenant",
+    text: "Les cours, le dictionnaire, les mini-jeux, le tableau de bord et les paramètres sont réservés aux comptes connectés.",
     links: [
       ["Connexion", "/connexion"],
-      ["Tableau de bord", "/tableau-de-bord"],
-      ["Dictionnaire", "/dictionnaire"],
-      ["Jeux", "/jeux"],
-      ["Paramètres", "/parametres"],
-      ["Contact apprenant", "/contact-apprenant"],
-    ],
-  },
-  {
-    title: "Mini-jeux",
-    text: "Les exercices de révision pour mémoriser les signes et suivre sa progression.",
-    links: [
-      ["Quiz LSF", "/jeu-quiz"],
-      ["Memory", "/jeu-memoire"],
-      ["Vrai ou Faux", "/jeu-vrai-faux"],
-      ["Champ lexical", "/jeu-champ-lexical"],
+      ["Voir les offres", "/tarifs"],
+      ["Demander une démo", "/demande-demo"],
     ],
   },
   {
     title: "Administration et légal",
     text: "Les pages liées au suivi RH, aux règles d'utilisation et aux informations obligatoires.",
     links: [
-      ["Espace RH", "/espace-rh"],
       ["Mentions légales", "/mentions-legales"],
       ["Conditions d'utilisation", "/cgu"],
       ["Politique de confidentialité", "/confidentialite"],
@@ -64,34 +50,35 @@ const sections = [
 
 <Layout
   title="Plan du site"
-  description="Plan du site SWAAN : accès aux pages principales, ressources, espace apprenant, mini-jeux et pages légales."
+  description="Plan du site SWAAN : accès aux pages publiques, ressources, connexion apprenant et pages légales."
 >
   <Nav />
 
   <main id="contenu" class="px-6 pt-32 pb-16 md:px-12 lg:px-20">
     <section class="mx-auto max-w-6xl">
-      <div class="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
+      <div class="grid gap-8 lg:grid-cols-(--grid-two-soft) lg:items-end">
         <div>
           <p class="section-label mb-4">Navigation</p>
-          <h1 class="font-serif text-[48px] leading-[1.05] font-light text-dark md:text-[72px]">
+          <h1 class="font-serif text-display-md leading-tight font-light text-dark md:text-display-2xl">
             Plan <em class="title-em">du site.</em>
           </h1>
         </div>
 
         <p class="max-w-2xl text-sm leading-7 font-light text-mid">
-          Retrouvez rapidement les pages importantes de SWAAN. Les pages de cours,
-          dictionnaire et jeux sont prévues pour l'espace connecté.
+          Retrouvez rapidement les pages publiques importantes de SWAAN. Les pages
+          de cours, dictionnaire, mini-jeux et suivi de progression restent
+          accessibles uniquement depuis l'espace connecté.
         </p>
       </div>
 
       <div class="mt-12 grid gap-6 md:grid-cols-2">
         {
           sections.map((section) => (
-            <section class="rounded-[34px] bg-bg p-7 shadow-neu-out-lg">
-              <p class="mb-3 text-[10px] font-medium tracking-[0.14em] text-soft uppercase">
+            <section class="rounded-card-lg bg-bg p-7 shadow-neu-out-lg">
+              <p class="mb-3 text-10 font-medium tracking-section text-soft uppercase">
                 SWAAN
               </p>
-              <h2 class="font-serif text-[36px] leading-none font-light text-dark">
+              <h2 class="font-serif text-section-lg leading-none font-light text-dark">
                 {section.title}
               </h2>
               <p class="mt-4 text-sm leading-7 font-light text-mid">
@@ -116,18 +103,27 @@ const sections = [
         }
       </div>
 
-      <section class="mt-8 rounded-[34px] bg-[#ead7cd] p-7 shadow-neu-out-lg">
-        <p class="text-[10px] font-medium tracking-[0.14em] text-mid uppercase">
-          Accessibilité
-        </p>
-        <h2 class="mt-3 font-serif text-[36px] leading-none font-light text-dark">
-          Une navigation plus facile à retrouver.
-        </h2>
-        <p class="mt-4 max-w-3xl text-sm leading-7 font-light text-mid">
-          Cette page complète le menu principal et le pied de page. Elle permet
-          d'avoir un second moyen de navigation, utile pour l'expérience utilisateur
-          et pour les critères RGAA liés à la navigation.
-        </p>
+      <section class="mt-8 rounded-card-lg bg-sand p-7 shadow-neu-out-lg">
+        <div class="grid gap-6 lg:grid-cols-(--grid-two-soft) lg:items-center">
+          <div>
+            <p class="text-10 font-medium tracking-section text-mid uppercase">
+              Espace réservé
+            </p>
+            <h2 class="mt-3 font-serif text-section-lg leading-tight font-light text-dark">
+              Les pages apprenant ne sont pas listées publiquement.
+            </h2>
+            <p class="mt-4 max-w-3xl text-sm leading-7 font-light text-mid">
+              Pour éviter de donner un accès direct aux contenus réservés, le plan
+              du site renvoie seulement vers la connexion, les tarifs et la demande
+              de démonstration.
+            </p>
+          </div>
+
+          <div class="flex flex-col gap-4 sm:flex-row lg:justify-end">
+            <a class="btn btn-accent w-fit" href="/connexion">Se connecter</a>
+            <a class="btn btn-soft w-fit" href="/tarifs">Voir les offres</a>
+          </div>
+        </div>
       </section>
     </section>
   </main>

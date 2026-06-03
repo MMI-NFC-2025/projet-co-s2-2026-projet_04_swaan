@@ -1,12 +1,48 @@
 ---
 import AccountShell from "../components/AccountShell.astro";
+import { getCompanies } from "../js/backend.mjs";
 
 const team = [
-  { name: "Leila T.", role: "Accueil", progress: 78, score: 1240, last: "Aujourd'hui", status: "Actif" },
-  { name: "Khaoula H.", role: "RH", progress: 64, score: 980, last: "Hier", status: "Actif" },
-  { name: "Leslie M.", role: "Relation client", progress: 42, score: 620, last: "Il y a 3 jours", status: "À relancer" },
-  { name: "Izia L.", role: "Manager", progress: 88, score: 1510, last: "Aujourd'hui", status: "Actif" },
-  { name: "Tebrouri A.", role: "Formation", progress: 27, score: 310, last: "Il y a 8 jours", status: "En retard" },
+  {
+    name: "Leila T.",
+    role: "Accueil",
+    progress: 78,
+    score: 1240,
+    last: "Aujourd'hui",
+    status: "Actif",
+  },
+  {
+    name: "Khaoula H.",
+    role: "RH",
+    progress: 64,
+    score: 980,
+    last: "Hier",
+    status: "Actif",
+  },
+  {
+    name: "Leslie M.",
+    role: "Relation client",
+    progress: 42,
+    score: 620,
+    last: "Il y a 3 jours",
+    status: "À relancer",
+  },
+  {
+    name: "John D.",
+    role: "Manager",
+    progress: 88,
+    score: 1510,
+    last: "Aujourd'hui",
+    status: "Actif",
+  },
+  {
+    name: "Tebrouri A.",
+    role: "Formation",
+    progress: 27,
+    score: 310,
+    last: "Il y a 8 jours",
+    status: "En retard",
+  },
 ];
 
 const stats = [
@@ -15,6 +51,9 @@ const stats = [
   ["Sessions terminées", "116", "cumul équipe"],
   ["Taux de réussite", "82 %", "mini-jeux"],
 ];
+
+const companies = await getCompanies();
+const company = companies[0];
 ---
 
 <AccountShell
@@ -22,25 +61,37 @@ const stats = [
   description="Espace RH SWAAN pour suivre la progression globale des collaborateurs."
   active="admin"
 >
-  <header class="mb-9 grid gap-6 xl:grid-cols-[1fr_auto] xl:items-end">
+  <header
+    class="mb-9 grid gap-6 xl:grid-cols-(--grid-form-inline) xl:items-end"
+  >
     <div>
       <p class="section-label mb-3">Espace RH</p>
-      <h1 class="font-serif text-[44px] leading-[1.05] font-light tracking-[-0.5px] text-dark md:text-[58px]">
+      <h1
+        class="font-serif text-display-sm leading-tight font-light tracking-title-sm text-dark md:text-game-lg"
+      >
         Suivi équipe <em class="title-em">SWAAN.</em>
       </h1>
       <p class="mt-5 max-w-2xl text-sm leading-7 font-light text-mid">
-        Pilotez le déploiement LSF : progression moyenne, collaborateurs à relancer, scores et rythme d'apprentissage.
+        Pilotez le déploiement LSF : progression moyenne, collaborateurs à
+        relancer, scores et rythme d'apprentissage.
       </p>
     </div>
 
     <div class="flex flex-wrap gap-3">
-      <button id="export-btn" class="btn btn-soft" type="button">Exporter CSV</button>
+      <button id="export-btn" class="btn btn-soft" type="button"
+        >Exporter CSV</button
+      >
       <a class="btn btn-accent" href="/demande-demo">Ajouter une équipe</a>
     </div>
   </header>
 
-  <section id="admin-guard" class="mb-7 hidden rounded-[30px] bg-[#ead7cd] p-6 shadow-neu-out-lg">
-    <p class="mb-2 text-[10px] font-medium tracking-[0.14em] text-mid uppercase">Accès RH</p>
+  <section
+    id="admin-guard"
+    class="mb-7 hidden rounded-card bg-sand p-6 shadow-neu-out-lg"
+  >
+    <p class="mb-2 text-10 font-medium tracking-section text-mid uppercase">
+      Accès RH
+    </p>
     <p class="text-sm leading-7 font-light text-mid">
       Cette vue est réservée aux responsables habilités au suivi de formation.
     </p>
@@ -49,24 +100,43 @@ const stats = [
   <section class="mb-7 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
     {
       stats.map(([label, value, meta]) => (
-        <article class="rounded-[28px] bg-bg p-6 shadow-neu-out-lg">
-          <p class="text-[10px] font-medium tracking-[0.14em] text-soft uppercase">{label}</p>
-          <p class="mt-3 font-serif text-[46px] leading-none font-light text-dark">{value}</p>
+        <article class="rounded-card-sm bg-bg p-6 shadow-neu-out-lg">
+          <p class="text-10 font-medium tracking-section text-soft uppercase">
+            {label}
+          </p>
+          <p class="mt-3 font-serif text-stat leading-none font-light text-dark">
+            {value}
+          </p>
           <p class="mt-3 text-sm font-light text-mid">{meta}</p>
         </article>
       ))
     }
   </section>
 
-  <section class="grid gap-7 xl:grid-cols-[1fr_360px]">
-    <article class="rounded-[34px] bg-bg p-5 shadow-neu-out-lg md:p-7">
-      <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+  <section class="grid gap-7 xl:grid-cols-(--grid-admin)">
+    <article class="rounded-card-lg bg-bg p-5 shadow-neu-out-lg md:p-7">
+      <div
+        class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between"
+      >
         <div>
-          <p class="text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Collaborateurs</p>
-          <h2 class="mt-2 font-serif text-[38px] leading-none font-light text-dark">Progression individuelle</h2>
+          <p class="text-10 font-medium tracking-section text-soft uppercase">
+            Collaborateurs
+          </p>
+          <h2
+            class="mt-2 font-serif text-card-xl leading-none font-light text-dark"
+          >
+            Progression individuelle
+          </h2>
         </div>
-        <label class="flex h-12 items-center gap-3 rounded-full bg-bg px-5 shadow-neu-in">
-          <input id="team-search" class="min-w-0 bg-transparent text-sm text-dark outline-none placeholder:text-soft" type="search" placeholder="Rechercher..." />
+        <label
+          class="flex h-12 items-center gap-3 rounded-full bg-bg px-5 shadow-neu-in"
+        >
+          <input
+            id="team-search"
+            class="min-w-0 bg-transparent text-sm text-dark outline-none placeholder:text-soft"
+            type="search"
+            placeholder="Rechercher..."
+          />
           <span class="text-pop-dark">⌕</span>
         </label>
       </div>
@@ -74,26 +144,38 @@ const stats = [
       <div class="grid gap-4" id="team-list">
         {
           team.map((member) => (
-            <div class="team-row rounded-[26px] bg-bg p-5 shadow-neu-in-sm" data-name={`${member.name} ${member.role} ${member.status}`.toLowerCase()}>
-              <div class="grid gap-4 lg:grid-cols-[1fr_160px_130px] lg:items-center">
+            <div
+              class="team-row rounded-panel bg-bg p-5 shadow-neu-in-sm"
+              data-name={`${member.name} ${member.role} ${member.status}`.toLowerCase()}
+            >
+              <div class="grid gap-4 lg:grid-cols-(--grid-rh-row) lg:items-center">
                 <div>
-                  <h3 class="font-serif text-2xl font-light text-dark">{member.name}</h3>
-                  <p class="mt-1 text-sm font-light text-mid">{member.role} · dernière activité : {member.last}</p>
+                  <h3 class="font-serif text-2xl font-light text-dark">
+                    {member.name}
+                  </h3>
+                  <p class="mt-1 text-sm font-light text-mid">
+                    {member.role} · dernière activité : {member.last}
+                  </p>
                 </div>
                 <div>
-                  <div class="mb-2 flex justify-between text-[10px] font-medium tracking-[0.12em] text-soft uppercase">
+                  <div class="mb-2 flex justify-between text-10 font-medium tracking-card text-soft uppercase">
                     <span>Progression</span>
                     <span>{member.progress}%</span>
                   </div>
                   <div class="h-4 rounded-full bg-bg p-1 shadow-neu-in">
-                    <div class="h-full rounded-full bg-pop-light shadow-neu-out" style={`width: ${member.progress}%`}></div>
+                    <div
+                      class="h-full rounded-full bg-pop-light shadow-neu-out"
+                      style={`width: ${member.progress}%`}
+                    />
                   </div>
                 </div>
                 <div class="flex flex-wrap items-center gap-2 lg:justify-end">
-                  <span class={`rounded-full bg-bg px-3 py-1 text-[9px] font-medium tracking-[0.12em] uppercase shadow-neu-out ${member.status === "Actif" ? "text-pop-dark" : "text-red-soft"}`}>
+                  <span
+                    class={`rounded-full bg-bg px-3 py-1 text-9 font-medium tracking-card uppercase shadow-neu-out ${member.status === "Actif" ? "text-pop-dark" : "text-red-soft"}`}
+                  >
                     {member.status}
                   </span>
-                  <span class="rounded-full bg-bg px-3 py-1 text-[9px] font-medium tracking-[0.12em] text-soft uppercase shadow-neu-out">
+                  <span class="rounded-full bg-bg px-3 py-1 text-9 font-medium tracking-card text-soft uppercase shadow-neu-out">
                     {member.score} XP
                   </span>
                 </div>
@@ -105,66 +187,123 @@ const stats = [
     </article>
 
     <aside class="grid gap-6">
-      <article class="rounded-[34px] bg-bg p-6 shadow-neu-out-lg">
-        <p class="mb-2 text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Entreprise</p>
-        <h2 id="company-name" class="font-serif text-[34px] leading-none font-light text-dark">SWAAN Démo</h2>
+      <article class="rounded-card-lg bg-bg p-6 shadow-neu-out-lg">
+        <p
+          class="mb-2 text-10 font-medium tracking-section text-soft uppercase"
+        >
+          Entreprise
+        </p>
+        <h2
+          id="company-name"
+          class="font-serif text-section leading-none font-light text-dark"
+        >
+          {company?.name || "SWAAN Démo"}
+        </h2>
         <div class="mt-5 grid gap-3">
-          <div class="rounded-[22px] bg-bg p-4 shadow-neu-in-sm">
-            <p class="text-[10px] font-medium tracking-[0.12em] text-soft uppercase">Pack</p>
-            <p id="company-pack" class="mt-2 text-sm font-medium text-pop-dark">Business</p>
+          <div class="rounded-soft bg-bg p-4 shadow-neu-in-sm">
+            <p class="text-10 font-medium tracking-card text-soft uppercase">
+              Pack
+            </p>
+            <p id="company-pack" class="mt-2 text-sm font-medium text-pop-dark">
+              {company?.pack || "Business"}
+            </p>
           </div>
-          <div class="rounded-[22px] bg-bg p-4 shadow-neu-in-sm">
-            <p class="text-[10px] font-medium tracking-[0.12em] text-soft uppercase">Utilisateurs</p>
-            <p id="company-users" class="mt-2 text-sm font-medium text-dark">42 comptes</p>
+          <div class="rounded-soft bg-bg p-4 shadow-neu-in-sm">
+            <p class="text-10 font-medium tracking-card text-soft uppercase">
+              Utilisateurs
+            </p>
+            <p id="company-users" class="mt-2 text-sm font-medium text-dark">
+              {company?.users_count || 42} comptes
+            </p>
           </div>
         </div>
       </article>
 
-      <article class="rounded-[34px] bg-[#ead7cd] p-6 shadow-neu-out-lg">
-        <p class="mb-2 text-[10px] font-medium tracking-[0.14em] text-mid uppercase">Actions RH</p>
-        <h2 class="font-serif text-[34px] leading-none font-light text-dark">À traiter</h2>
+      <article class="rounded-card-lg bg-sand p-6 shadow-neu-out-lg">
+        <p class="mb-2 text-10 font-medium tracking-section text-mid uppercase">
+          Actions RH
+        </p>
+        <h2 class="font-serif text-section leading-none font-light text-dark">
+          À traiter
+        </h2>
         <div class="mt-5 grid gap-3">
-          <button class="rounded-[22px] bg-bg p-4 text-left text-sm font-medium text-dark shadow-neu-out hover:shadow-neu-in" type="button">Relancer 2 collaborateurs</button>
-          <button class="rounded-[22px] bg-bg p-4 text-left text-sm font-medium text-dark shadow-neu-out hover:shadow-neu-in" type="button">Planifier une session d'équipe</button>
-          <a class="rounded-[22px] bg-bg p-4 text-sm font-medium text-dark shadow-neu-out hover:shadow-neu-in" href="/documentation">Lire la documentation</a>
+          <button
+            class="rounded-soft bg-bg p-4 text-left text-sm font-medium text-dark shadow-neu-out hover:shadow-neu-in"
+            type="button">Relancer 2 collaborateurs</button
+          >
+          <button
+            class="rounded-soft bg-bg p-4 text-left text-sm font-medium text-dark shadow-neu-out hover:shadow-neu-in"
+            type="button">Planifier une session d'équipe</button
+          >
+          <a
+            class="rounded-soft bg-bg p-4 text-sm font-medium text-dark shadow-neu-out hover:shadow-neu-in"
+            href="/documentation">Lire la documentation</a
+          >
         </div>
       </article>
 
-      <article class="rounded-[34px] bg-bg p-6 shadow-neu-out-lg">
-        <p class="mb-2 text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Répartition</p>
-        <h2 class="font-serif text-[34px] leading-none font-light text-dark">Niveaux</h2>
+      <article class="rounded-card-lg bg-bg p-6 shadow-neu-out-lg">
+        <p
+          class="mb-2 text-10 font-medium tracking-section text-soft uppercase"
+        >
+          Répartition
+        </p>
+        <h2 class="font-serif text-section leading-none font-light text-dark">
+          Niveaux
+        </h2>
         <div class="mt-6 grid gap-4">
-          {["Débutant 1", "Débutant 2", "Intermédiaire"].map((label, index) => (
-            <div>
-              <div class="mb-2 flex justify-between text-sm text-mid">
-                <span>{label}</span>
-                <span>{[31, 45, 24][index]}%</span>
-              </div>
-              <div class="h-4 rounded-full bg-bg p-1 shadow-neu-in">
-                <div class="h-full rounded-full bg-pop shadow-neu-out" style={`width: ${[31, 45, 24][index]}%`}></div>
-              </div>
-            </div>
-          ))}
+          {
+            ["Débutant 1", "Débutant 2", "Intermédiaire"].map(
+              (label, index) => (
+                <div>
+                  <div class="mb-2 flex justify-between text-sm text-mid">
+                    <span>{label}</span>
+                    <span>{[31, 45, 24][index]}%</span>
+                  </div>
+                  <div class="h-4 rounded-full bg-bg p-1 shadow-neu-in">
+                    <div
+                      class="h-full rounded-full bg-pop shadow-neu-out"
+                      style={`width: ${[31, 45, 24][index]}%`}
+                    />
+                  </div>
+                </div>
+              ),
+            )
+          }
         </div>
       </article>
     </aside>
   </section>
 
   <script define:vars={{ team }}>
-    const POCKETBASE_URL = "https://swaanpb.tebrouri.fr";
     const guard = document.getElementById("admin-guard");
     const role = localStorage.getItem("swaan_user_role");
     if (role !== "admin") guard?.classList.remove("hidden");
 
-    document.getElementById("team-search")?.addEventListener("input", (event) => {
-      const query = event.target.value.trim().toLowerCase();
-      document.querySelectorAll(".team-row").forEach((row) => {
-        row.classList.toggle("hidden", query && !row.dataset.name.includes(query));
+    document
+      .getElementById("team-search")
+      ?.addEventListener("input", (event) => {
+        const query = event.target.value.trim().toLowerCase();
+        document.querySelectorAll(".team-row").forEach((row) => {
+          row.classList.toggle(
+            "hidden",
+            query && !row.dataset.name.includes(query),
+          );
+        });
       });
-    });
 
     document.getElementById("export-btn")?.addEventListener("click", () => {
-      const rows = [["Nom", "Role", "Progression", "XP", "Derniere activite", "Statut"], ...team.map((member) => [member.name, member.role, member.progress, member.score, member.last, member.status])];
+      const rows = [
+        ["Nom", "Role", "Progression", "XP", "Derniere activite", "Statut"],
+        ...team.map((member) => [
+          member.name,
+          member.role,
+          member.progress,
+          member.score,
+          member.last,
+          member.status,
+        ]),
+      ];
       const csv = rows.map((row) => row.join(";")).join("\n");
       const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
       const url = URL.createObjectURL(blob);
@@ -174,23 +313,5 @@ const stats = [
       link.click();
       URL.revokeObjectURL(url);
     });
-
-    async function loadCompany() {
-      try {
-        const response = await fetch(`${POCKETBASE_URL}/api/collections/companies/records?perPage=1&sort=created`);
-        if (!response.ok) throw new Error(`PocketBase ${response.status}`);
-        const data = await response.json();
-        const company = data.items?.[0];
-        if (!company) return;
-
-        document.getElementById("company-name").textContent = company.name || "Entreprise";
-        document.getElementById("company-pack").textContent = company.pack || "Pack entreprise";
-        document.getElementById("company-users").textContent = `${company.users_count || 0} comptes`;
-      } catch (error) {
-        console.error("Entreprise PocketBase indisponible :", error);
-      }
-    }
-
-    loadCompany();
   </script>
 </AccountShell>

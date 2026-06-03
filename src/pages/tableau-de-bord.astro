@@ -1,5 +1,6 @@
 ---
 import AccountShell from "../components/AccountShell.astro";
+import { getGameCatalog } from "../js/backend.mjs";
 
 const goals = [
   "Apprendre 3 nouveaux signes",
@@ -7,36 +8,7 @@ const goals = [
   "Terminer ta session quotidienne",
 ];
 
-const games = [
-  {
-    title: "Memory",
-    subtitle: "Vocabulaire du quotidien",
-    href: "/jeu-memoire",
-    image: "/assets/img/sign-merci-game.png",
-    tag: "Associer",
-  },
-  {
-    title: "Vrai / Faux",
-    subtitle: "Expressions courantes",
-    href: "/jeu-vrai-faux",
-    image: "/assets/img/sign-bonjour-game.png",
-    tag: "Réviser",
-  },
-  {
-    title: "Quiz",
-    subtitle: "Révision rapide",
-    href: "/jeu-quiz",
-    image: "/assets/img/sign-attention-game.png",
-    tag: "Tester",
-  },
-  {
-    title: "Champ lexical",
-    subtitle: "Classer par thème",
-    href: "/jeu-champ-lexical",
-    image: "/assets/img/sign-merci-game.png",
-    tag: "Catégoriser",
-  },
-];
+const games = await getGameCatalog();
 ---
 
 <AccountShell
@@ -44,10 +16,10 @@ const games = [
   description="Tableau de bord connecté SWAAN avec progression, objectifs du jour, statistiques et accès aux jeux LSF."
   active="dashboard"
 >
-  <header class="mb-9 grid gap-6 xl:grid-cols-[1fr_auto] xl:items-center">
+  <header class="mb-9 grid gap-6 xl:grid-cols-(--grid-form-inline) xl:items-center">
     <div>
       <p class="section-label mb-3">Tableau de bord</p>
-      <h1 class="font-serif text-[44px] leading-[1.05] font-light tracking-[-0.5px] text-dark md:text-[58px]">
+      <h1 class="font-serif text-display-sm leading-tight font-light tracking-title-sm text-dark md:text-game-lg">
         Bonjour, <em id="dashboard-name" class="title-em">Leila</em>
       </h1>
       <p class="mt-4 max-w-2xl text-sm leading-7 font-light text-mid">
@@ -61,32 +33,32 @@ const games = [
     </label>
   </header>
 
-  <div class="grid gap-7 xl:grid-cols-[0.95fr_1.05fr]">
-    <section class="rounded-[32px] bg-bg p-7 shadow-neu-out-lg">
+  <div class="grid gap-7 xl:grid-cols-(--grid-two-soft)">
+    <section class="rounded-card-md bg-bg p-7 shadow-neu-out-lg">
       <div class="mb-5 flex items-start justify-between gap-4">
         <div>
-          <p class="text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Ta progression</p>
-          <h2 class="mt-2 font-serif text-[34px] leading-none font-light text-dark">Débutant <em id="dashboard-level" class="title-em">1</em></h2>
+          <p class="text-10 font-medium tracking-section text-soft uppercase">Ta progression</p>
+          <h2 class="mt-2 font-serif text-section leading-none font-light text-dark">Débutant <em id="dashboard-level" class="title-em">1</em></h2>
         </div>
-        <span id="dashboard-streak" class="rounded-full bg-bg px-4 py-2 text-[11px] font-medium tracking-[0.1em] text-pop-dark uppercase shadow-neu-in-sm">0 jour</span>
+        <span id="dashboard-streak" class="rounded-full bg-bg px-4 py-2 text-11 font-medium tracking-chip text-pop-dark uppercase shadow-neu-in-sm">0 jour</span>
       </div>
 
       <div class="grid gap-4">
-        <div class="rounded-[24px] bg-bg p-5 shadow-neu-in">
+        <div class="rounded-img bg-bg p-5 shadow-neu-in">
           <p class="mb-2 text-sm font-medium text-mid">XP total</p>
-          <p class="font-serif text-[42px] leading-none font-light text-dark"><span id="dashboard-xp">0</span> <span class="text-xl text-soft">points</span></p>
+          <p class="font-serif text-hero-sm leading-none font-light text-dark"><span id="dashboard-xp">0</span> <span class="text-xl text-soft">points</span></p>
         </div>
         <a href="/dictionnaire" class="btn btn-accent w-fit">Continuer ma leçon</a>
       </div>
     </section>
 
-    <section class="rounded-[32px] bg-[#ead7cd] p-7 shadow-neu-out-lg">
-      <p class="mb-2 text-[10px] font-medium tracking-[0.14em] text-mid uppercase">Objectifs du jour</p>
-      <h2 class="mb-6 font-serif text-[34px] leading-none font-light text-dark">Session quotidienne</h2>
+    <section class="rounded-card-md bg-sand p-7 shadow-neu-out-lg">
+      <p class="mb-2 text-10 font-medium tracking-section text-mid uppercase">Objectifs du jour</p>
+      <h2 class="mb-6 font-serif text-section leading-none font-light text-dark">Session quotidienne</h2>
       <div class="grid gap-4">
         {
           goals.map((goal) => (
-            <a href={goal.includes("mini-jeu") ? "/jeux" : "/dictionnaire"} class="flex items-center gap-4 rounded-[22px] bg-bg/55 p-4 shadow-neu-in-sm hover:shadow-neu-out">
+            <a href={goal.includes("mini-jeu") ? "/jeux" : "/dictionnaire"} class="flex items-center gap-4 rounded-soft bg-bg/55 p-4 shadow-neu-in-sm hover:shadow-neu-out">
               <span class="dashboard-goal-icon flex size-9 shrink-0 items-center justify-center rounded-full bg-bg text-pop-dark shadow-neu-out" data-goal={goal}>✓</span>
               <span class="text-sm font-medium text-dark">{goal}</span>
             </a>
@@ -96,31 +68,31 @@ const games = [
     </section>
   </div>
 
-  <section class="mt-7 rounded-[32px] bg-bg p-6 shadow-neu-out-lg">
+  <section class="mt-7 rounded-card-md bg-bg p-6 shadow-neu-out-lg">
     <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
       <div>
-        <p class="text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Tes badges</p>
-        <h2 class="mt-2 font-serif text-[38px] leading-none font-light text-dark">
+        <p class="text-10 font-medium tracking-section text-soft uppercase">Tes badges</p>
+        <h2 class="mt-2 font-serif text-card-xl leading-none font-light text-dark">
           Récompenses <em class="title-em">débloquées.</em>
         </h2>
       </div>
-      <p id="dashboard-badges-count" class="rounded-full bg-bg px-5 py-2.5 text-xs font-medium tracking-[0.09em] text-pop-dark uppercase shadow-neu-in-sm">
+      <p id="dashboard-badges-count" class="rounded-full bg-bg px-5 py-2.5 text-xs font-medium tracking-nav text-pop-dark uppercase shadow-neu-in-sm">
         0 badge
       </p>
     </div>
 
     <div id="dashboard-badges" class="grid gap-4 md:grid-cols-2 xl:grid-cols-4" aria-live="polite">
-      <article class="rounded-[28px] bg-bg p-5 shadow-neu-in">
+      <article class="rounded-card-sm bg-bg p-5 shadow-neu-in">
         <p class="text-sm font-light text-mid">Chargement des badges...</p>
       </article>
     </div>
   </section>
 
-  <section class="mt-7 rounded-[32px] bg-bg p-6 shadow-neu-out-lg">
+  <section class="mt-7 rounded-card-md bg-bg p-6 shadow-neu-out-lg">
     <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
       <div>
-        <p class="text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Tes mini-jeux</p>
-        <h2 class="mt-2 font-serif text-[38px] leading-none font-light text-dark">
+        <p class="text-10 font-medium tracking-section text-soft uppercase">Tes mini-jeux</p>
+        <h2 class="mt-2 font-serif text-card-xl leading-none font-light text-dark">
           Réviser en <em class="title-em">jouant.</em>
         </h2>
       </div>
@@ -132,15 +104,15 @@ const games = [
     <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
       {
         games.map((game) => (
-          <a href={game.href} class="group rounded-[30px] bg-bg p-4 shadow-neu-out transition hover:-translate-y-1 hover:shadow-neu-in">
-            <div class="mb-4 flex h-44 items-center justify-center rounded-[24px] bg-bg p-3 shadow-neu-in">
-              <img src={game.image} alt={`Illustration du jeu ${game.title}`} class="h-full w-full object-contain transition group-hover:scale-[1.03]" loading="lazy" />
+          <a href={game.href} class="group rounded-card bg-bg p-4 shadow-neu-out transition hover:-translate-y-1 hover:shadow-neu-in">
+            <div class="mb-4 flex h-44 items-center justify-center rounded-img bg-bg p-3 shadow-neu-in">
+              <img src={game.image || "/assets/img/logo_swaan.avif"} alt={`Illustration du jeu ${game.title}`} class="h-full w-full object-contain transition group-hover:scale-103" loading="lazy" />
             </div>
             <div class="px-2 pb-2">
-              <span class="mb-3 inline-flex rounded-full bg-bg px-3 py-1 text-[9px] font-medium tracking-[0.12em] text-pop-dark uppercase shadow-neu-in-sm">
+              <span class="mb-3 inline-flex rounded-full bg-bg px-3 py-1 text-9 font-medium tracking-card text-pop-dark uppercase shadow-neu-in-sm">
                 {game.tag}
               </span>
-              <h3 class="font-serif text-[30px] leading-none font-light text-dark">{game.title}</h3>
+              <h3 class="font-serif text-card-title leading-none font-light text-dark">{game.title}</h3>
               <p class="mt-2 text-sm leading-6 font-light text-mid">{game.subtitle}</p>
             </div>
           </a>
@@ -149,59 +121,59 @@ const games = [
     </div>
   </section>
 
-  <div class="mt-7 grid gap-7 xl:grid-cols-[1fr_360px]">
+  <div class="mt-7 grid gap-7 xl:grid-cols-(--grid-admin)">
     <section>
       <div class="mb-4 flex items-center justify-between gap-4">
-        <h2 class="font-serif text-[36px] font-light text-dark">Tes statistiques</h2>
-        <a href="/dictionnaire" class="hidden rounded-full bg-bg px-5 py-2.5 text-xs font-medium tracking-[0.09em] text-pop-dark uppercase shadow-neu-out hover:shadow-neu-in sm:inline-flex">
+        <h2 class="font-serif text-section-lg font-light text-dark">Tes statistiques</h2>
+        <a href="/dictionnaire" class="hidden rounded-full bg-bg px-5 py-2.5 text-xs font-medium tracking-nav text-pop-dark uppercase shadow-neu-out hover:shadow-neu-in sm:inline-flex">
           Voir les signes
         </a>
       </div>
 
       <div class="grid gap-5 md:grid-cols-2">
-        <a href="/dictionnaire" class="rounded-[30px] bg-bg p-7 shadow-neu-out-lg hover:shadow-neu-in">
-          <p class="mb-4 text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Signes appris</p>
+        <a href="/dictionnaire" class="rounded-card bg-bg p-7 shadow-neu-out-lg hover:shadow-neu-in">
+          <p class="mb-4 text-10 font-medium tracking-section text-soft uppercase">Signes appris</p>
           <div class="mb-4 h-8 rounded-full bg-bg p-1 shadow-neu-in">
             <div id="dashboard-signs-bar" class="h-full w-0 rounded-full bg-pop-light shadow-neu-out"></div>
           </div>
-          <p id="dashboard-signs" class="font-serif text-[44px] leading-none font-light text-dark">0</p>
+          <p id="dashboard-signs" class="font-serif text-display-sm leading-none font-light text-dark">0</p>
         </a>
 
-        <a href="/jeu-vrai-faux" class="rounded-[30px] bg-bg p-7 shadow-neu-out-lg hover:shadow-neu-in">
-          <p class="mb-4 text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Taux de réussite</p>
+        <a href="/jeu-vrai-faux" class="rounded-card bg-bg p-7 shadow-neu-out-lg hover:shadow-neu-in">
+          <p class="mb-4 text-10 font-medium tracking-section text-soft uppercase">Taux de réussite</p>
           <div class="mb-4 h-8 rounded-full bg-bg p-1 shadow-neu-in">
             <div id="dashboard-success-bar" class="h-full w-0 rounded-full bg-pop shadow-neu-out"></div>
           </div>
-          <p class="font-serif text-[44px] leading-none font-light text-dark"><span id="dashboard-success">0</span> <span class="text-2xl text-soft">%</span></p>
+          <p class="font-serif text-display-sm leading-none font-light text-dark"><span id="dashboard-success">0</span> <span class="text-2xl text-soft">%</span></p>
         </a>
       </div>
 
-      <a href="/tableau-de-bord" class="mt-5 grid gap-6 rounded-[32px] bg-[#ead7cd] p-7 shadow-neu-out-lg md:grid-cols-[1fr_auto] md:items-center">
+      <a href="/tableau-de-bord" class="mt-5 grid gap-6 rounded-card-md bg-sand p-7 shadow-neu-out-lg md:grid-cols-(--grid-form-inline) md:items-center">
         <div>
-          <p class="mb-2 text-[10px] font-medium tracking-[0.14em] text-mid uppercase">Temps total d'apprentissage</p>
-          <p id="dashboard-time" class="font-serif text-[48px] leading-none font-light text-dark">0min</p>
+          <p class="mb-2 text-10 font-medium tracking-section text-mid uppercase">Temps total d'apprentissage</p>
+          <p id="dashboard-time" class="font-serif text-display-md leading-none font-light text-dark">0min</p>
         </div>
         <div class="relative size-28 rounded-full bg-bg p-4 shadow-neu-out">
-          <div id="dashboard-time-ring" class="absolute inset-4 rounded-full border-[18px] border-pop-light border-r-transparent"></div>
-          <div class="absolute inset-[38px] rounded-full bg-bg shadow-neu-in-sm"></div>
+          <div id="dashboard-time-ring" class="absolute inset-4 rounded-full border-18 border-pop-light border-r-transparent"></div>
+          <div class="absolute inset-10 rounded-full bg-bg shadow-neu-in-sm"></div>
         </div>
       </a>
     </section>
 
-    <section class="rounded-[32px] bg-bg p-6 shadow-neu-out-lg">
+    <section class="rounded-card-md bg-bg p-6 shadow-neu-out-lg">
       <div class="mb-5">
-        <p class="text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Tes mini-jeux</p>
-        <h2 class="mt-2 font-serif text-[34px] leading-none font-light text-dark">Réviser en jouant</h2>
+        <p class="text-10 font-medium tracking-section text-soft uppercase">Tes mini-jeux</p>
+        <h2 class="mt-2 font-serif text-section leading-none font-light text-dark">Réviser en jouant</h2>
       </div>
 
-      <div class="mb-5 rounded-[24px] bg-bg p-5 text-sm leading-7 font-light italic text-mid shadow-neu-in">
+      <div class="mb-5 rounded-img bg-bg p-5 text-sm leading-7 font-light italic text-mid shadow-neu-in">
         "J'ai choisi ceux-là pour toi... j'espère que je ne me suis pas trompé !"
       </div>
 
       <div class="grid gap-4">
         {
           games.map((game) => (
-            <a href={game.href} class="rounded-[22px] bg-bg px-5 py-4 shadow-neu-out hover:shadow-neu-in">
+            <a href={game.href} class="rounded-soft bg-bg px-5 py-4 shadow-neu-out hover:shadow-neu-in">
               <p class="font-medium text-dark">{game.title}</p>
               <p class="mt-1 text-sm font-light text-mid">{game.subtitle}</p>
             </a>
@@ -213,6 +185,13 @@ const games = [
   </div>
 
   <script>
+    import {
+      buildFallbackBadges,
+      defaultBadges,
+      getCurrentUserBadges,
+      getCurrentUserProgressSessions,
+    } from "../js/backend.mjs";
+
     function titleCaseName(value) {
       if (!value) return "Leila";
       return value
@@ -259,133 +238,6 @@ const games = [
       return date.toDateString() === today.toDateString();
     }
 
-    const POCKETBASE_URL = "https://swaanpb.tebrouri.fr";
-
-    const defaultBadges = [
-      {
-        id: "premiere-session",
-        name: "Première session",
-        description: "Terminer un premier mini-jeu.",
-        icon: "✓",
-        condition: "1 jeu terminé",
-        neededSessions: 1,
-      },
-      {
-        id: "memoire-active",
-        name: "Mémoire active",
-        description: "Réviser au moins 3 signes.",
-        icon: "S",
-        condition: "3 signes travaillés",
-        neededSigns: 3,
-      },
-      {
-        id: "bon-score",
-        name: "Bon score",
-        description: "Atteindre 70 % de réussite.",
-        icon: "%",
-        condition: "70 % de réussite",
-        neededSuccess: 70,
-      },
-      {
-        id: "regularite",
-        name: "Régularité",
-        description: "Apprendre sur deux journées différentes.",
-        icon: "2",
-        condition: "2 jours actifs",
-        neededDays: 2,
-      },
-    ];
-
-    async function readPocketBaseProgress() {
-      const auth = JSON.parse(localStorage.getItem("pocketbase_auth") || "{}");
-      const userId = auth?.record?.id || auth?.model?.id;
-      const token = auth?.token;
-      if (!userId || !token) return [];
-
-      try {
-        const filter = encodeURIComponent(`user_id = "${userId}"`);
-        const response = await fetch(`${POCKETBASE_URL}/api/collections/progress/records?perPage=100&sort=-completed_at&filter=${filter}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (!response.ok) throw new Error(`PocketBase ${response.status}`);
-        const data = await response.json();
-
-        return (data.items || []).map((record) => ({
-          game: "pocketbase",
-          score: Number(record.score || 0),
-          total: 100,
-          learned: record.completed ? 3 : 0,
-          minutes: 6,
-          createdAt: record.completed_at || record.updated || record.created,
-          fromPocketBase: true,
-        }));
-      } catch (error) {
-        console.error("Erreur lecture progression PocketBase :", error);
-        return [];
-      }
-    }
-
-    async function readPocketBaseBadges() {
-      const auth = JSON.parse(localStorage.getItem("pocketbase_auth") || "{}");
-      const userId = auth?.record?.id || auth?.model?.id;
-      const token = auth?.token;
-
-      try {
-        const badgeResponse = await fetch(`${POCKETBASE_URL}/api/collections/badges/records?perPage=100&sort=created`, {
-          headers: token ? { Authorization: `Bearer ${token}` } : {},
-        });
-
-        if (!badgeResponse.ok) throw new Error(`Badges ${badgeResponse.status}`);
-        const badgeData = await badgeResponse.json();
-        const badges = badgeData.items || [];
-
-        if (!userId || !token) {
-          return badges.map((badge) => ({ ...badge, earned: false }));
-        }
-
-        const filter = encodeURIComponent(`user_id = "${userId}"`);
-        const earnedResponse = await fetch(`${POCKETBASE_URL}/api/collections/user_badges/records?perPage=100&expand=badge_id&filter=${filter}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        if (!earnedResponse.ok) throw new Error(`User badges ${earnedResponse.status}`);
-        const earnedData = await earnedResponse.json();
-        const earnedIds = new Set((earnedData.items || []).map((item) => item.badge_id));
-
-        return badges.map((badge) => ({
-          id: badge.id,
-          name: badge.name,
-          description: badge.description,
-          icon: badge.icon,
-          condition: badge.condition,
-          earned: earnedIds.has(badge.id),
-        }));
-      } catch (error) {
-        console.error("Erreur lecture badges PocketBase :", error);
-        return [];
-      }
-    }
-
-    function buildFallbackBadges(sessions) {
-      const totalScore = sessions.reduce((sum, session) => sum + Number(session.score || 0), 0);
-      const totalQuestions = sessions.reduce((sum, session) => sum + Number(session.total || 0), 0);
-      const totalLearned = sessions.reduce((sum, session) => sum + Number(session.learned || 0), 0);
-      const successRate = totalQuestions > 0 ? Math.round((totalScore / totalQuestions) * 100) : 0;
-      const activeDays = new Set(sessions.map((session) => new Date(session.createdAt).toDateString())).size;
-
-      return defaultBadges.map((badge) => ({
-        ...badge,
-        earned:
-          (badge.neededSessions && sessions.length >= badge.neededSessions) ||
-          (badge.neededSigns && totalLearned >= badge.neededSigns) ||
-          (badge.neededSuccess && successRate >= badge.neededSuccess) ||
-          (badge.neededDays && activeDays >= badge.neededDays),
-      }));
-    }
-
     function renderBadges(badges) {
       const badgesBox = document.getElementById("dashboard-badges");
       const countBox = document.getElementById("dashboard-badges-count");
@@ -400,18 +252,18 @@ const games = [
         .map((badge) => {
           const earned = Boolean(badge.earned);
           return `
-            <article class="rounded-[28px] bg-bg p-5 shadow-${earned ? "neu-out" : "neu-in"} ${earned ? "" : "opacity-65"}">
+            <article class="rounded-card-sm bg-bg p-5 shadow-${earned ? "neu-out" : "neu-in"} ${earned ? "" : "opacity-65"}">
               <div class="mb-5 flex items-center justify-between gap-3">
                 <span class="flex size-12 items-center justify-center rounded-full bg-bg font-serif text-2xl text-${earned ? "pop-dark" : "soft"} shadow-neu-in-sm">
                   ${badge.icon || "S"}
                 </span>
-                <span class="rounded-full bg-bg px-3 py-1 text-[9px] font-medium tracking-[0.12em] text-${earned ? "pop-dark" : "soft"} uppercase shadow-neu-in-sm">
+                <span class="rounded-full bg-bg px-3 py-1 text-9 font-medium tracking-card text-${earned ? "pop-dark" : "soft"} uppercase shadow-neu-in-sm">
                   ${earned ? "Obtenu" : "À débloquer"}
                 </span>
               </div>
-              <h3 class="font-serif text-[28px] leading-none font-light text-dark">${badge.name || "Badge SWAAN"}</h3>
+              <h3 class="font-serif text-3xl leading-none font-light text-dark">${badge.name || "Badge SWAAN"}</h3>
               <p class="mt-3 text-sm leading-6 font-light text-mid">${badge.description || "Badge lié à la progression."}</p>
-              <p class="mt-4 text-[10px] font-medium tracking-[0.12em] text-soft uppercase">${badge.condition || "Progression"}</p>
+              <p class="mt-4 text-10 font-medium tracking-card text-soft uppercase">${badge.condition || "Progression"}</p>
             </article>
           `;
         })
@@ -457,10 +309,10 @@ const games = [
     }
 
     async function updateDashboardProgress() {
-      const pocketBaseSessions = await readPocketBaseProgress();
+      const pocketBaseSessions = await getCurrentUserProgressSessions();
       const sessions = pocketBaseSessions.length > 0 ? pocketBaseSessions : readGameSessions();
       renderDashboardProgress(sessions);
-      const pocketBaseBadges = await readPocketBaseBadges();
+      const pocketBaseBadges = await getCurrentUserBadges();
       renderBadges(pocketBaseBadges.length > 0 ? pocketBaseBadges : buildFallbackBadges(sessions));
     }
 

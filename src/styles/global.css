@@ -12,14 +12,99 @@
   --color-pop-light: #c4d8b0;
   --color-red-soft: #c97070;
   --color-red-light: #e8c4c4;
+  --color-sand: #ead7cd;
 
   --font-sans: "DM Sans", sans-serif;
   --font-serif: "Cormorant Garamond", serif;
+
+  --text-9: 0.5625rem;
+  --text-10: 0.625rem;
+  --text-11: 0.6875rem;
+  --text-13: 0.8125rem;
+  --text-15: 0.9375rem;
+  --text-card-title: 1.875rem;
+  --text-section-sm: 2rem;
+  --text-section: 2.125rem;
+  --text-section-lg: 2.25rem;
+  --text-card-xl: 2.375rem;
+  --text-game-title: 2.5rem;
+  --text-hero-sm: 2.625rem;
+  --text-display-sm: 2.75rem;
+  --text-stat: 2.875rem;
+  --text-display-md: 3rem;
+  --text-game-lg: 3.625rem;
+  --text-display-lg: 3.875rem;
+  --text-display-xl: 4rem;
+  --text-display-2xl: 4.5rem;
+  --text-display-3xl: 4.75rem;
+  --text-error-sm: 3.375rem;
+  --text-error-md: 5.375rem;
+  --text-error-lg: 6rem;
+  --text-error-xl: 8.75rem;
+
+  --tracking-mini: 0.04em;
+  --tracking-button: 0.08em;
+  --tracking-nav: 0.09em;
+  --tracking-chip: 0.1em;
+  --tracking-card: 0.12em;
+  --tracking-section: 0.14em;
+  --tracking-space: 0.16em;
+  --tracking-title: -1px;
+  --tracking-title-sm: -0.5px;
+
+  --radius-soft: 1.375rem;
+  --radius-img: 1.5rem;
+  --radius-panel: 1.625rem;
+  --radius-card-sm: 1.75rem;
+  --radius-card: 1.875rem;
+  --radius-card-md: 2rem;
+  --radius-card-lg: 2.125rem;
+  --radius-card-xl: 2.25rem;
+  --radius-form: 2.375rem;
+  --radius-hero: 2.5rem;
+  --radius-hero-lg: 2.625rem;
+
+  --spacing-18: 4.5rem;
+  --spacing-77: 19.375rem;
+  --spacing-95: 23.75rem;
+  --spacing-105: 26.25rem;
+  --spacing-110: 27.5rem;
+  --spacing-115: 28.75rem;
+  --spacing-117: 29.375rem;
+  --spacing-120: 30rem;
+  --spacing-140: 35rem;
+
+  --grid-two-soft: 0.9fr 1.1fr;
+  --grid-two-soft-alt: 0.95fr 1.05fr;
+  --grid-two-reverse: 1.1fr 0.9fr;
+  --grid-two-hero: 1.05fr 0.95fr;
+  --grid-two-info: 0.94fr 1.06fr;
+  --grid-two-demo: 0.85fr 1.15fr;
+  --grid-two-landing: 1.2fr 1fr;
+  --grid-two-dico: 1fr 0.95fr;
+  --grid-two-contact: 0.86fr 1.14fr;
+  --grid-two-card: 0.75fr 1.25fr;
+  --grid-game: 0.9fr 1.1fr;
+  --grid-admin: 1fr 22.5rem;
+  --grid-account: 16.25rem 1fr;
+  --grid-quiz: 10rem 10rem 1fr;
+  --grid-footer: 1.35fr repeat(3, 1fr);
+  --grid-form-inline: 1fr auto;
+  --grid-rh-row: 1fr 10rem 8.125rem;
+
+  --scale-98: 0.98;
+  --scale-985: 0.985;
+  --scale-103: 1.03;
 
   --shadow-neu-out: 6px 6px 14px #c8c4bf, -6px -6px 14px #ffffff;
   --shadow-neu-out-lg: 10px 10px 24px #c8c4bf, -10px -10px 24px #ffffff;
   --shadow-neu-in: inset 4px 4px 10px #c8c4bf, inset -4px -4px 10px #ffffff;
   --shadow-neu-in-sm: inset 2px 2px 6px #c8c4bf, inset -2px -2px 6px #ffffff;
+  --shadow-nav: 0 4px 16px #c8c4bf, 0 -1px 4px #ffffff;
+  --shadow-pop-out: 5px 5px 12px rgba(90, 120, 72, 0.45), -3px -3px 8px rgba(255, 255, 255, 0.55);
+  --shadow-pop-out-soft: 5px 5px 12px rgba(90, 120, 72, 0.4), -3px -3px 8px rgba(255, 255, 255, 0.5);
+  --shadow-pop-in: inset 3px 3px 8px rgba(80, 110, 60, 0.5), inset -2px -2px 6px rgba(255, 255, 255, 0.25);
+  --shadow-dot: 0 0 0 3px rgba(143, 175, 122, 0.25);
 }
 
 @layer base {
@@ -54,7 +139,7 @@
 
 @layer components {
   .skip-link {
-    @apply fixed top-4 left-4 z-[100] -translate-y-24 rounded-full bg-dark px-5 py-3 text-sm font-medium text-bg shadow-neu-out transition focus:translate-y-0;
+    @apply fixed top-4 left-4 z-50 -translate-y-24 rounded-full bg-dark px-5 py-3 text-sm font-medium text-bg shadow-neu-out transition focus:translate-y-0;
   }
 
   .sr-only-custom {
@@ -67,11 +152,11 @@
   }
 
   .section-label {
-    @apply mb-4 flex items-center gap-3 text-[11px] font-medium tracking-[0.14em] text-soft uppercase before:block before:h-px before:w-7 before:bg-soft;
+    @apply mb-4 flex items-center gap-3 text-11 font-medium tracking-section text-soft uppercase before:block before:h-px before:w-7 before:bg-soft;
   }
 
   .section-title {
-    @apply mb-10 max-w-2xl font-serif text-[34px] leading-[1.1] font-light text-dark md:text-[44px] lg:mb-13 lg:text-[50px];
+    @apply mb-10 max-w-2xl font-serif text-section leading-tight font-light text-dark md:text-display-sm lg:mb-13 lg:text-5xl;
   }
 
   .section-title em,
@@ -84,7 +169,7 @@
   }
 
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-full px-8 py-4 text-sm font-medium transition duration-200 hover:scale-[0.98] hover:shadow-neu-in;
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-8 py-4 text-sm font-medium transition duration-200 hover:scale-98 hover:shadow-neu-in;
   }
 
   .btn-soft {
@@ -92,7 +177,7 @@
   }
 
   .btn-accent {
-    @apply bg-pop text-white shadow-[5px_5px_12px_rgba(90,120,72,0.45),-3px_-3px_8px_rgba(255,255,255,0.55)] hover:shadow-[inset_3px_3px_8px_rgba(80,110,60,0.5),inset_-2px_-2px_6px_rgba(255,255,255,0.25)];
+    @apply bg-pop text-white shadow-pop-out hover:shadow-pop-in;
   }
 
   .reveal {
@@ -101,5 +186,21 @@
 
   .reveal.visible {
     @apply translate-y-0 opacity-100;
+  }
+
+  .demo-page-grid {
+    @apply mx-auto grid max-w-7xl gap-10 lg:items-start;
+  }
+
+  @media (min-width: 1024px) {
+    .demo-page-grid {
+      height: calc(100vh - 11rem);
+      grid-template-columns: var(--grid-two-demo);
+    }
+
+    .demo-scroll-panel {
+      max-height: calc(100vh - 11rem);
+      overflow-y: auto;
+    }
   }
 }

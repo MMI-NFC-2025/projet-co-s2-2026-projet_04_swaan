@@ -27,8 +27,8 @@ const demoRecipientEmail = "leila.tebrourij@gmail.com";
   <Nav />
 
   <main class="px-6 pt-36 pb-16 md:px-12 lg:h-screen lg:overflow-hidden lg:px-20 lg:pb-8">
-    <section class="mx-auto grid max-w-7xl gap-10 lg:h-[calc(100vh-11rem)] lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
-      <div class="demo-scroll-panel lg:max-h-[calc(100vh-11rem)] lg:overflow-y-auto lg:pr-4">
+    <section class="demo-page-grid">
+      <div class="demo-scroll-panel lg:pr-4">
         <nav class="reveal mb-8 text-sm text-soft" aria-label="Fil d'Ariane">
           <a class="hover:text-dark" href="/">Accueil</a>
           <span class="mx-2">/</span>
@@ -36,15 +36,15 @@ const demoRecipientEmail = "leila.tebrourij@gmail.com";
         </nav>
 
         <div class="section-label reveal">Démo entreprise</div>
-        <h1 class="reveal font-serif text-[44px] leading-[1.05] font-light tracking-[-1px] text-dark md:text-[64px]">
+        <h1 class="reveal font-serif text-display-sm leading-tight font-light tracking-title text-dark md:text-display-xl">
           Demander un accès de démonstration <em class="title-em">SWAAN.</em>
         </h1>
         <p class="reveal mt-7 max-w-xl text-base leading-8 font-light text-mid">
           La démo est réservée aux personnes qui travaillent dans une entreprise et qui participent réellement aux sujets de formation, RH, RSE, inclusion ou management d'équipe.
         </p>
 
-        <div class="reveal mt-10 rounded-[32px] bg-bg p-7 shadow-neu-out-lg">
-          <p class="mb-5 text-[11px] font-medium tracking-[0.14em] text-soft uppercase">Documents demandés</p>
+        <div class="reveal mt-10 rounded-card-md bg-bg p-7 shadow-neu-out-lg">
+          <p class="mb-5 text-11 font-medium tracking-section text-soft uppercase">Documents demandés</p>
           <ul class="grid gap-4">
             {
               documents.map((document) => (
@@ -58,16 +58,16 @@ const demoRecipientEmail = "leila.tebrourij@gmail.com";
         </div>
       </div>
 
-      <form id="demo-form" class="demo-scroll-panel reveal rounded-[40px] bg-bg p-6 shadow-neu-out-lg md:p-10 lg:max-h-[calc(100vh-11rem)] lg:overflow-y-auto lg:pr-8" enctype="multipart/form-data" novalidate>
+      <form id="demo-form" class="demo-scroll-panel reveal rounded-hero bg-bg p-6 shadow-neu-out-lg md:p-10 lg:pr-8" enctype="multipart/form-data" novalidate>
         <div class="mb-9">
-          <p class="mb-3 text-[11px] font-medium tracking-[0.14em] text-soft uppercase">Formulaire</p>
-          <h2 class="font-serif text-[36px] leading-[1.1] font-light text-dark">
+          <p class="mb-3 text-11 font-medium tracking-section text-soft uppercase">Formulaire</p>
+          <h2 class="font-serif text-section-lg leading-tight font-light text-dark">
             Informations de contact
           </h2>
         </div>
 
-        <div id="selected-pack-box" class="mb-8 hidden rounded-[30px] bg-pop-light/45 p-5 shadow-neu-in-sm">
-          <p class="mb-2 text-[10px] font-medium tracking-[0.14em] text-pop-dark uppercase">Pack sélectionné</p>
+        <div id="selected-pack-box" class="mb-8 hidden rounded-card bg-pop-light/45 p-5 shadow-neu-in-sm">
+          <p class="mb-2 text-10 font-medium tracking-section text-pop-dark uppercase">Pack sélectionné</p>
           <div class="font-serif text-3xl font-light text-dark" id="selected-pack-label"></div>
           <p class="mt-2 text-sm leading-7 font-light text-mid">
             Ce pack sera ajouté automatiquement à votre demande de démo.
@@ -114,7 +114,7 @@ const demoRecipientEmail = "leila.tebrourij@gmail.com";
 
         <div class="mt-10 mb-7 h-px bg-shadow-dark"></div>
 
-        <h2 class="mb-6 font-serif text-[36px] leading-[1.1] font-light text-dark">
+        <h2 class="mb-6 font-serif text-section-lg leading-tight font-light text-dark">
           Votre entreprise
         </h2>
 
@@ -138,24 +138,24 @@ const demoRecipientEmail = "leila.tebrourij@gmail.com";
 
           <label class="grid gap-2 text-sm text-mid md:col-span-2">
             Objectif de la formation
-            <textarea class="min-h-36 rounded-[28px] bg-bg px-6 py-5 text-dark shadow-neu-in outline-none" name="objectif" placeholder="Exemple : sensibiliser l'équipe d'accueil, former les collaborateurs aux bases de la LSF, préparer une action RSE..." required></textarea>
+            <textarea class="min-h-36 rounded-card-sm bg-bg px-6 py-5 text-dark shadow-neu-in outline-none" name="objectif" placeholder="Exemple : sensibiliser l'équipe d'accueil, former les collaborateurs aux bases de la LSF, préparer une action RSE..." required></textarea>
           </label>
         </div>
 
         <div class="mt-10 mb-7 h-px bg-shadow-dark"></div>
 
-        <h2 class="mb-6 font-serif text-[36px] leading-[1.1] font-light text-dark">
+        <h2 class="mb-6 font-serif text-section-lg leading-tight font-light text-dark">
           Justificatifs
         </h2>
 
         <div class="grid gap-5">
-          <label class="grid gap-3 rounded-[30px] bg-bg p-6 text-sm text-mid shadow-neu-in">
+          <label class="grid gap-3 rounded-card bg-bg p-6 text-sm text-mid shadow-neu-in">
             Justificatif entreprise
             <input class="text-sm text-mid file:mr-4 file:rounded-full file:border-0 file:bg-bg file:px-5 file:py-3 file:text-xs file:font-medium file:text-pop-dark file:shadow-neu-out" name="justificatif_entreprise" type="file" accept=".pdf,.png,.jpg,.jpeg" />
             <span class="text-xs leading-6 text-soft">Exemples : badge professionnel, attestation employeur, extrait d'annuaire interne, document avec nom de l'entreprise.</span>
           </label>
 
-          <label class="grid gap-3 rounded-[30px] bg-bg p-6 text-sm text-mid shadow-neu-in">
+          <label class="grid gap-3 rounded-card bg-bg p-6 text-sm text-mid shadow-neu-in">
             Justificatif de rôle formation/RH
             <input class="text-sm text-mid file:mr-4 file:rounded-full file:border-0 file:bg-bg file:px-5 file:py-3 file:text-xs file:font-medium file:text-pop-dark file:shadow-neu-out" name="justificatif_role" type="file" accept=".pdf,.png,.jpg,.jpeg" />
             <span class="text-xs leading-6 text-soft">Exemples : fiche de poste, signature email professionnelle, attestation interne, document de mission.</span>
@@ -167,12 +167,12 @@ const demoRecipientEmail = "leila.tebrourij@gmail.com";
           <span>Je confirme demander cette démo dans un cadre professionnel lié à la formation, aux RH, à l'inclusion, à la RSE ou au management.</span>
         </label>
 
-        <div id="demo-error" class="mt-7 hidden rounded-[26px] bg-red-light/55 p-5 text-sm leading-7 text-red-soft shadow-neu-in-sm" role="alert" aria-live="assertive">
+        <div id="demo-error" class="mt-7 hidden rounded-panel bg-red-light/55 p-5 text-sm leading-7 text-red-soft shadow-neu-in-sm" role="alert" aria-live="assertive">
           Merci de remplir les champs obligatoires avant d'envoyer.
         </div>
 
-        <div id="demo-success" class="mt-7 hidden rounded-[30px] bg-pop-light/55 p-6 shadow-neu-in-sm" role="status" aria-live="polite">
-          <p class="mb-2 text-[11px] font-medium tracking-[0.14em] text-pop-dark uppercase">Demande envoyée</p>
+        <div id="demo-success" class="mt-7 hidden rounded-card bg-pop-light/55 p-6 shadow-neu-in-sm" role="status" aria-live="polite">
+          <p class="mb-2 text-11 font-medium tracking-section text-pop-dark uppercase">Demande envoyée</p>
           <h3 class="font-serif text-3xl font-light text-dark">Votre demande a bien été transmise.</h3>
           <p class="mt-3 text-sm leading-7 font-light text-mid">
             Référence : <span id="demo-reference" class="font-medium text-dark"></span>. Un email récapitulatif est envoyé à l'équipe SWAAN.

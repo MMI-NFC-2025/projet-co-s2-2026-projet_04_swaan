@@ -7,10 +7,10 @@ import AccountShell from "../components/AccountShell.astro";
   description="Paramètres de profil et préférences de l'espace apprenant SWAAN."
   active="parametres"
 >
-  <header class="mb-9 grid gap-6 xl:grid-cols-[1fr_auto] xl:items-end">
+  <header class="mb-9 grid gap-6 xl:grid-cols-(--grid-form-inline) xl:items-end">
     <div>
       <p class="section-label mb-3">Compte client</p>
-      <h1 class="font-serif text-[44px] leading-[1.05] font-light tracking-[-0.5px] text-dark md:text-[58px]">
+      <h1 class="font-serif text-display-sm leading-tight font-light tracking-title-sm text-dark md:text-game-lg">
         Paramètres du <em class="title-em">compte.</em>
       </h1>
       <p class="mt-5 max-w-2xl text-sm leading-7 font-light text-mid">
@@ -21,11 +21,11 @@ import AccountShell from "../components/AccountShell.astro";
     <a class="btn btn-soft" href="/tableau-de-bord">Retour dashboard</a>
   </header>
 
-  <section class="grid gap-7 xl:grid-cols-[1.1fr_0.9fr]">
-    <form id="settings-form" class="rounded-[38px] bg-bg p-6 shadow-neu-out-lg md:p-9">
+  <section class="grid gap-7 xl:grid-cols-(--grid-two-reverse)">
+    <form id="settings-form" class="rounded-form bg-bg p-6 shadow-neu-out-lg md:p-9">
       <div class="mb-8">
-        <p class="mb-3 text-[11px] font-medium tracking-[0.14em] text-soft uppercase">Profil</p>
-        <h2 class="font-serif text-[38px] leading-none font-light text-dark">Informations personnelles</h2>
+        <p class="mb-3 text-11 font-medium tracking-section text-soft uppercase">Profil</p>
+        <h2 class="font-serif text-card-xl leading-none font-light text-dark">Informations personnelles</h2>
       </div>
 
       <div class="grid gap-5 md:grid-cols-2">
@@ -57,22 +57,22 @@ import AccountShell from "../components/AccountShell.astro";
       <div class="mt-9 mb-7 h-px bg-shadow-dark"></div>
 
       <div class="mb-6">
-        <p class="mb-3 text-[11px] font-medium tracking-[0.14em] text-soft uppercase">Préférences</p>
-        <h2 class="font-serif text-[38px] leading-none font-light text-dark">Apprentissage</h2>
+        <p class="mb-3 text-11 font-medium tracking-section text-soft uppercase">Préférences</p>
+        <h2 class="font-serif text-card-xl leading-none font-light text-dark">Apprentissage</h2>
       </div>
 
       <div class="grid gap-4">
-        <label class="flex gap-4 rounded-[26px] bg-bg p-5 text-sm leading-7 text-mid shadow-neu-in-sm">
+        <label class="flex gap-4 rounded-panel bg-bg p-5 text-sm leading-7 text-mid shadow-neu-in-sm">
           <input id="daily-goal" class="mt-1 size-4 accent-pop" name="dailyGoal" type="checkbox" />
           <span>Afficher les objectifs du jour sur mon tableau de bord.</span>
         </label>
-        <label class="flex gap-4 rounded-[26px] bg-bg p-5 text-sm leading-7 text-mid shadow-neu-in-sm">
+        <label class="flex gap-4 rounded-panel bg-bg p-5 text-sm leading-7 text-mid shadow-neu-in-sm">
           <input id="save-scores" class="mt-1 size-4 accent-pop" name="saveScores" type="checkbox" />
           <span>Conserver mes scores de mini-jeux pour suivre ma progression.</span>
         </label>
       </div>
 
-      <div id="settings-success" class="mt-7 hidden rounded-[28px] bg-pop-light/55 p-5 text-sm leading-7 text-pop-dark shadow-neu-in-sm" role="status" aria-live="polite">
+      <div id="settings-success" class="mt-7 hidden rounded-card-sm bg-pop-light/55 p-5 text-sm leading-7 text-pop-dark shadow-neu-in-sm" role="status" aria-live="polite">
         Paramètres enregistrés. Le tableau de bord utilisera ces informations.
       </div>
 
@@ -83,11 +83,11 @@ import AccountShell from "../components/AccountShell.astro";
     </form>
 
     <aside class="grid gap-6">
-      <article class="rounded-[34px] bg-bg p-6 shadow-neu-out-lg">
+      <article class="rounded-card-lg bg-bg p-6 shadow-neu-out-lg">
         <div class="mb-5 flex items-center gap-4">
           <div class="flex size-16 items-center justify-center rounded-full bg-bg font-serif text-3xl text-pop-dark shadow-neu-in">S</div>
           <div>
-            <p class="text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Aperçu profil</p>
+            <p class="text-10 font-medium tracking-section text-soft uppercase">Aperçu profil</p>
             <h2 id="preview-name" class="font-serif text-3xl leading-none font-light text-dark">Leila</h2>
           </div>
         </div>

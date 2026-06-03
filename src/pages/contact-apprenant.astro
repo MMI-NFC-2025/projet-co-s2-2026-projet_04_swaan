@@ -31,7 +31,7 @@ const quickHelps = [
 ---
 
 <AccountShell title={title} description={description} active="contact">
-  <div class="grid gap-10 lg:grid-cols-[0.86fr_1.14fr] lg:items-start">
+  <div class="grid gap-10 lg:grid-cols-(--grid-two-contact) lg:items-start">
     <aside class="lg:sticky lg:top-10">
       <nav class="reveal mb-8 text-sm text-soft" aria-label="Fil d'Ariane">
         <a class="hover:text-dark" href="/tableau-de-bord">Tableau de bord</a>
@@ -40,16 +40,16 @@ const quickHelps = [
       </nav>
 
       <div class="section-label reveal">Besoin d'aide</div>
-      <h1 class="reveal max-w-2xl font-serif text-[44px] leading-[1.05] font-light tracking-[-1px] text-dark md:text-[64px]">
+      <h1 class="reveal max-w-2xl font-serif text-display-sm leading-tight font-light tracking-title text-dark md:text-display-xl">
         Contacter l'équipe <em class="title-em">SWAAN.</em>
       </h1>
       <p class="reveal mt-7 max-w-xl text-base leading-8 font-light text-mid">
         Envoie une demande claire avec ton contexte. Le formulaire prépare un récapitulatif complet pour le support et garde une copie locale de ta demande.
       </p>
 
-      <div class="reveal mt-9 rounded-[34px] bg-bg p-5 shadow-neu-out-lg">
+      <div class="reveal mt-9 rounded-card-lg bg-bg p-5 shadow-neu-out-lg">
         <img
-          class="mx-auto h-56 w-full rounded-[28px] bg-bg object-contain p-4 shadow-neu-in"
+          class="mx-auto h-56 w-full rounded-card-sm bg-bg object-contain p-4 shadow-neu-in"
           src="/assets/img/sign-attention-game.png"
           alt="Illustration LSF aide"
           loading="eager"
@@ -59,7 +59,7 @@ const quickHelps = [
       <div class="reveal mt-7 grid gap-4">
         {
           quickHelps.map((item) => (
-            <div class="rounded-[26px] bg-bg p-5 shadow-neu-in-sm">
+            <div class="rounded-panel bg-bg p-5 shadow-neu-in-sm">
               <h2 class="mb-2 font-serif text-2xl font-light text-dark">{item.title}</h2>
               <p class="text-sm leading-7 font-light text-mid">{item.text}</p>
             </div>
@@ -68,10 +68,10 @@ const quickHelps = [
       </div>
     </aside>
 
-    <section class="reveal rounded-[40px] bg-bg p-6 shadow-neu-out-lg md:p-9">
+    <section class="reveal rounded-hero bg-bg p-6 shadow-neu-out-lg md:p-9">
       <div class="mb-8">
-        <p class="mb-3 text-[11px] font-medium tracking-[0.14em] text-soft uppercase">Formulaire de contact</p>
-        <h2 class="font-serif text-[36px] leading-[1.1] font-light text-dark md:text-[44px]">
+        <p class="mb-3 text-11 font-medium tracking-section text-soft uppercase">Formulaire de contact</p>
+        <h2 class="font-serif text-section-lg leading-tight font-light text-dark md:text-display-sm">
           Décrire la demande
         </h2>
       </div>
@@ -137,24 +137,24 @@ const quickHelps = [
         <label class="grid gap-2 text-sm text-mid">
           Message
           <textarea
-            class="min-h-44 rounded-[30px] bg-bg px-6 py-5 text-dark shadow-neu-in outline-none placeholder:text-soft"
+            class="min-h-44 rounded-card bg-bg px-6 py-5 text-dark shadow-neu-in outline-none placeholder:text-soft"
             name="message"
             placeholder="Décris ce qui se passe, la page concernée, et ce que tu voulais faire."
             required
           ></textarea>
         </label>
 
-        <label class="flex gap-4 rounded-[26px] bg-bg p-5 text-sm leading-7 text-mid shadow-neu-in-sm">
+        <label class="flex gap-4 rounded-panel bg-bg p-5 text-sm leading-7 text-mid shadow-neu-in-sm">
           <input class="mt-1 size-4 accent-pop" name="copy" type="checkbox" checked />
           <span>Garder une copie locale de cette demande dans le navigateur.</span>
         </label>
 
-        <div id="contact-error" class="hidden rounded-[26px] bg-red-light/55 p-5 text-sm leading-7 text-red-soft shadow-neu-in-sm" role="alert">
+        <div id="contact-error" class="hidden rounded-panel bg-red-light/55 p-5 text-sm leading-7 text-red-soft shadow-neu-in-sm" role="alert">
           Merci de remplir tous les champs obligatoires avant d'envoyer.
         </div>
 
-        <div id="contact-success" class="hidden rounded-[30px] bg-pop-light/55 p-6 shadow-neu-in-sm" role="status" aria-live="polite">
-          <p class="mb-2 text-[11px] font-medium tracking-[0.14em] text-pop-dark uppercase">Demande préparée</p>
+        <div id="contact-success" class="hidden rounded-card bg-pop-light/55 p-6 shadow-neu-in-sm" role="status" aria-live="polite">
+          <p class="mb-2 text-11 font-medium tracking-section text-pop-dark uppercase">Demande préparée</p>
           <h3 class="font-serif text-3xl font-light text-dark">Message prêt à envoyer.</h3>
           <p class="mt-3 text-sm leading-7 font-light text-mid">
             Référence : <span id="contact-reference" class="font-medium text-dark"></span>. Une copie locale a été enregistrée si l'option était cochée.

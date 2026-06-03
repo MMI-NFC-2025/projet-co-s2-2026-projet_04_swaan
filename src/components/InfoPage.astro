@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import Nav from "./Nav.astro";
 import Footer from "./Footer.astro";
+import { getModules } from "../js/backend.mjs";
 
 const {
   title,
@@ -18,13 +19,15 @@ const {
   notice,
   showModules = false,
 } = Astro.props;
+
+const modules = showModules ? await getModules() : [];
 ---
 
 <Layout title={title} description={description} image={image}>
   <Nav />
 
   <main class="px-6 pt-36 pb-16 md:px-12 lg:px-20">
-    <section class="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.94fr_1.06fr] lg:items-center">
+    <section class="mx-auto grid max-w-7xl gap-10 lg:grid-cols-(--grid-two-info) lg:items-center">
       <div>
         <nav class="reveal mb-8 text-sm text-soft" aria-label="Fil d'Ariane">
           <a class="hover:text-dark" href="/">Accueil</a>
@@ -33,7 +36,7 @@ const {
         </nav>
 
         <div class="section-label reveal">{eyebrow}</div>
-        <h1 class="reveal max-w-3xl font-serif text-[44px] leading-[1.05] font-light tracking-[-1px] text-dark md:text-[64px] lg:text-[76px]">
+        <h1 class="reveal max-w-3xl font-serif text-display-sm leading-tight font-light tracking-title text-dark md:text-display-xl lg:text-display-3xl">
           {title}
         </h1>
         <p class="reveal mt-7 max-w-xl text-base leading-8 font-light text-mid">
@@ -46,16 +49,16 @@ const {
         </div>
       </div>
 
-      <aside class="reveal rounded-[42px] bg-bg p-6 shadow-neu-out-lg">
-        <div class="rounded-[34px] bg-bg p-5 shadow-neu-in">
+      <aside class="reveal rounded-hero-lg bg-bg p-6 shadow-neu-out-lg">
+        <div class="rounded-card-lg bg-bg p-5 shadow-neu-in">
           <img class="mx-auto h-72 w-full object-contain md:h-80" src={image} alt={`Illustration ${title}`} loading="eager" />
         </div>
         {
           highlights.length > 0 && (
             <div class="mt-5 grid gap-3 sm:grid-cols-3">
               {highlights.map((item) => (
-                <div class="rounded-[24px] bg-bg p-4 text-center shadow-neu-out">
-                  <p class="text-[10px] font-medium tracking-[0.12em] text-soft uppercase">{item.label}</p>
+                <div class="rounded-img bg-bg p-4 text-center shadow-neu-out">
+                  <p class="text-10 font-medium tracking-card text-soft uppercase">{item.label}</p>
                   <p class="mt-2 font-serif text-2xl font-light text-dark">{item.value}</p>
                 </div>
               ))}
@@ -68,8 +71,8 @@ const {
     {
       notice && (
         <section class="mx-auto mt-12 max-w-7xl">
-          <div class="reveal rounded-[32px] bg-pop-light/45 p-6 shadow-neu-in-sm md:p-8">
-            <p class="mb-2 text-[11px] font-medium tracking-[0.14em] text-pop-dark uppercase">{notice.label}</p>
+          <div class="reveal rounded-card-md bg-pop-light/45 p-6 shadow-neu-in-sm md:p-8">
+            <p class="mb-2 text-11 font-medium tracking-section text-pop-dark uppercase">{notice.label}</p>
             <p class="max-w-4xl text-sm leading-7 font-light text-mid">{notice.text}</p>
           </div>
         </section>
@@ -82,8 +85,8 @@ const {
           <div class="section-label reveal">À retenir</div>
           <div class="grid gap-5 md:grid-cols-3">
             {cards.map((card) => (
-              <article class="reveal rounded-[32px] bg-bg p-6 shadow-neu-out transition hover:shadow-neu-in">
-                <p class="mb-4 text-[10px] font-medium tracking-[0.14em] text-soft uppercase">{card.label}</p>
+              <article class="reveal rounded-card-md bg-bg p-6 shadow-neu-out transition hover:shadow-neu-in">
+                <p class="mb-4 text-10 font-medium tracking-section text-soft uppercase">{card.label}</p>
                 <h2 class="mb-3 font-serif text-3xl font-light text-dark">{card.title}</h2>
                 <p class="text-sm leading-7 font-light text-mid">{card.text}</p>
               </article>
@@ -96,22 +99,34 @@ const {
     {
       showModules && (
         <section class="mx-auto mt-16 max-w-7xl">
-          <div class="reveal rounded-[34px] bg-bg p-6 shadow-neu-out-lg md:p-8">
+          <div class="reveal rounded-card-lg bg-bg p-6 shadow-neu-out-lg md:p-8">
             <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <p class="text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Modules PocketBase</p>
-                <h2 class="font-serif text-[38px] leading-none font-light text-dark">
+                <p class="text-10 font-medium tracking-section text-soft uppercase">Modules PocketBase</p>
+                <h2 class="font-serif text-card-xl leading-none font-light text-dark">
                   Parcours de formation.
                 </h2>
               </div>
-              <span id="modules-count" class="rounded-full bg-bg px-5 py-2.5 text-xs font-medium tracking-[0.09em] text-pop-dark uppercase shadow-neu-in-sm">
-                Chargement
+              <span id="modules-count" class="rounded-full bg-bg px-5 py-2.5 text-xs font-medium tracking-nav text-pop-dark uppercase shadow-neu-in-sm">
+                {modules.length} {modules.length > 1 ? "modules" : "module"}
               </span>
             </div>
             <div id="modules-list" class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-              <article class="rounded-[26px] bg-bg p-5 shadow-neu-in-sm">
-                <p class="text-sm leading-7 font-light text-mid">Chargement des modules...</p>
-              </article>
+              {
+                modules.length > 0 ? (
+                  modules.map((module) => (
+                    <article class="rounded-panel bg-bg p-5 shadow-neu-out">
+                      <p class="mb-3 text-10 font-medium tracking-section text-soft uppercase">Niveau {module.level || "1"}</p>
+                      <h3 class="font-serif text-card-title leading-none font-light text-dark">{module.title || "Module SWAAN"}</h3>
+                      <p class="mt-4 text-sm leading-7 font-light text-mid">{module.description || "Module de formation LSF."}</p>
+                    </article>
+                  ))
+                ) : (
+                  <article class="rounded-panel bg-bg p-5 shadow-neu-in-sm">
+                    <p class="text-sm leading-7 font-light text-mid">Aucun module n'est encore renseigné dans PocketBase.</p>
+                  </article>
+                )
+              }
             </div>
           </div>
         </section>
@@ -122,15 +137,15 @@ const {
       sections.length > 0 && (
         <section class="mx-auto mt-16 grid max-w-7xl gap-6 lg:grid-cols-2">
           {sections.map((section) => (
-            <article class="reveal rounded-[34px] bg-bg p-6 shadow-neu-out-lg md:p-8">
-              <p class="mb-3 text-[10px] font-medium tracking-[0.14em] text-soft uppercase">{section.label}</p>
-              <h2 class="mb-4 font-serif text-[34px] leading-[1.1] font-light text-dark">{section.title}</h2>
+            <article class="reveal rounded-card-lg bg-bg p-6 shadow-neu-out-lg md:p-8">
+              <p class="mb-3 text-10 font-medium tracking-section text-soft uppercase">{section.label}</p>
+              <h2 class="mb-4 font-serif text-section leading-tight font-light text-dark">{section.title}</h2>
               <p class="mb-6 text-sm leading-7 font-light text-mid">{section.text}</p>
               {section.items && (
                 <ul class="grid gap-3">
                   {section.items.map((item) => (
-                    <li class="flex gap-3 rounded-[22px] bg-bg p-4 text-sm leading-6 font-light text-mid shadow-neu-in-sm">
-                      <span class="mt-1 flex size-5 shrink-0 items-center justify-center rounded-full bg-pop-light text-[10px] font-medium text-pop-dark">✓</span>
+                    <li class="flex gap-3 rounded-soft bg-bg p-4 text-sm leading-6 font-light text-mid shadow-neu-in-sm">
+                      <span class="mt-1 flex size-5 shrink-0 items-center justify-center rounded-full bg-pop-light text-10 font-medium text-pop-dark">✓</span>
                       <span>{item}</span>
                     </li>
                   ))}
@@ -144,46 +159,4 @@ const {
   </main>
 
   <Footer />
-
-  {
-    showModules && (
-      <script>
-        const POCKETBASE_URL = "https://swaanpb.tebrouri.fr";
-        const modulesList = document.getElementById("modules-list");
-        const modulesCount = document.getElementById("modules-count");
-
-        function renderModules(modules) {
-          if (!modulesList || !modulesCount) return;
-          modulesCount.textContent = `${modules.length} ${modules.length > 1 ? "modules" : "module"}`;
-          modulesList.innerHTML = modules.length > 0
-            ? modules.map((module) => `
-              <article class="rounded-[26px] bg-bg p-5 shadow-neu-out">
-                <p class="mb-3 text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Niveau ${module.level || "1"}</p>
-                <h3 class="font-serif text-[30px] leading-none font-light text-dark">${module.title || "Module SWAAN"}</h3>
-                <p class="mt-4 text-sm leading-7 font-light text-mid">${module.description || "Module de formation LSF."}</p>
-              </article>
-            `).join("")
-            : `
-              <article class="rounded-[26px] bg-bg p-5 shadow-neu-in-sm">
-                <p class="text-sm leading-7 font-light text-mid">Aucun module n'est encore renseigné dans PocketBase.</p>
-              </article>
-            `;
-        }
-
-        async function loadModules() {
-          try {
-            const response = await fetch(`${POCKETBASE_URL}/api/collections/modules/records?perPage=50&sort=order`);
-            if (!response.ok) throw new Error(`PocketBase ${response.status}`);
-            const data = await response.json();
-            renderModules(data.items || []);
-          } catch (error) {
-            console.error("Modules PocketBase indisponibles :", error);
-            renderModules([]);
-          }
-        }
-
-        loadModules();
-      </script>
-    )
-  }
 </Layout>

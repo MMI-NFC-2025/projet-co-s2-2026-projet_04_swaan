@@ -1,13 +1,17 @@
 ---
 import AccountShell from "../components/AccountShell.astro";
+import { getGameSignes } from "../js/backend.mjs";
+
+const signes = await getGameSignes();
+const firstSign = signes[0];
 ---
 
 <AccountShell title="Quiz LSF" active="jeux">
   <div class="max-w-6xl">
-    <header class="mb-9 grid gap-6 xl:grid-cols-[1fr_auto] xl:items-end">
+    <header class="mb-9 grid gap-6 xl:grid-cols-(--grid-form-inline) xl:items-end">
       <div>
         <p class="section-label mb-3">Jeu pédagogique</p>
-        <h1 class="font-serif text-[44px] leading-[1.05] font-light text-dark md:text-[58px]">
+        <h1 class="font-serif text-display-sm leading-tight font-light text-dark md:text-game-lg">
           Quiz <em class="title-em">LSF.</em>
         </h1>
         <p class="mt-5 max-w-2xl text-sm leading-7 font-light text-mid">
@@ -18,21 +22,21 @@ import AccountShell from "../components/AccountShell.astro";
       <a class="btn btn-soft" href="/jeux">Tous les jeux</a>
     </header>
 
-    <section class="mb-7 grid gap-5 md:grid-cols-[160px_160px_1fr]">
-      <article class="rounded-[28px] bg-bg p-6 shadow-neu-out-lg">
-        <p class="text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Question</p>
-        <p class="mt-3 font-serif text-[44px] leading-none font-light text-dark">
+    <section class="mb-7 grid gap-5 md:grid-cols-(--grid-quiz)">
+      <article class="rounded-card-sm bg-bg p-6 shadow-neu-out-lg">
+        <p class="text-10 font-medium tracking-section text-soft uppercase">Question</p>
+        <p class="mt-3 font-serif text-display-sm leading-none font-light text-dark">
           <span id="quiz-current">1</span>/<span id="quiz-total">6</span>
         </p>
       </article>
 
-      <article class="rounded-[28px] bg-bg p-6 shadow-neu-out-lg">
-        <p class="text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Score</p>
-        <p class="mt-3 font-serif text-[44px] leading-none font-light text-pop-dark" id="quiz-score">0</p>
+      <article class="rounded-card-sm bg-bg p-6 shadow-neu-out-lg">
+        <p class="text-10 font-medium tracking-section text-soft uppercase">Score</p>
+        <p class="mt-3 font-serif text-display-sm leading-none font-light text-pop-dark" id="quiz-score">0</p>
       </article>
 
-      <article class="rounded-[28px] bg-bg p-6 shadow-neu-out-lg">
-        <p class="mb-4 text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Progression</p>
+      <article class="rounded-card-sm bg-bg p-6 shadow-neu-out-lg">
+        <p class="mb-4 text-10 font-medium tracking-section text-soft uppercase">Progression</p>
         <div class="h-5 rounded-full bg-bg p-1 shadow-neu-in" aria-hidden="true">
           <div id="quiz-progress" class="h-full w-0 rounded-full bg-pop transition-all"></div>
         </div>
@@ -42,28 +46,28 @@ import AccountShell from "../components/AccountShell.astro";
       </article>
     </section>
 
-    <section class="grid gap-7 xl:grid-cols-[0.9fr_1.1fr] xl:items-stretch">
-      <article class="rounded-[38px] bg-bg p-6 shadow-neu-out-lg md:p-8">
-        <div class="rounded-[32px] bg-bg p-4 shadow-neu-in">
+    <section class="grid gap-7 xl:grid-cols-(--grid-game) xl:items-stretch">
+      <article class="rounded-form bg-bg p-6 shadow-neu-out-lg md:p-8">
+        <div class="rounded-card-md bg-bg p-4 shadow-neu-in">
           <img
             id="quiz-image"
-            class="mx-auto h-[320px] w-full object-contain md:h-[420px]"
-            src="/assets/img/sign-bonjour-game.png"
+            class="mx-auto h-80 w-full object-contain md:h-105"
+            src={firstSign?.image || "/assets/img/logo_swaan.avif"}
             alt="Signe LSF à identifier"
             loading="eager"
           />
         </div>
       </article>
 
-      <article class="rounded-[38px] bg-bg p-6 shadow-neu-out-lg md:p-8">
-        <p class="mb-3 text-[11px] font-medium tracking-[0.14em] text-soft uppercase">Quel mot correspond à ce signe ?</p>
-        <h2 id="quiz-question" class="font-serif text-[38px] leading-tight font-light text-dark">
+      <article class="rounded-form bg-bg p-6 shadow-neu-out-lg md:p-8">
+        <p class="mb-3 text-11 font-medium tracking-section text-soft uppercase">Quel mot correspond à ce signe ?</p>
+        <h2 id="quiz-question" class="font-serif text-card-xl leading-tight font-light text-dark">
           Choisis la bonne réponse.
         </h2>
 
         <div id="quiz-options" class="mt-8 grid gap-4 sm:grid-cols-2"></div>
 
-        <div id="quiz-feedback" class="mt-7 hidden rounded-[28px] bg-pop-light/55 p-5 text-sm leading-7 text-pop-dark shadow-neu-in-sm" role="status" aria-live="polite"></div>
+        <div id="quiz-feedback" class="mt-7 hidden rounded-card-sm bg-pop-light/55 p-5 text-sm leading-7 text-pop-dark shadow-neu-in-sm" role="status" aria-live="polite"></div>
 
         <div class="mt-8 flex flex-col gap-4 sm:flex-row">
           <button id="quiz-next" class="btn btn-accent" type="button" disabled>Question suivante</button>
@@ -73,23 +77,11 @@ import AccountShell from "../components/AccountShell.astro";
     </section>
   </div>
 
-  <script>
-    const POCKETBASE_URL = "https://swaanpb.tebrouri.fr";
-    const fallbackSigns = [
-      { word: "Bonjour", image: "/assets/img/sign-bonjour-game.png" },
-      { word: "Merci", image: "/assets/img/sign-merci-game.png" },
-      { word: "Oui", image: "/assets/img/sign-oui-game.png" },
-      { word: "Non", image: "/assets/img/sign-non-game.png" },
-      { word: "Aide", image: "/assets/img/sign-attention-game.png" },
-      { word: "Main", image: "/assets/img/sign-attention-game.png" },
-      { word: "Yeux", image: "/assets/img/sign-attention-game.png" },
-      { word: "Bouche", image: "/assets/img/sign-attention-game.png" },
-      { word: "Chat", image: "/assets/img/sign-famille-game.png" },
-      { word: "Pomme", image: "/assets/img/sign-merci-game.png" },
-    ];
+  <script define:vars={{ signes }}>
+    import { saveGameProgress } from "../js/backend.mjs";
 
     const state = {
-      signs: fallbackSigns,
+      signs: signes,
       round: [],
       current: 0,
       score: 0,
@@ -113,98 +105,14 @@ import AccountShell from "../components/AccountShell.astro";
       return [...items].sort(() => Math.random() - 0.5);
     }
 
-    function normalizeSign(record) {
-      const word = record.mots || record.mot || record.word || "";
-      const fileName = Array.isArray(record.img_signe) ? record.img_signe[0] : record.img_signe;
-      const collectionId = record.collectionId || record.collectionName || "signe";
-      const imageUrl = fileName
-        ? `${POCKETBASE_URL}/api/files/${collectionId}/${record.id}/${encodeURIComponent(fileName)}`
-        : record.image;
-
-      return {
-        word,
-        image: imageUrl,
-        category: record.categorie || record.category || "",
-      };
-    }
-
-    function withTimeout(promise, duration = 2500) {
-      return Promise.race([
-        promise,
-        new Promise((_, reject) => {
-          window.setTimeout(() => reject(new Error("timeout")), duration);
-        }),
-      ]);
-    }
-
-    function saveLocalSession(session) {
-      const previous = JSON.parse(localStorage.getItem("swaan_game_sessions") || "[]");
-      localStorage.setItem("swaan_game_sessions", JSON.stringify([session, ...previous].slice(0, 50)));
-    }
-
-    async function savePocketBaseProgress(score, total) {
-      const auth = JSON.parse(localStorage.getItem("pocketbase_auth") || "{}");
-      const userId = auth?.record?.id || auth?.model?.id;
-      const token = auth?.token;
-      const scorePercent = total > 0 ? Math.round((score / total) * 100) : 0;
-      const session = {
-        game: "quiz",
-        score,
-        total,
-        learned: Math.min(3, score),
-        minutes: 6,
-        createdAt: new Date().toISOString(),
-      };
-
-      saveLocalSession(session);
-
-      if (!userId || !token) return;
-
-      try {
-        await fetch(`${POCKETBASE_URL}/api/collections/progress/records`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            user_id: userId,
-            completed: true,
-            score: scorePercent,
-            completed_at: session.createdAt,
-          }),
-        });
-      } catch (error) {
-        console.error("Erreur sauvegarde progression PocketBase :", error);
-      }
-    }
-
-    async function loadSigns() {
-      try {
-        const response = await withTimeout(
-          fetch(`${POCKETBASE_URL}/api/collections/signe/records?sort=mots&perPage=100`),
-        );
-        if (!response.ok) throw new Error(`PocketBase ${response.status}`);
-
-        const data = await response.json();
-        const records = data.items || [];
-
-        const signs = records
-          .map(normalizeSign)
-          .filter((sign) => sign.word && sign.image);
-
-        if (signs.length >= 4) {
-          state.signs = signs;
-          statusBox.textContent = "Les signes sont chargés.";
-          createRound();
-        }
-      } catch (error) {
-        console.error("Erreur chargement quiz :", error);
-        statusBox.textContent = "Observe le signe puis choisis le bon mot.";
-      }
-    }
-
     function createRound() {
+      if (state.signs.length < 4) {
+        statusBox.textContent = "Ajoute au moins 4 signes avec image dans PocketBase pour lancer le quiz.";
+        optionsBox.innerHTML = "";
+        nextButton.disabled = true;
+        return;
+      }
+
       state.total = Math.min(state.baseTotal, state.signs.length);
       state.round = shuffle(state.signs).slice(0, state.total);
       state.total = state.round.length;
@@ -248,7 +156,7 @@ import AccountShell from "../components/AccountShell.astro";
       getOptions(sign).forEach((word) => {
         const button = document.createElement("button");
         button.type = "button";
-        button.className = "rounded-[26px] bg-bg px-6 py-5 text-left text-lg font-medium text-dark shadow-neu-out transition hover:text-pop-dark hover:shadow-neu-in";
+        button.className = "rounded-panel bg-bg px-6 py-5 text-left text-lg font-medium text-dark shadow-neu-out transition hover:text-pop-dark hover:shadow-neu-in";
         button.textContent = word;
         button.addEventListener("click", () => answerQuestion(word, button));
         optionsBox.appendChild(button);
@@ -289,7 +197,6 @@ import AccountShell from "../components/AccountShell.astro";
     function finishQuiz() {
       progressBar.style.width = "100%";
       statusBox.textContent = `Partie terminée : ${state.score}/${state.total}.`;
-      image.src = "/assets/img/sign-bonjour-game.png";
       image.alt = "Fin du quiz LSF";
       optionsBox.innerHTML = "";
       feedbackBox.classList.remove("hidden");
@@ -298,7 +205,7 @@ import AccountShell from "../components/AccountShell.astro";
         : "Continue à t'entraîner avec le dictionnaire et relance une partie.";
       nextButton.disabled = true;
       localStorage.setItem("swaan_quiz_score", String(state.score));
-      savePocketBaseProgress(state.score, state.total);
+      saveGameProgress("quiz", state.score, state.total, 6);
     }
 
     nextButton?.addEventListener("click", () => {
@@ -309,6 +216,5 @@ import AccountShell from "../components/AccountShell.astro";
     restartButton?.addEventListener("click", createRound);
 
     createRound();
-    loadSigns();
   </script>
 </AccountShell>
