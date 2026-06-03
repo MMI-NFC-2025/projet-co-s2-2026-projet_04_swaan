@@ -1,8 +1,5 @@
 import PocketBase from "pocketbase";
-
-const pbUrl =
-    import.meta.env?.PUBLIC_POCKETBASE_URL ||
-    "https://swaanpb.tebrouri.fr";
+const pb = new PocketBase("https://swaanpb.tebrouri.fr");
 
 const pb = new PocketBase(pbUrl);
 
