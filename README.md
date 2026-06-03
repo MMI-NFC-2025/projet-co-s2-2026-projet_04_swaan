@@ -3,9 +3,9 @@
 
 Éléménts à renseigner pour la soutenance :
 
-- [ ] Nom du projet : swaan
-- [ ] URL de la landing page : 
-- [ ] URL de l'application finale :
+- [ ] Nom du projet : Swaan
+- [ ] URL de la landing page :https://swaan.tebrouri.fr/
+- [ ] URL de l'application finale : https://swaan.tebrouri.fr/
 - [ ] URL de connexion au back office : https://swaanpb.tebrouri.fr/_/
 - [ ] Identifiant de connexion au backoffice : leila.tebrourij@gmail.com
 - [ ] Mot de passe de connexion au backoffice : Swaan2026.

@@ -149,7 +149,18 @@ const games = [
         const response = await fetch(`${POCKETBASE_URL}/api/collections/jeux/records?perPage=50&sort=created`);
         if (!response.ok) throw new Error(`PocketBase ${response.status}`);
         const data = await response.json();
-        renderGames((data.items || []).map(normalizeGame));
+
+        // Garder uniquement une entrée par type de jeu (pas une carte par question)
+        const seen = new Set();
+        const unique = (data.items || []).filter((item) => {
+          const type = String(item.type_jeux || item.type || "quiz").toLowerCase();
+          if (seen.has(type)) return false;
+          seen.add(type);
+          return true;
+        });
+
+        if (unique.length === 0) throw new Error("Aucun jeu trouvé");
+        renderGames(unique.map(normalizeGame));
       } catch (error) {
         console.error("Jeux PocketBase indisponibles :", error);
         renderGames(games.map(normalizeGame));
