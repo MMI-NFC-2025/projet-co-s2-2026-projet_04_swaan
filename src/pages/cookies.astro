@@ -1,26 +1,38 @@
 ---
 import InfoPage from "../components/InfoPage.astro";
+
+const sections = [
+  {
+    label: "Cookies",
+    title: "Cookies nécessaires",
+    text: "Le site utilise des cookies nécessaires au bon fonctionnement de la plateforme. Ces cookies permettent notamment le maintien de la session utilisateur, l’authentification et les préférences d’utilisation.",
+  },
+  {
+    label: "Audience",
+    title: "Mesure d’audience",
+    text: "SWAAN utilise Umami Analytics afin de mesurer anonymement la fréquentation du site. Les statistiques collectées servent exclusivement à améliorer le service et ne permettent pas d’identifier personnellement les visiteurs.",
+  },
+  {
+    label: "Gestion",
+    title: "Gestion des cookies",
+    text: "L’utilisateur peut configurer son navigateur afin de refuser tout ou partie des cookies. Certaines fonctionnalités peuvent toutefois être affectées par cette désactivation.",
+  },
+];
 ---
 
 <InfoPage
   title="Cookies"
-  eyebrow="Stockage local"
-  description="SWAAN utilise surtout du stockage local de démonstration et pourra utiliser des cookies strictement nécessaires pour gérer la session, les préférences et le bon fonctionnement de la plateforme."
-  image="/assets/img/dictionnaire/nourriture-cafe.png"
-  ctaLabel="Nous contacter"
-  ctaHref="/contact"
-  secondaryLabel="Confidentialité"
-  secondaryHref="/confidentialite"
-  notice={{ label: "État actuel du projet", text: "Dans cette version, certaines informations de démonstration sont stockées localement dans le navigateur, par exemple le prénom utilisateur, les préférences de compte ou les scores de jeux. Aucun outil publicitaire n'est intégré." }}
-  cards={[
-    { label: "Nécessaire", title: "Session", text: "Conserver l'état connecté ou les informations utiles à l'accès à l'espace apprenant." },
-    { label: "Préférence", title: "Expérience", text: "Mémoriser certaines données locales pour éviter de répéter une action pendant la démonstration." },
-    { label: "Mesure", title: "Statistiques", text: "Aucun outil de mesure externe ou publicitaire n'est déclaré tant qu'il n'est pas réellement intégré." },
+  eyebrow="Confidentialité"
+  description="Dernière mise à jour : Juin 2026. Les cookies utilisés sur SWAAN servent au fonctionnement de la session, à l’authentification et à la mesure d’audience anonyme."
+  image="/assets/img/logo_swaan.avif"
+  ctaLabel="Politique complète"
+  ctaHref="/confidentialite"
+  secondaryLabel="Nous contacter"
+  secondaryHref="/contact"
+  highlights={[
+    { label: "Session", value: "Oui" },
+    { label: "Audience", value: "Umami" },
+    { label: "Publicité", value: "Non" },
   ]}
-  sections={[
-    { label: "Stockage utilisé", title: "Ce que le navigateur peut conserver.", text: "Le stockage local sert à améliorer l'expérience apprenant et à conserver certaines préférences.", items: ["Nom affiché dans l'espace apprenant", "Préférences de paramètres", "Scores temporaires de jeux", "État de session utilisateur"] },
-    { label: "Gestion", title: "Contrôler le stockage.", text: "L'utilisateur peut supprimer les données locales depuis les paramètres de son navigateur ou en se déconnectant lorsque l'action est prévue.", items: ["Suppression via les réglages navigateur", "Déconnexion depuis l'espace apprenant", "Réinitialisation possible dans certains écrans de paramètres"] },
-    { label: "Consentement", title: "Cas des cookies non essentiels.", text: "Si des outils de mesure d'audience, marketing ou publicitaires sont ajoutés, un bandeau de consentement devra être mis en place avant activation.", items: ["Pas de cookies publicitaires actuellement", "Pas de tracker externe déclaré", "Mise à jour obligatoire avant mise en production"] },
-    { label: "Transparence", title: "Éviter les zones floues.", text: "La page cookies doit rester alignée avec les outils réellement utilisés sur le site.", items: ["Pas de promesse abstraite", "Description claire des usages", "Mise à jour si de nouveaux outils sont ajoutés"] },
-  ]}
+  sections={sections}
 />

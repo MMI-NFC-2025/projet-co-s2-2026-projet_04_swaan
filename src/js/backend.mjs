@@ -72,23 +72,13 @@ export async function getModuleById(id) {
     }
 }
 
-// Leçons
-export async function getLessons(moduleId) {
+// Entreprises
+export async function getCompanies() {
     try {
-        const filter = moduleId ? `module_id = "${moduleId}"` : "";
-        return await pb.collection("lessons").getFullList({ sort: "order", filter });
+        return await pb.collection("companies").getFullList({ sort: "name" });
     } catch (error) {
-        console.error("Erreur récupération leçons :", error);
+        console.error("Erreur récupération entreprises :", error);
         return [];
-    }
-}
-
-export async function getLessonById(id) {
-    try {
-        return await pb.collection("lessons").getOne(id);
-    } catch (error) {
-        console.error("Erreur récupération leçon :", error);
-        return null;
     }
 }
 

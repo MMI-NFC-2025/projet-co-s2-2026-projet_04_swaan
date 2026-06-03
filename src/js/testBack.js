@@ -4,8 +4,7 @@ import {
     getJeux,
     getModules,
     getModuleById,
-    getLessons,
-    getLessonById,
+    getCompanies,
     login,
     logout,
     isAuthValid,
@@ -34,20 +33,14 @@ console.log("\n=== Test getModules ===");
 const modules = await getModules();
 console.log(modules);
 
+console.log("\n=== Test getCompanies ===");
+const companies = await getCompanies();
+console.log(companies);
+
 /*
 console.log("\n=== Test getModuleById ===");
 const module = await getModuleById("REMPLACE_PAR_UN_VRAI_ID");
 console.log(module);
-*/
-
-console.log("\n=== Test getLessons (toutes) ===");
-const lessons = await getLessons();
-console.log(lessons);
-
-/*
-console.log("\n=== Test getLessonById ===");
-const lesson = await getLessonById("REMPLACE_PAR_UN_VRAI_ID");
-console.log(lesson);
 */
 
 console.log("\n=== Test login (mauvais mot de passe) ===");

@@ -1,28 +1,98 @@
 ---
 import InfoPage from "../components/InfoPage.astro";
+
+const sections = [
+  {
+    label: "1. Responsable",
+    title: "Responsable du traitement",
+    text: "Les données personnelles collectées sur SWAAN sont gérées par Leila Tebrouri, Leslie Laurent et Khaoula Dhafer dans le cadre du projet pédagogique SWAAN.",
+  },
+  {
+    label: "2. Données",
+    title: "Données collectées",
+    text: "Lors de l’utilisation de la plateforme, certaines données peuvent être enregistrées.",
+    items: [
+      "nom ;",
+      "prénom ;",
+      "adresse e-mail ;",
+      "mot de passe chiffré ;",
+      "photo de profil ;",
+      "entreprise de rattachement ;",
+      "progression dans les modules ;",
+      "résultats et scores obtenus aux jeux ;",
+      "statistiques de connexion.",
+    ],
+  },
+  {
+    label: "3. Finalités",
+    title: "Finalité des traitements",
+    text: "Les données sont utilisées pour créer et gérer les comptes utilisateurs, assurer le fonctionnement de la plateforme, suivre la progression pédagogique, produire des statistiques d’utilisation, améliorer l’expérience utilisateur et garantir la sécurité du service.",
+  },
+  {
+    label: "4. Base légale",
+    title: "Base légale",
+    text: "Les traitements sont réalisés sur la base de l’exécution du service demandé, de l’intérêt légitime lié à l’amélioration du projet pédagogique et du consentement lorsque celui-ci est requis.",
+  },
+  {
+    label: "5. Conservation",
+    title: "Conservation des données",
+    text: "Les données sont conservées pendant toute la durée d’utilisation du compte puis supprimées dans un délai raisonnable après sa désactivation.",
+  },
+  {
+    label: "6. Sécurité",
+    title: "Sécurité",
+    text: "Les données sont stockées sur des serveurs sécurisés. Les mots de passe sont conservés sous forme chiffrée et ne sont jamais visibles par les administrateurs.",
+  },
+  {
+    label: "7. Droits",
+    title: "Droits des utilisateurs",
+    text: "Conformément au RGPD, chaque utilisateur dispose de droits sur ses données personnelles.",
+    items: [
+      "droit d’accès ;",
+      "droit de rectification ;",
+      "droit d’effacement ;",
+      "droit à la limitation du traitement ;",
+      "droit d’opposition ;",
+      "droit à la portabilité de ses données.",
+      "Toute demande peut être adressée à leila.tebrouri@gmail.com.",
+    ],
+  },
+  {
+    label: "8. Cookies",
+    title: "Cookies nécessaires",
+    text: "Le site utilise des cookies nécessaires au bon fonctionnement de la plateforme. Ces cookies permettent notamment le maintien de la session utilisateur, l’authentification et les préférences d’utilisation.",
+  },
+  {
+    label: "9. Audience",
+    title: "Mesure d’audience",
+    text: "SWAAN utilise Umami Analytics afin de mesurer anonymement la fréquentation du site. Les statistiques collectées servent exclusivement à améliorer le service et ne permettent pas d’identifier personnellement les visiteurs.",
+  },
+  {
+    label: "10. Gestion",
+    title: "Gestion des cookies",
+    text: "L’utilisateur peut configurer son navigateur afin de refuser tout ou partie des cookies. Certaines fonctionnalités peuvent toutefois être affectées par cette désactivation.",
+  },
+  {
+    label: "11. Réclamation",
+    title: "Réclamation",
+    text: "En cas de difficulté concernant l’utilisation des données personnelles, l’utilisateur peut introduire une réclamation auprès de la CNIL : www.cnil.fr.",
+  },
+];
 ---
 
 <InfoPage
-  title="Politique de confidentialité"
+  title="Politique de confidentialité et cookies"
   eyebrow="Données personnelles"
-  description="SWAAN traite des données liées aux comptes, entreprises, parcours de formation et progressions afin de fournir une expérience d'apprentissage LSF personnalisée et un suivi pédagogique."
-  image="/assets/img/dictionnaire/corps-coeur.png"
-  ctaLabel="Exercer une demande"
+  description="Dernière mise à jour : Juin 2026. Cette page explique quelles données sont collectées et comment elles sont utilisées dans SWAAN."
+  image="/assets/img/signes-pro-formation.png"
+  ctaLabel="Nous contacter"
   ctaHref="/contact"
-  secondaryLabel="Voir les cookies"
-  secondaryHref="/cookies"
-  notice={{ label: "À personnaliser", text: "Cette politique doit être adaptée au responsable de traitement réel, aux durées de conservation retenues, aux éventuels sous-traitants et aux outils de mesure ajoutés avant une mise en production." }}
-  cards={[
-    { label: "Compte", title: "Identité utilisateur", text: "Nom, prénom, email professionnel, rôle, entreprise et statut du compte." },
-    { label: "Formation", title: "Progression", text: "Leçons consultées, scores, badges, objectifs et complétion des modules." },
-    { label: "Demandes", title: "Formulaires", text: "Messages de contact, demandes de démonstration, fonction, entreprise et pièces justificatives si le formulaire les demande." },
+  secondaryLabel="Voir les CGU"
+  secondaryHref="/cgu"
+  highlights={[
+    { label: "Données", value: "RGPD" },
+    { label: "Cookies", value: "Session" },
+    { label: "Audience", value: "Umami" },
   ]}
-  sections={[
-    { label: "Finalités", title: "Pourquoi ces données sont utilisées.", text: "Les données servent à créer le compte, personnaliser le parcours, mesurer la progression et permettre aux responsables habilités de suivre le déploiement.", items: ["Authentification et accès sécurisé", "Suivi pédagogique individuel", "Badges, scores et objectifs", "Vue agrégée pour les responsables formation", "Traitement des demandes de contact et de démonstration"] },
-    { label: "Base juridique", title: "Cadre du traitement.", text: "Selon le contexte final, les traitements pourront reposer sur l'exécution d'un contrat, l'intérêt légitime de formation, le consentement pour certains dépôts de fichiers ou une obligation légale.", items: ["Base exacte à confirmer avant publication", "Aucune collecte sans finalité définie", "Information accessible depuis les formulaires"] },
-    { label: "Données collectées", title: "Catégories prévues.", text: "Le projet prévoit uniquement les données nécessaires au fonctionnement de la plateforme et au suivi de formation.", items: ["Identité : nom, prénom, email", "Organisation : entreprise, rôle, fonction", "Apprentissage : progression, score, badges", "Technique : session, identifiant utilisateur, date de mise à jour", "Contact : message, motif, priorité, documents transmis volontairement"] },
-    { label: "Conservation", title: "Durées à fixer.", text: "Les durées doivent être limitées à ce qui est nécessaire au projet. Elles devront être validées selon le cadre réel de déploiement.", items: ["Compte : pendant la durée d'accès au service", "Progression : pendant la durée de formation ou du contrat", "Demandes de contact : durée nécessaire au traitement", "Pièces justificatives : durée courte à préciser"] },
-    { label: "Destinataires", title: "Qui peut accéder aux données.", text: "Les données sont accessibles aux personnes habilitées selon leur rôle et aux prestataires techniques nécessaires au fonctionnement.", items: ["Utilisateur concerné", "Responsable formation ou RH habilité", "Équipe SWAAN ou administrateur technique", "Prestataires techniques nécessaires au service"] },
-    { label: "Droits", title: "Accès, correction et suppression.", text: "Les utilisateurs peuvent demander l'accès, la rectification, l'effacement, la limitation ou l'opposition lorsque le cadre applicable le permet.", items: ["Demande via la page contact", "Réponse selon les délais légaux applicables", "Réclamation possible auprès de la CNIL", "Vérification d'identité possible avant traitement"] },
-  ]}
+  sections={sections}
 />

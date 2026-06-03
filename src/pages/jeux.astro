@@ -60,7 +60,7 @@ const games = [
     <a href="/tableau-de-bord" class="btn btn-soft w-fit">Retour au tableau de bord</a>
   </header>
 
-  <section class="grid gap-7 md:grid-cols-2 xl:grid-cols-4">
+  <section id="games-grid" class="grid gap-7 md:grid-cols-2 xl:grid-cols-4">
     {
       games.map((game) => (
         <a href={game.href} class="group flex min-h-full flex-col rounded-[34px] bg-bg p-5 shadow-neu-out-lg transition hover:-translate-y-1 hover:shadow-neu-in">
@@ -82,4 +82,80 @@ const games = [
       ))
     }
   </section>
+
+  <script define:vars={{ games }}>
+    const POCKETBASE_URL = "https://swaanpb.tebrouri.fr";
+    const gamesGrid = document.getElementById("games-grid");
+    const gamePages = {
+      memory: "/jeu-memoire",
+      memoire: "/jeu-memoire",
+      quiz: "/jeu-quiz",
+      vrai_faux: "/jeu-vrai-faux",
+      "vrai/faux": "/jeu-vrai-faux",
+      champ_lexical: "/jeu-champ-lexical",
+    };
+    const gameImages = {
+      memory: "/assets/img/dictionnaire/quotidien-merci.png",
+      memoire: "/assets/img/dictionnaire/quotidien-merci.png",
+      quiz: "/assets/img/dictionnaire/corps-main.png",
+      vrai_faux: "/assets/img/dictionnaire/quotidien-bonjour.png",
+      "vrai/faux": "/assets/img/dictionnaire/quotidien-bonjour.png",
+      champ_lexical: "/assets/img/dictionnaire/nourriture-pomme.png",
+    };
+
+    function titleFromType(type) {
+      return String(type || "Jeu")
+        .replace("_", " ")
+        .replace(/\b\w/g, (letter) => letter.toUpperCase());
+    }
+
+    function normalizeGame(game) {
+      const type = game.type_jeux || game.type || game.title || "quiz";
+      const key = String(type).toLowerCase();
+      return {
+        title: game.title || titleFromType(type),
+        subtitle: game.enonce || game.subtitle || "Réviser les signes LSF",
+        description: game.description || game.enonce || "Mini-jeu connecté à PocketBase pour travailler les signes et la progression.",
+        href: game.href || gamePages[key] || "/jeux",
+        image: game.image || gameImages[key] || "/assets/img/dictionnaire/quotidien-bonjour.png",
+        status: "Disponible",
+        meta: game.reponse_correct ? `Réponse : ${game.reponse_correct}` : game.meta || "SWAAN",
+      };
+    }
+
+    function renderGames(items) {
+      if (!gamesGrid || items.length === 0) return;
+      gamesGrid.innerHTML = items.map((game) => `
+        <a href="${game.href}" class="group flex min-h-full flex-col rounded-[34px] bg-bg p-5 shadow-neu-out-lg transition hover:-translate-y-1 hover:shadow-neu-in">
+          <div class="mb-5 flex h-64 items-center justify-center rounded-[28px] bg-bg p-5 shadow-neu-in">
+            <img src="${game.image}" alt="Illustration du jeu ${game.title}" class="h-full w-full object-contain transition group-hover:scale-[1.03]" loading="lazy" />
+          </div>
+          <div class="flex flex-1 flex-col px-2 pb-2">
+            <div class="mb-4 flex flex-wrap gap-2">
+              <span class="rounded-full bg-bg px-3 py-1 text-[9px] font-medium tracking-[0.12em] text-pop-dark uppercase shadow-neu-in-sm">${game.status}</span>
+              <span class="rounded-full bg-bg px-3 py-1 text-[9px] font-medium tracking-[0.12em] text-soft uppercase shadow-neu-in-sm">${game.meta}</span>
+            </div>
+            <h2 class="font-serif text-[38px] leading-none font-light text-dark">${game.title}</h2>
+            <p class="mt-2 text-sm font-medium text-pop-dark">${game.subtitle}</p>
+            <p class="mt-4 flex-1 text-sm leading-7 font-light text-mid">${game.description}</p>
+            <span class="btn btn-accent mt-6 w-fit">Lancer le jeu</span>
+          </div>
+        </a>
+      `).join("");
+    }
+
+    async function loadPocketBaseGames() {
+      try {
+        const response = await fetch(`${POCKETBASE_URL}/api/collections/jeux/records?perPage=50&sort=created`);
+        if (!response.ok) throw new Error(`PocketBase ${response.status}`);
+        const data = await response.json();
+        renderGames((data.items || []).map(normalizeGame));
+      } catch (error) {
+        console.error("Jeux PocketBase indisponibles :", error);
+        renderGames(games.map(normalizeGame));
+      }
+    }
+
+    loadPocketBaseGames();
+  </script>
 </AccountShell>

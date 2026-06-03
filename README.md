@@ -3,20 +3,20 @@
 
 Éléménts à renseigner pour la soutenance :
 
-- [ ] Nom du projet :
-- [ ] URL de la landing page :
+- [ ] Nom du projet : swaan
+- [ ] URL de la landing page : 
 - [ ] URL de l'application finale :
-- [ ] URL de connexion au back office :
-- [ ] Identifiant de connexion au backoffice :
-- [ ] Mot de passe de connexion au backoffice :
-- [ ] URL de la maquette FIGMA :
-- [ ] Description du projet :
+- [ ] URL de connexion au back office : https://swaanpb.tebrouri.fr/_/
+- [ ] Identifiant de connexion au backoffice : leila.tebrourij@gmail.com
+- [ ] Mot de passe de connexion au backoffice : Swaan2026.
+- [ ] URL de la maquette FIGMA : https://www.figma.com/design/nWSGioLDNaGr9Gtss8KxRO/Projet_S2_maquette?node-id=21-2&t=YtYPKPYFee3Lr2no-1
+- [ ] Description du projet : SWAAN est une webapp de sensibilisation et d’apprentissage de la Langue des Signes Française (LSF) destinée aux entreprises souhaitant former leurs collaborateurs aux bases de la communication inclusive. Ce site a été réalisé dans un cadre pédagogique et académique.
 
 ## 🚀 Équipe
 
 | Étudiants    | Prénom NOM  |
 | :----------- | :---------- |
-| Étudiant 1   | à compléter |
-| Étudiant 2   | à compléter |
-| Étudiant 3   | à compléter |
-| (Étudiant 4) | à compléter |
+| TEBROURI.    | LEILA.      |
+| LAURENT.     | LESLIE.     |
+| DHAFER.      | KHAOULA.    |
+

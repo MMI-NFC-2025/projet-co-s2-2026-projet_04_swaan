@@ -1,28 +1,95 @@
 ---
 import InfoPage from "../components/InfoPage.astro";
+
+const sections = [
+  {
+    label: "1. Objet",
+    title: "Modalités d’accès et d’utilisation",
+    text: "Les présentes Conditions Générales d’Utilisation définissent les modalités d’accès et d’utilisation de la plateforme SWAAN.",
+  },
+  {
+    label: "2. Acceptation",
+    title: "Acceptation des conditions",
+    text: "Toute utilisation du site implique l’acceptation pleine et entière des présentes CGU.",
+  },
+  {
+    label: "3. Accès",
+    title: "Accès au service",
+    text: "L’accès aux contenus publics du site est libre. L’accès à la plateforme d’apprentissage nécessite la création préalable d’un compte utilisateur par l’équipe SWAAN ou l’administrateur de l’entreprise cliente.",
+    items: ["Les identifiants de connexion sont transmis directement à l’utilisateur concerné."],
+  },
+  {
+    label: "4. Compte",
+    title: "Compte utilisateur",
+    text: "L’utilisateur s’engage à utiliser la plateforme dans le respect de sa finalité pédagogique.",
+    items: [
+      "conserver la confidentialité de ses identifiants ;",
+      "fournir des informations exactes ;",
+      "ne pas partager son compte avec un tiers ;",
+      "utiliser la plateforme dans le respect de sa finalité pédagogique.",
+    ],
+  },
+  {
+    label: "5. Fonctionnalités",
+    title: "Fonctionnalités proposées",
+    text: "La plateforme peut notamment proposer des modules d’apprentissage LSF, des mini-jeux pédagogiques, un dictionnaire de signes, un suivi de progression, un système de badges et des statistiques d’apprentissage.",
+  },
+  {
+    label: "6. Profil",
+    title: "Modification du profil",
+    text: "L’utilisateur peut modifier certaines informations de son profil depuis son espace personnel.",
+  },
+  {
+    label: "7. Propriété",
+    title: "Propriété intellectuelle",
+    text: "Les contenus pédagogiques et les éléments graphiques de SWAAN demeurent la propriété exclusive de leurs auteurs. Toute reproduction ou réutilisation sans autorisation est interdite.",
+  },
+  {
+    label: "8. Suspension",
+    title: "Suspension ou suppression d’un compte",
+    text: "L’équipe SWAAN se réserve le droit de suspendre ou supprimer un compte dans certains cas.",
+    items: [
+      "utilisation abusive ;",
+      "tentative de fraude ;",
+      "non-respect des présentes CGU ;",
+      "atteinte au bon fonctionnement de la plateforme.",
+    ],
+  },
+  {
+    label: "9. Responsabilité",
+    title: "Limitation de responsabilité",
+    text: "SWAAN est un outil pédagogique. Les créateurs ne sauraient être tenus responsables d’éventuelles interruptions temporaires du service, pertes de données ou dysfonctionnements techniques.",
+  },
+  {
+    label: "10. Évolution",
+    title: "Modification des CGU",
+    text: "Les présentes CGU peuvent être modifiées à tout moment afin de tenir compte des évolutions du projet ou des obligations légales.",
+  },
+  {
+    label: "11. Droit",
+    title: "Droit applicable",
+    text: "Les présentes CGU sont régies par le droit français.",
+  },
+];
 ---
 
 <InfoPage
-  title="Conditions générales d'utilisation"
-  eyebrow="Cadre d'utilisation"
-  description="Les conditions générales d'utilisation encadrent l'accès à SWAAN, l'usage des contenus LSF, des mini-jeux, du dictionnaire et des espaces dédiés aux collaborateurs et responsables formation."
-  image="/assets/img/dictionnaire/quotidien-oui.png"
-  ctaLabel="Poser une question"
+  title="Conditions générales d’utilisation"
+  eyebrow="Cadre d’utilisation"
+  description="Dernière mise à jour : Juin 2026. Les règles d’accès et d’utilisation de la plateforme SWAAN."
+  image="/assets/img/dictionnaire/quotidien-bonjour.png"
+  ctaLabel="Nous contacter"
   ctaHref="/contact"
   secondaryLabel="Confidentialité"
   secondaryHref="/confidentialite"
-  notice={{ label: "Document projet", text: "Ces CGU sont rédigées pour cadrer la maquette fonctionnelle SWAAN. Elles devront être adaptées au statut juridique, au contrat commercial et aux responsabilités exactes avant publication officielle." }}
-  cards={[
-    { label: "Accès", title: "Comptes utilisateurs", text: "L'accès aux cours, jeux et dictionnaire connecté est destiné aux utilisateurs autorisés par leur entreprise." },
-    { label: "Usage", title: "Formation interne", text: "Les contenus sont prévus pour apprendre les bases de la LSF dans un contexte professionnel." },
-    { label: "Données", title: "Progression", text: "Les scores, badges et progressions servent à personnaliser l'apprentissage et à suivre l'activité de formation." },
+  highlights={[
+    { label: "Accès", value: "Compte" },
+    { label: "Usage", value: "Pédagogique" },
+    { label: "Droit", value: "France" },
   ]}
-  sections={[
-    { label: "Objet", title: "À quoi sert SWAAN.", text: "SWAAN est une plateforme pédagogique B2B destinée à sensibiliser et former des collaborateurs aux bases de la Langue des Signes Française.", items: ["Parcours progressif par modules", "Dictionnaire de signes consultable", "Mini-jeux de mémorisation", "Suivi de progression individuel et équipe"] },
-    { label: "Compte", title: "Accès et authentification.", text: "L'espace apprenant est réservé aux utilisateurs autorisés. Chaque compte est personnel et rattaché à une entreprise ou organisation.", items: ["Ne pas partager ses identifiants", "Utiliser une adresse email valide", "Prévenir l'administrateur en cas d'accès non autorisé", "Se déconnecter sur un poste partagé"] },
-    { label: "Utilisateur", title: "Engagements attendus.", text: "Chaque utilisateur s'engage à utiliser la plateforme de manière loyale, respectueuse et conforme à sa finalité pédagogique.", items: ["Ne pas détourner les vidéos ou illustrations", "Ne pas copier massivement les contenus", "Respecter les personnes sourdes et malentendantes", "Signaler une erreur ou un contenu sensible via le contact"] },
-    { label: "Service", title: "Disponibilité et évolution.", text: "SWAAN peut évoluer pour améliorer les modules, les jeux, la progression, les contenus ou l'administration RH.", items: ["Maintenance ou interruption temporaire possible", "Ajout ou correction de signes", "Évolution des fonctionnalités", "Données de démonstration susceptibles d'être remplacées"] },
-    { label: "Responsabilité", title: "Limites pédagogiques.", text: "SWAAN permet d'apprendre des bases et de sensibiliser, mais ne remplace pas une formation complète certifiante en LSF.", items: ["Contenus fournis à titre pédagogique", "Vérification recommandée pour les usages sensibles", "Responsabilité de l'entreprise dans le déploiement interne"] },
-    { label: "Résiliation", title: "Fin d'accès.", text: "L'accès peut être désactivé à la fin d'un test, d'un contrat, d'un projet pilote ou en cas d'usage non conforme.", items: ["Suppression ou désactivation du compte", "Conservation limitée selon la politique de confidentialité", "Demande possible via le contact"] },
-  ]}
+  notice={{
+    label: "À retenir",
+    text: "SWAAN est une plateforme pédagogique : les comptes apprenants sont créés ou transmis par l’équipe SWAAN ou par l’entreprise cliente.",
+  }}
+  sections={sections}
 />

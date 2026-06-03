@@ -74,7 +74,7 @@ const included = [
         </p>
       </div>
 
-      <div class="mt-14 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+      <div id="offers-grid" class="mt-14 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
         {
           offers.map((offer) => (
             <article class="reveal flex min-h-[430px] flex-col rounded-[34px] bg-bg p-8 shadow-neu-out-lg">
@@ -149,4 +149,68 @@ const included = [
   </main>
 
   <Footer />
+
+  <script define:vars={{ offers }}>
+    const POCKETBASE_URL = "https://swaanpb.tebrouri.fr";
+    const offersGrid = document.getElementById("offers-grid");
+
+    function formatPrice(value) {
+      const number = Number(value);
+      if (Number.isNaN(number)) return value || "Sur devis";
+      return new Intl.NumberFormat("fr-FR").format(number) + " €";
+    }
+
+    function normalizeOffer(offer) {
+      return {
+        title: offer.nom_pack || offer.title || "Pack entreprise",
+        monthly: formatPrice(offer.prix_mois ?? offer.monthly),
+        yearly: formatPrice(offer.prix_annee ?? offer.yearly),
+        slug: (offer.nom_pack || offer.title || "pack").toLowerCase().replaceAll(" ", "-"),
+        teamSize: offer.teamSize || "Entreprise",
+        description: offer.description || "Offre SWAAN pour équiper une équipe avec les parcours, jeux et dictionnaire LSF.",
+      };
+    }
+
+    function renderOffers(items) {
+      if (!offersGrid || items.length === 0) return;
+      offersGrid.innerHTML = items.map((offer) => `
+        <article class="reveal flex min-h-[430px] flex-col rounded-[34px] bg-bg p-8 shadow-neu-out-lg">
+          <div class="mb-8 flex items-start justify-between gap-4">
+            <h2 class="font-serif text-3xl leading-tight font-light text-dark">${offer.title}</h2>
+            <span class="shrink-0 rounded-full bg-bg px-3 py-1 text-[9px] font-medium tracking-[0.14em] text-pop-dark uppercase shadow-neu-out">B2B</span>
+          </div>
+          <div class="grid gap-5">
+            <div>
+              <p class="mb-2 text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Mensuel</p>
+              <p class="font-serif text-[44px] leading-none font-light text-dark">${offer.monthly} <span class="text-2xl text-mid">/ mois</span></p>
+            </div>
+            <div>
+              <p class="mb-2 text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Annuel</p>
+              <p class="font-serif text-3xl leading-none font-light text-pop-dark">${offer.yearly} <span class="text-xl text-pop-dark">/ an</span></p>
+            </div>
+          </div>
+          <p class="mt-7 text-sm leading-7 font-light text-mid">${offer.description}</p>
+          <div class="mt-auto pt-8">
+            <a class="btn btn-soft w-full justify-center" href="/demande-demo?pack=${encodeURIComponent(offer.slug)}&taille=${encodeURIComponent(offer.teamSize)}" aria-label="Choisir ${offer.title}">
+              Choisir ce pack
+            </a>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    async function loadPocketBaseOffers() {
+      try {
+        const response = await fetch(`${POCKETBASE_URL}/api/collections/offres/records?perPage=50&sort=prix_mois`);
+        if (!response.ok) throw new Error(`PocketBase ${response.status}`);
+        const data = await response.json();
+        renderOffers((data.items || []).map(normalizeOffer));
+      } catch (error) {
+        console.error("Offres PocketBase indisponibles :", error);
+        renderOffers(offers.map(normalizeOffer));
+      }
+    }
+
+    loadPocketBaseOffers();
+  </script>
 </Layout>

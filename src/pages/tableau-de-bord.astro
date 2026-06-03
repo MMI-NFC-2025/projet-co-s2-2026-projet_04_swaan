@@ -99,6 +99,26 @@ const games = [
   <section class="mt-7 rounded-[32px] bg-bg p-6 shadow-neu-out-lg">
     <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
       <div>
+        <p class="text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Tes badges</p>
+        <h2 class="mt-2 font-serif text-[38px] leading-none font-light text-dark">
+          Récompenses <em class="title-em">débloquées.</em>
+        </h2>
+      </div>
+      <p id="dashboard-badges-count" class="rounded-full bg-bg px-5 py-2.5 text-xs font-medium tracking-[0.09em] text-pop-dark uppercase shadow-neu-in-sm">
+        0 badge
+      </p>
+    </div>
+
+    <div id="dashboard-badges" class="grid gap-4 md:grid-cols-2 xl:grid-cols-4" aria-live="polite">
+      <article class="rounded-[28px] bg-bg p-5 shadow-neu-in">
+        <p class="text-sm font-light text-mid">Chargement des badges...</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="mt-7 rounded-[32px] bg-bg p-6 shadow-neu-out-lg">
+    <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+      <div>
         <p class="text-[10px] font-medium tracking-[0.14em] text-soft uppercase">Tes mini-jeux</p>
         <h2 class="mt-2 font-serif text-[38px] leading-none font-light text-dark">
           Réviser en <em class="title-em">jouant.</em>
@@ -241,6 +261,41 @@ const games = [
 
     const POCKETBASE_URL = "https://swaanpb.tebrouri.fr";
 
+    const defaultBadges = [
+      {
+        id: "premiere-session",
+        name: "Première session",
+        description: "Terminer un premier mini-jeu.",
+        icon: "✓",
+        condition: "1 jeu terminé",
+        neededSessions: 1,
+      },
+      {
+        id: "memoire-active",
+        name: "Mémoire active",
+        description: "Réviser au moins 3 signes.",
+        icon: "S",
+        condition: "3 signes travaillés",
+        neededSigns: 3,
+      },
+      {
+        id: "bon-score",
+        name: "Bon score",
+        description: "Atteindre 70 % de réussite.",
+        icon: "%",
+        condition: "70 % de réussite",
+        neededSuccess: 70,
+      },
+      {
+        id: "regularite",
+        name: "Régularité",
+        description: "Apprendre sur deux journées différentes.",
+        icon: "2",
+        condition: "2 jours actifs",
+        neededDays: 2,
+      },
+    ];
+
     async function readPocketBaseProgress() {
       const auth = JSON.parse(localStorage.getItem("pocketbase_auth") || "{}");
       const userId = auth?.record?.id || auth?.model?.id;
@@ -271,6 +326,96 @@ const games = [
         console.error("Erreur lecture progression PocketBase :", error);
         return [];
       }
+    }
+
+    async function readPocketBaseBadges() {
+      const auth = JSON.parse(localStorage.getItem("pocketbase_auth") || "{}");
+      const userId = auth?.record?.id || auth?.model?.id;
+      const token = auth?.token;
+
+      try {
+        const badgeResponse = await fetch(`${POCKETBASE_URL}/api/collections/badges/records?perPage=100&sort=created`, {
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+        });
+
+        if (!badgeResponse.ok) throw new Error(`Badges ${badgeResponse.status}`);
+        const badgeData = await badgeResponse.json();
+        const badges = badgeData.items || [];
+
+        if (!userId || !token) {
+          return badges.map((badge) => ({ ...badge, earned: false }));
+        }
+
+        const filter = encodeURIComponent(`user_id = "${userId}"`);
+        const earnedResponse = await fetch(`${POCKETBASE_URL}/api/collections/user_badges/records?perPage=100&expand=badge_id&filter=${filter}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (!earnedResponse.ok) throw new Error(`User badges ${earnedResponse.status}`);
+        const earnedData = await earnedResponse.json();
+        const earnedIds = new Set((earnedData.items || []).map((item) => item.badge_id));
+
+        return badges.map((badge) => ({
+          id: badge.id,
+          name: badge.name,
+          description: badge.description,
+          icon: badge.icon,
+          condition: badge.condition,
+          earned: earnedIds.has(badge.id),
+        }));
+      } catch (error) {
+        console.error("Erreur lecture badges PocketBase :", error);
+        return [];
+      }
+    }
+
+    function buildFallbackBadges(sessions) {
+      const totalScore = sessions.reduce((sum, session) => sum + Number(session.score || 0), 0);
+      const totalQuestions = sessions.reduce((sum, session) => sum + Number(session.total || 0), 0);
+      const totalLearned = sessions.reduce((sum, session) => sum + Number(session.learned || 0), 0);
+      const successRate = totalQuestions > 0 ? Math.round((totalScore / totalQuestions) * 100) : 0;
+      const activeDays = new Set(sessions.map((session) => new Date(session.createdAt).toDateString())).size;
+
+      return defaultBadges.map((badge) => ({
+        ...badge,
+        earned:
+          (badge.neededSessions && sessions.length >= badge.neededSessions) ||
+          (badge.neededSigns && totalLearned >= badge.neededSigns) ||
+          (badge.neededSuccess && successRate >= badge.neededSuccess) ||
+          (badge.neededDays && activeDays >= badge.neededDays),
+      }));
+    }
+
+    function renderBadges(badges) {
+      const badgesBox = document.getElementById("dashboard-badges");
+      const countBox = document.getElementById("dashboard-badges-count");
+      if (!badgesBox || !countBox) return;
+
+      const normalizedBadges = badges.length > 0 ? badges : defaultBadges.map((badge) => ({ ...badge, earned: false }));
+      const earnedCount = normalizedBadges.filter((badge) => badge.earned).length;
+
+      countBox.textContent = `${earnedCount} ${earnedCount > 1 ? "badges" : "badge"}`;
+      badgesBox.innerHTML = normalizedBadges
+        .slice(0, 4)
+        .map((badge) => {
+          const earned = Boolean(badge.earned);
+          return `
+            <article class="rounded-[28px] bg-bg p-5 shadow-${earned ? "neu-out" : "neu-in"} ${earned ? "" : "opacity-65"}">
+              <div class="mb-5 flex items-center justify-between gap-3">
+                <span class="flex size-12 items-center justify-center rounded-full bg-bg font-serif text-2xl text-${earned ? "pop-dark" : "soft"} shadow-neu-in-sm">
+                  ${badge.icon || "S"}
+                </span>
+                <span class="rounded-full bg-bg px-3 py-1 text-[9px] font-medium tracking-[0.12em] text-${earned ? "pop-dark" : "soft"} uppercase shadow-neu-in-sm">
+                  ${earned ? "Obtenu" : "À débloquer"}
+                </span>
+              </div>
+              <h3 class="font-serif text-[28px] leading-none font-light text-dark">${badge.name || "Badge SWAAN"}</h3>
+              <p class="mt-3 text-sm leading-6 font-light text-mid">${badge.description || "Badge lié à la progression."}</p>
+              <p class="mt-4 text-[10px] font-medium tracking-[0.12em] text-soft uppercase">${badge.condition || "Progression"}</p>
+            </article>
+          `;
+        })
+        .join("");
     }
 
     function renderDashboardProgress(sessions) {
@@ -315,6 +460,8 @@ const games = [
       const pocketBaseSessions = await readPocketBaseProgress();
       const sessions = pocketBaseSessions.length > 0 ? pocketBaseSessions : readGameSessions();
       renderDashboardProgress(sessions);
+      const pocketBaseBadges = await readPocketBaseBadges();
+      renderBadges(pocketBaseBadges.length > 0 ? pocketBaseBadges : buildFallbackBadges(sessions));
     }
 
     updateDashboardProgress();
