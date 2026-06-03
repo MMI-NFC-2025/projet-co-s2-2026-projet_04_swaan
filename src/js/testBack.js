@@ -12,7 +12,7 @@ import {
     getCurrentUser,
     createNewUser,
     registerUser,
-} from "./src/js/backend.mjs";
+} from "./backend.mjs";
 
 // ── Test getOffres ─────────────────────────────────────────────────────────
 
