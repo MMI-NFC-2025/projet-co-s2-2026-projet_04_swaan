@@ -71,6 +71,7 @@ const localSignVideos = {
     main: "Main.mp4",
     merci: "Merci.mp4",
     non: "Non.mp4",
+    oiseau: "Oiseaux.mp4",
     oiseaux: "Oiseaux.mp4",
     oui: "Oui.mp4",
     pain: "Pain.mp4",
@@ -133,11 +134,11 @@ export function getDictionaryCategories(signes = []) {
 
 export function getSignVideoUrl(signe) {
     return (
+        getLocalSignVideoUrl(signe) ||
         getImageUrl(signe, "video_signe") ||
         getImageUrl(signe, "video") ||
         signe?.video_url ||
         signe?.sign_video_url ||
-        getLocalSignVideoUrl(signe) ||
         ""
     );
 }
@@ -389,10 +390,85 @@ export async function saveGameProgress(game, score, total, minutes = 6) {
             score: scorePercent,
             completed_at: session.createdAt,
         });
+        await unlockUserBadges(scorePercent);
         return true;
     } catch (error) {
         console.error("Erreur sauvegarde progression :", error);
         return false;
+    }
+}
+
+function normalizeText(value) {
+    return String(value || "")
+        .trim()
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+}
+
+function shouldUnlockBadge(badge, stats, currentScore) {
+    const badgeText = normalizeText(`${badge.name} ${badge.condition} ${badge.description}`);
+
+    if (badgeText.includes("premiere") || badgeText.includes("1 jeu")) {
+        return stats.sessionsCount >= 1;
+    }
+
+    if (badgeText.includes("memoire") || badgeText.includes("3 signes")) {
+        return stats.signsLearned >= 3;
+    }
+
+    if (badgeText.includes("score") || badgeText.includes("70")) {
+        return stats.bestScore >= 70 || currentScore >= 70;
+    }
+
+    if (badgeText.includes("regularite") || badgeText.includes("2 jours")) {
+        return stats.activeDays >= 2;
+    }
+
+    return false;
+}
+
+async function unlockUserBadges(currentScore) {
+    if (!pb.authStore.isValid) return;
+
+    try {
+        const userId = pb.authStore.record.id;
+        const [progressRecords, badges, earnedBadges] = await Promise.all([
+            pb.collection("progress").getFullList({
+                sort: "-completed_at",
+                filter: `user_id = "${userId}"`,
+            }),
+            pb.collection("badges").getFullList({ sort: "created" }),
+            pb.collection("user_badges").getFullList({
+                filter: `user_id = "${userId}"`,
+            }),
+        ]);
+
+        const earnedIds = new Set(earnedBadges.map((item) => item.badge_id));
+        const activeDays = new Set(progressRecords.map((item) => new Date(item.completed_at || item.created).toDateString())).size;
+        const bestScore = progressRecords.reduce((best, item) => Math.max(best, Number(item.score || 0)), currentScore);
+        const completedSessions = progressRecords.filter((item) => item.completed).length;
+
+        const stats = {
+            sessionsCount: progressRecords.length,
+            signsLearned: completedSessions * 3,
+            bestScore,
+            activeDays,
+        };
+
+        const badgesToUnlock = badges.filter((badge) => !earnedIds.has(badge.id) && shouldUnlockBadge(badge, stats, currentScore));
+
+        await Promise.all(
+            badgesToUnlock.map((badge) =>
+                pb.collection("user_badges").create({
+                    user_id: userId,
+                    badge_id: badge.id,
+                    earned_at: new Date().toISOString(),
+                })
+            )
+        );
+    } catch (error) {
+        console.error("Erreur déblocage badges :", error);
     }
 }
 

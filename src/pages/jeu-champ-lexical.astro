@@ -38,10 +38,10 @@ const firstCard = cards[0];
   <section class="grid gap-7 xl:grid-cols-(--grid-game)">
     <article class="rounded-card-lg bg-bg p-5 shadow-neu-out-lg md:p-7">
       <div class="mb-5 rounded-card bg-bg p-5 shadow-neu-in">
-        <img id="sign-image" class="mx-auto h-72 w-full object-contain" src={firstCard?.image || "/assets/img/logo_swaan.avif"} alt="Signe à classer" />
+        <img id="sign-image" class="mx-auto h-72 w-full object-contain" src={firstCard?.image || "/assets/img/logo_swaan.avif"} alt="Signe LSF à classer" />
       </div>
       <p class="text-10 font-medium tracking-section text-soft uppercase">Signe affiché</p>
-      <h2 id="sign-word" class="mt-2 font-serif text-display-md leading-none font-light text-dark">{firstCard?.word || "Chargement"}</h2>
+      <h2 id="sign-word" class="mt-2 font-serif text-display-md leading-none font-light text-dark">Trouve sa catégorie.</h2>
       <p id="feedback" class="mt-5 rounded-img bg-bg p-5 text-sm leading-7 font-medium text-mid shadow-neu-in-sm" role="status" aria-live="polite">
         Choisis le bon champ lexical.
       </p>
@@ -77,18 +77,14 @@ const firstCard = cards[0];
     </article>
   </section>
 
-  <script define:vars={{ cards, categories }}>
-    window.__champCards = cards;
-    window.__champCategories = categories;
-  </script>
+  <script id="champ-cards-data" type="application/json" set:html={JSON.stringify(cards)}></script>
+  <script id="champ-categories-data" type="application/json" set:html={JSON.stringify(categories)}></script>
 
   <script>
-    async function saveGameProgress(type, score, total) {
-      localStorage.setItem(`swaan_${type}_score`, String(score));
-    }
+    import { saveGameProgress } from "../js/backend.mjs";
 
-    const cards = window.__champCards || [];
-    const categories = window.__champCategories || [];
+    const cards = JSON.parse(document.getElementById("champ-cards-data")?.textContent || "[]");
+    const categories = JSON.parse(document.getElementById("champ-categories-data")?.textContent || "[]");
     const signImage = document.getElementById("sign-image");
     const signWord = document.getElementById("sign-word");
     const feedback = document.getElementById("feedback");
@@ -120,8 +116,8 @@ const firstCard = cards[0];
       }
 
       signImage.src = card.image;
-      signImage.alt = `Signe ${card.word}`;
-      signWord.textContent = card.word;
+      signImage.alt = "Signe LSF à classer";
+      signWord.textContent = "Trouve sa catégorie.";
       questionCount.textContent = `${index + 1} / ${deck.length}`;
       scoreCount.textContent = score;
       feedback.textContent = "Choisis le bon champ lexical.";

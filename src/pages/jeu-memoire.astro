@@ -59,16 +59,12 @@ const signs = await getGameSignes(6);
     </div>
   </section>
 
-  <script define:vars={{ signs }}>
-    window.__memoireSigns = signs;
-  </script>
+  <script id="memory-data" type="application/json" set:html={JSON.stringify(signs)}></script>
 
   <script>
-    async function saveGameProgress(type, score, total) {
-      localStorage.setItem(`swaan_${type}_score`, String(score));
-    }
+    import { saveGameProgress } from "../js/backend.mjs";
 
-    const signs = window.__memoireSigns || [];
+    const signs = JSON.parse(document.getElementById("memory-data")?.textContent || "[]");
     const board = document.getElementById("memory-board");
     const moveCounter = document.getElementById("move-counter");
     const pairCounter = document.getElementById("pair-counter");

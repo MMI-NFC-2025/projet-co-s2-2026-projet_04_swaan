@@ -96,16 +96,12 @@ const firstQuestion = questions[0];
       </div>
     </div>
 
-  <script define:vars={{ questions }}>
-    window.__vraiFauxQuestions = questions;
-  </script>
+  <script id="vrai-faux-data" type="application/json" set:html={JSON.stringify(questions)}></script>
 
   <script>
-    async function saveGameProgress(type, score, total) {
-      localStorage.setItem(`swaan_${type}_score`, String(score));
-    }
+    import { saveGameProgress } from "../js/backend.mjs";
 
-    const questions = window.__vraiFauxQuestions || [];
+    const questions = JSON.parse(document.getElementById("vrai-faux-data")?.textContent || "[]");
     let current = 0;
     let good = 0;
     let bad = 0;

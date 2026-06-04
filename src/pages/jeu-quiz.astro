@@ -77,17 +77,13 @@ const firstSign = signes[0];
     </section>
   </div>
 
-  <script define:vars={{ signes }}>
-    window.__quizSignes = signes;
-  </script>
+  <script id="quiz-data" type="application/json" set:html={JSON.stringify(signes)}></script>
 
   <script>
-    async function saveGameProgress(type, score, total) {
-      localStorage.setItem(`swaan_${type}_score`, String(score));
-    }
+    import { saveGameProgress } from "../js/backend.mjs";
 
     const state = {
-      signs: window.__quizSignes || [],
+      signs: JSON.parse(document.getElementById("quiz-data")?.textContent || "[]"),
       round: [],
       current: 0,
       score: 0,
