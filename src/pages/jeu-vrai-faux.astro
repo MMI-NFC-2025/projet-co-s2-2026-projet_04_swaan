@@ -97,8 +97,15 @@ const firstQuestion = questions[0];
     </div>
 
   <script define:vars={{ questions }}>
-    import { saveGameProgress } from "../js/backend.mjs";
+    window.__vraiFauxQuestions = questions;
+  </script>
 
+  <script>
+    async function saveGameProgress(type, score, total) {
+      localStorage.setItem(`swaan_${type}_score`, String(score));
+    }
+
+    const questions = window.__vraiFauxQuestions || [];
     let current = 0;
     let good = 0;
     let bad = 0;

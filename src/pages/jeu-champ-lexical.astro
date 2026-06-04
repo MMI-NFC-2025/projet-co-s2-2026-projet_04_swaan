@@ -78,8 +78,17 @@ const firstCard = cards[0];
   </section>
 
   <script define:vars={{ cards, categories }}>
-    import { saveGameProgress } from "../js/backend.mjs";
+    window.__champCards = cards;
+    window.__champCategories = categories;
+  </script>
 
+  <script>
+    async function saveGameProgress(type, score, total) {
+      localStorage.setItem(`swaan_${type}_score`, String(score));
+    }
+
+    const cards = window.__champCards || [];
+    const categories = window.__champCategories || [];
     const signImage = document.getElementById("sign-image");
     const signWord = document.getElementById("sign-word");
     const feedback = document.getElementById("feedback");

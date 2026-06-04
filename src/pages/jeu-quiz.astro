@@ -78,10 +78,16 @@ const firstSign = signes[0];
   </div>
 
   <script define:vars={{ signes }}>
-    import { saveGameProgress } from "../js/backend.mjs";
+    window.__quizSignes = signes;
+  </script>
+
+  <script>
+    async function saveGameProgress(type, score, total) {
+      localStorage.setItem(`swaan_${type}_score`, String(score));
+    }
 
     const state = {
-      signs: signes,
+      signs: window.__quizSignes || [],
       round: [],
       current: 0,
       score: 0,

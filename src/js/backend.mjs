@@ -50,6 +50,42 @@ export function getSignWord(record) {
     return String(record?.mots || record?.mot || record?.word || "").trim();
 }
 
+function normalizeVideoKey(value) {
+    return String(value || "")
+        .trim()
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+}
+
+const localSignVideos = {
+    aide: "Aide.mp4",
+    bonjour: "Bonjour.mp4",
+    bouche: "Bouche.mp4",
+    cafe: "Café.mp4",
+    chat: "chat.mp4",
+    chien: "Chien.mp4",
+    coeur: "coeur.mp4",
+    eau: "Eau.mp4",
+    lapin: "Lapin.mp4",
+    main: "Main.mp4",
+    merci: "Merci.mp4",
+    non: "Non.mp4",
+    oiseaux: "Oiseaux.mp4",
+    oui: "Oui.mp4",
+    pain: "Pain.mp4",
+    poisson: "poisson.mp4",
+    pomme: "Pomme.mp4",
+    repas: "Repas.mp4",
+    tete: "tête.mp4",
+    yeux: "yeux.mp4",
+};
+
+export function getLocalSignVideoUrl(signe) {
+    const videoFile = localSignVideos[normalizeVideoKey(getSignWord(signe))];
+    return videoFile ? `/assets/video/${encodeURIComponent(videoFile)}` : "";
+}
+
 export function normalizeSignCategory(value) {
     const category = String(value || "").trim().toLowerCase();
     if (category.includes("quotidien") || category.includes("geste")) return "quotidien";
@@ -101,6 +137,7 @@ export function getSignVideoUrl(signe) {
         getImageUrl(signe, "video") ||
         signe?.video_url ||
         signe?.sign_video_url ||
+        getLocalSignVideoUrl(signe) ||
         ""
     );
 }

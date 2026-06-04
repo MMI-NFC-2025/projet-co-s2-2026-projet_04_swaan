@@ -60,8 +60,15 @@ const signs = await getGameSignes(6);
   </section>
 
   <script define:vars={{ signs }}>
-    import { saveGameProgress } from "../js/backend.mjs";
+    window.__memoireSigns = signs;
+  </script>
 
+  <script>
+    async function saveGameProgress(type, score, total) {
+      localStorage.setItem(`swaan_${type}_score`, String(score));
+    }
+
+    const signs = window.__memoireSigns || [];
     const board = document.getElementById("memory-board");
     const moveCounter = document.getElementById("move-counter");
     const pairCounter = document.getElementById("pair-counter");
